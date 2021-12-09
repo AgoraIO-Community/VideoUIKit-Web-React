@@ -6,7 +6,7 @@
 
 ## Getting started
 ### Requirements
-- [An Agora developer account](https://sso.agora.io/en/signup?utm_source=github&utm_repo=Agora-React-Web-UIKit)
+- [An Agora developer account](https://sso.agora.io/en/signup?utm_source=github&utm_repo=Web-React-UIKit)
 - A React project
 
 You can also use the UIKit outside a React project (for example in a vanilla-js project) using web-components. Find out more in the `/web-component` directory.

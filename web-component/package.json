@@ -1,7 +1,7 @@
 {
   "name": "agora-react-web-uikit",
   "description": "Agora React Web UIKit wrapped in a web component to use outside of React",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "author": "",
   "license": "MIT",
   "keywords": [
