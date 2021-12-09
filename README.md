@@ -31,16 +31,18 @@ const App = () => {
   const [videoCall, setVideoCall] = useState(true);
   const rtcProps = {
     appId: '<Agora App ID>',
-    channel: 'test',
-    token: '<Your Agora Token>' // skip if you're using an app in testing mode
+    channel: 'test', // your agora channel
+    token: '<Your channel Token>' // use null or skip if using app in testing mode
   };
   const callbacks = {
     EndCall: () => setVideoCall(false),
   };
   return videoCall ? (
-    <AgoraUIKit rtcProps={rtcProps} callbacks={callbacks} />
+    <div style={{display: 'flex', width: '100vw', height: '100vh'}}>
+      <AgoraUIKit rtcProps={rtcProps} callbacks={callbacks} />
+    </div>
   ) : (
-    <Text onPress={()=>setVideoCall(true)}>Start Call</Text>
+    <h3 onClick={() => setVideoCall(true)}>Start Call</h3>
   );
 };
 
