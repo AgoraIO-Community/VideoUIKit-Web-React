@@ -1,0 +1,80 @@
+{
+  "name": "agora-react-web-uikit",
+  "description": "Agora React Web UIKit wrapped in a web component to use outside of React",
+  "version": "1.0.0",
+  "author": "",
+  "license": "MIT",
+  "keywords": [
+    "direflow",
+    "react",
+    "webcomponent"
+  ],
+  "homepage": "https://direflow.io/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Silind-Software/direflow"
+  },
+  "bugs": {
+    "email": "direflow@silind.com",
+    "url": "https://github.com/Silind-Software/direflow/issues/new"
+  },
+  "main": "build/direflowBundle.js",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "start": "direflow-scripts start",
+    "build": "direflow-scripts build",
+    "build:lib": "direflow-scripts build:lib",
+    "test": "direflow-scripts test"
+  },
+  "dependencies": {
+    "@types/node": "file:../node_modules/@types/node",
+    "@types/react": "file:../node_modules/@types/react",
+    "@types/react-dom": "file:../node_modules/@types/react-dom",
+    "agora-rtc-react": "^1.1.0",
+    "agora-react-uikit": "file:..",
+    "direflow-component": "3.5.5",
+    "direflow-scripts": "3.5.5",
+    "react": "file:../node_modules/react",
+    "react-dom": "file:../node_modules/react-dom",
+    "react-scripts": "file:../node_modules/react-scripts"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^2.19.0",
+    "@typescript-eslint/parser": "^2.19.0",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.18.0",
+    "@types/jest": "24.0.18",
+    "@types/react-test-renderer": "16.9.1",
+    "jest-environment-jsdom-fourteen": "0.1.0",
+    "react-app-rewired": "2.1.3",
+    "react-test-renderer": "16.9.0",
+    "to-string-loader": "^1.1.6",
+    "typescript": "^3.9.3",
+    "webpack-cli": "^3.3.11",
+    "ts-loader": "^6.2.2"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "direflow-scripts/direflow-jest.config.js"
+    ]
+  },
+  "config-overrides-path": "direflow-webpack.js"
+}

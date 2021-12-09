@@ -1,0 +1,23 @@
+/* add css module styles here (optional) */
+
+.test {
+  margin: 2em;
+  padding: 0.5em;
+  border: 2px solid #000;
+  font-size: 2em;
+  text-align: center;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar::-webkit-scrollbar-track {
+  background: #ccc;
+}
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #007bffcc;
+}
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #007bff;
+}

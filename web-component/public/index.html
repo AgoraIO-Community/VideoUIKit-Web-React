@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>Agora React Web Uikit</title>
+  </head>
+  <body>
+    <agora-react-web-uikit
+      style="width: 100%; height: 100vh; display: flex;"
+      appId=''
+      channel='test'
+    />
+    <script>
+      // select web component
+      const el = document.querySelector('agora-react-web-uikit');
+      
+      // alternatively we can do this to pass props
+      // el.appId = '30a6bc89994d4222a71eba01c253cbc7'
+
+      // Add event listener and subscribe to custom event
+      el.addEventListener('agoraUIKitEndcall', (e) => {
+        console.log('hello from html')
+        // handle endcall event
+        el.remove();
+      });
+    </script>
+  </body>
+</html>
