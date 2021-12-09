@@ -4,7 +4,7 @@ import 'agora-react-uikit/dist/index.css'
 
 const App: React.FunctionComponent = () => {
   const [videocall, setVideocall] = useState(true)
-  const [role, setRole] = useState(false)
+  const [isHost, setHost] = useState(true)
   const [isPinned, setPinned] = useState(false)
 
   return (
@@ -13,15 +13,16 @@ const App: React.FunctionComponent = () => {
         <h1 style={styles.heading}>Agora React Web UI Kit</h1>
         {videocall ? (<>
           <div style={styles.nav}>
-            <p style={{ fontSize: 20, width: 200 }}>You're {role ? 'an audience' : 'a host'}</p>
-            <p style={styles.btn} onClick={() => setRole(!role)}>Change Role</p>
+            <p style={{ fontSize: 20, width: 200 }}>You're {isHost ? 'a host' : 'an audience'}</p>
+            <p style={styles.btn} onClick={() => setHost(!isHost)}>Change Role</p>
             <p style={styles.btn} onClick={() => setPinned(!isPinned)}>Change Layout</p>
           </div>
           <AgoraUIKit
             rtcProps={{
-              appId: '',
+              appId: '<Your Agora App ID>',
               channel: 'test',
-              role: role ? 'audience' : 'host',
+              token: null, //add your token if using app in secured mode
+              role: isHost ? 'host' : 'audience',
               layout: isPinned ? layout.pin : layout.grid
             }}
             callbacks={{

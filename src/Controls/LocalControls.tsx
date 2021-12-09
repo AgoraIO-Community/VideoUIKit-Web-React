@@ -26,8 +26,8 @@ function LocalControls() {
           ...localBtnContainer
         }}
       >
-        {rtcProps.role === 'host' && <LocalVideoMute />}
-        {rtcProps.role === 'host' && <LocalAudioMute />}
+        {rtcProps.role !== 'audience' && <LocalVideoMute />}
+        {rtcProps.role !== 'audience' && <LocalAudioMute />}
         <EndCall />
       </div>
     </LocalUserContextComponent>

@@ -40,6 +40,9 @@ export enum remoteTrackState {
   no = 2 // remote unpublished
 }
 
+/**
+ * Data type for a UIKitUser
+ */
 export type UIKitUser = RemoteUIKitUser | LocalUIKitUser
 export interface LocalUIKitUser {
   /**
@@ -234,6 +237,9 @@ export interface StylePropInterface {
  */
 export interface VideoPlaceholderProps {
   user: UIKitUser
+  /**
+   * State value to display buttons
+   */
   isShown: boolean
   showButtons?: boolean
   showSwap?: boolean
@@ -301,7 +307,7 @@ export interface RtcPropsInterface {
   /**
    * Set local user's role between audience and host. Use with mode set to livestreaming. (default: host)
    */
-  role: role
+  role?: role
   // /**
   //  * Select between livestreaming and communication mode for the SDK. (default: communication)
   //  */
@@ -372,7 +378,11 @@ export enum ToggleState {
   enabling // disabled -> enabling -> enabled
 }
 
-export type CallbacksInterface = UIKitEventsInterface & RtcEventsInterface
+/**
+ * Callbacks exposed by the UIKit
+ */
+export type CallbacksInterface = UIKitEventsInterface &
+  RtcEventsInterface
 export interface UIKitEventsInterface {
   EndCall(): void
   ActiveSpeaker(uid: UID): void
@@ -459,9 +469,9 @@ export interface PropsInterface {
   callbacks?: Partial<CallbacksInterface>
 }
 
-// /**
-//  * Custom Icons require a base64 endcoded transparent PNG
-//  */
+/**
+ * Interface for icons supplied with the UIKit (curtosy of https://feathericons.com/)
+ */
 export interface IconsInterface {
   /**
    * Icon for Camera/Video mute in on state
@@ -510,7 +520,7 @@ const PropsContext = React.createContext<PropsInterface>(initialValue)
 export const PropsProvider = PropsContext.Provider
 export const PropsConsumer = PropsContext.Consumer
 
-declare const enum InjectStreamEventStatus {
+const enum InjectStreamEventStatus {
   /**
    * Successfully injects the online media stream.
    */

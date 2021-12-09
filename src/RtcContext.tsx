@@ -14,6 +14,9 @@ export type DispatchType = <
   value: V
 }) => void
 
+/**
+ * Interface for the RtcContext
+ */
 export interface RtcContextInterface {
   client: IAgoraRTCClient
   localVideoTrack: ILocalVideoTrack | null
