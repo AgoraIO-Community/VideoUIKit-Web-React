@@ -64,3 +64,8 @@ There's a demo project in the repo [here](https://github.com/AgoraIO-Community/W
 For full documentation, see our [docs page](https://agoraio-community.github.io/Web-React-UIKit/).
 
 You can visit the [wiki](https://github.com/AgoraIO-Community/Web-React-UIKit/wiki) for other examples and in depth guide.
+
+
+## UIKits
+
+The plan is to grow this library and have similar offerings across all supported platforms. There are already similar libraries for [Android](https://github.com/AgoraIO-Community/Android-UIKit/), [iOS](https://github.com/AgoraIO-Community/iOS-UIKit), [React Native](https://github.com/AgoraIO-Community/ReactNative-UIKit), and [Flutter](https://github.com/AgoraIO-Community/Flutter-UIKit/), so be sure to check them out.
