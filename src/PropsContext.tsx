@@ -81,20 +81,6 @@ export interface RemoteUIKitUser {
   hasVideo: remoteTrackState
 }
 
-// // import { StyleProp, ViewStyle } from 'react-native'
-// // import { StreamFallbackOptions, VideoRenderMode } from 'react-native-agora'
-// // import { RtcEngineEvents } from 'react-native-agora/src/common/RtcEvents'
-// // import {IAgoraRTCClient} from 'agora-rtc-react'
-// /**
-//  * The user object
-//  */
-// interface UidInterface {
-//   // TODO: refactor local to 0 and remove string.
-//   uid: number | string
-//   audio: boolean
-//   video: boolean
-// }
-
 /**
  * Remote Buttons styles
  */

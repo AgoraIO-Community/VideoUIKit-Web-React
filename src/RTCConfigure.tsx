@@ -366,7 +366,8 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
         mediaStore: mediaStore.current,
         localVideoTrack: localVideoTrack,
         localAudioTrack: localAudioTrack,
-        dispatch: dispatch
+        dispatch: dispatch,
+        localUid: uid.current
       }}
     >
       <MaxUidProvider value={uidState.max}>

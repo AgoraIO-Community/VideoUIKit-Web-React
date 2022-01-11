@@ -2,7 +2,8 @@ import React from 'react'
 import {
   IAgoraRTCClient,
   ILocalAudioTrack,
-  ILocalVideoTrack
+  ILocalVideoTrack,
+  UID
 } from 'agora-rtc-react'
 import { CallbacksInterface, mediaStore } from './PropsContext'
 
@@ -23,8 +24,11 @@ export interface RtcContextInterface {
   localAudioTrack: ILocalAudioTrack | null
   mediaStore: mediaStore
   dispatch: DispatchType
+  localUid: UID | undefined
 }
-
+/**
+ * Context to access local/remote tracks, client, dispatch and localuid
+ */
 const RtcContext = React.createContext<RtcContextInterface>(
   {} as RtcContextInterface
 )
