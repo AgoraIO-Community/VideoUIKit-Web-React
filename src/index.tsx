@@ -1,7 +1,7 @@
 /**
  * @module agora-rn-uikit
  */
-import AgoraUIKit from './AgoraUIKit'
+import AgoraUIKit, { VideocallUI } from './AgoraUIKit'
 import LocalVideoMute from './Controls/Local/LocalVideoMute'
 import LocalAudioMute from './Controls/Local/LocalAudioMute'
 import EndCall from './Controls/Local/EndCall'
@@ -23,6 +23,7 @@ import MaxUidContext from './MaxUidContext'
 import PropsContext from './PropsContext'
 import RtcContext from './RtcContext'
 import TracksConfigure from './TracksConfigure'
+
 export default AgoraUIKit
 export {
   RemoteVideoMute,
@@ -45,7 +46,8 @@ export {
   MaxUidContext,
   MinUidContext,
   PropsContext,
-  RtcContext
+  RtcContext,
+  VideocallUI
 }
 
 export type {

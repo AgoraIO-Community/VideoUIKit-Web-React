@@ -19,11 +19,29 @@ export type DispatchType = <
  * Interface for the RtcContext
  */
 export interface RtcContextInterface {
+  /**
+   * The client object used by the web SDK
+   */
   client: IAgoraRTCClient
+  /**
+   * The local user's video track
+   */
   localVideoTrack: ILocalVideoTrack | null
+  /**
+   * The local user's audio track
+   */
   localAudioTrack: ILocalAudioTrack | null
+  /**
+   * An object containing a key value store of tracks mapped to users UIDs
+   */
   mediaStore: mediaStore
+  /**
+   * React dispatch to update values in the reducer
+   */
   dispatch: DispatchType
+  /**
+   * The local UID returned by the SDK when using local uid as 0.
+   */
   localUid: UID | undefined
 }
 /**

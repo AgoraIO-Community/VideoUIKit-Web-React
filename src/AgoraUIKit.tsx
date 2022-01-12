@@ -41,7 +41,7 @@ const AgoraUIKit: React.FC<PropsInterface> = (props) => {
   )
 }
 
-const VideocallUI = () => {
+export const VideocallUI = () => {
   const { rtcProps } = useContext(PropsContext)
   return (
     <RtcConfigure callActive={rtcProps.callActive}>
