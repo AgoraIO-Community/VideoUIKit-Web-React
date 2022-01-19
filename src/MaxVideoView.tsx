@@ -5,7 +5,9 @@ import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
 import PropsContext, { UIKitUser } from './PropsContext'
 import VideoPlaceholder from './VideoPlaceholder'
-
+/**
+ * React component to display the user video in maximized view
+ */
 const MaxVideoView = (props: {
   user: UIKitUser
   style?: React.CSSProperties

@@ -10,7 +10,9 @@ export const LocalConsumer = LocalContext.Consumer
 interface LocalUserContextInterface {
   children: React.ReactNode
 }
-
+/**
+ * React context that exposes the {@link LocalUIKitUser} data object
+ */
 const LocalUserContext: React.FC<LocalUserContextInterface> = (props) => {
   const max = useContext(MaxUidContext)
   const min = useContext(MinUidContext)

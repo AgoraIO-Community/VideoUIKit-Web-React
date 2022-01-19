@@ -4,6 +4,9 @@ import MaxUidContext from './MaxUidContext'
 import PropsContext from './PropsContext'
 import MaxVideoView from './MaxVideoView'
 
+/**
+ * React Component to render the user videos in a grid
+ */
 const GridVideo: React.FC = () => {
   const { styleProps, rtcProps } = useContext(PropsContext)
   const { gridVideoCells, gridVideoContainer } = styleProps || {}

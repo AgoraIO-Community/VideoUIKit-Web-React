@@ -192,10 +192,6 @@ export interface StylePropInterface {
    * Style for the local button container
    */
   localBtnContainer?: React.CSSProperties
-  // /**
-  //  * Style for the button container that sets the mute and unmute for maxVideoView in pinned layout, only visible if max view is remote user
-  //  */
-  // maxViewRemoteBtnContainer?: React.CSSProperties
   /**
    * Applies style to the individual cell (view) containing the video in the grid layout
    */
@@ -271,13 +267,6 @@ export interface RtcPropsInterface {
    * Pass in a custom RTC client, to use your own implementation of the AgoraRTCClient.
    */
   customRtcClient?: IAgoraRTCClient
-  // /**
-  //  * Pass in a customs tracks
-  //  */
-  // customTracks?: {
-  //   video?: ILocalVideoTrack
-  //   audio?: ILocalAudioTrack
-  // }
   /**
    * Enables dual stream mode. (default: false)
    */
@@ -294,10 +283,6 @@ export interface RtcPropsInterface {
    * Set local user's role between audience and host. Use with mode set to livestreaming. (default: host)
    */
   role?: role
-  // /**
-  //  * Select between livestreaming and communication mode for the SDK. (default: communication)
-  //  */
-  // mode?: mode
   /**
    * Enable the mic before joining the call. (default: true)
    */
@@ -327,35 +312,6 @@ export enum layout {
  */
 type role = 'audience' | 'host'
 
-// /**
-//  * User role for live streaming mode
-//  */
-// export enum role {
-//   /**
-//    * 1: A host can both send and receive streams.
-//    */
-//   Broadcaster = 1,
-//   /**
-//    * 2: The default role. An audience can only receive streams.
-//    */
-//   Audience = 2
-// }
-
-// /**
-//  * Mode for RTC (Live or Broadcast)
-//  */
-// export enum mode {
-//   /**
-//    * 0: (Default) The Communication profile.
-//    * Use this profile in one-on-one calls or group calls, where all users can talk freely.
-//    */
-//   Communication = 0,
-//   /**
-//    * 1: The Live-Broadcast profile.
-//    * Users in a live-broadcast channel have a role as either host or audience. A host can both send and receive streams; an audience can only receive streams.
-//    */
-//   LiveBroadcasting = 1
-// }
 
 export enum ToggleState {
   disabled, // set as 0 - to evaluate falsy
@@ -437,7 +393,6 @@ export interface RtcEventsInterface {
     uid: UID,
     url: string
   ): void
-  // [exception](): void
   ['is-using-cloud-proxy'](isUsingProxy: boolean): void
 }
 export interface PropsInterface {
@@ -449,9 +404,9 @@ export interface PropsInterface {
    * Props used to customise the UI Kit's appearance (accepts style object for different components)
    */
   styleProps?: Partial<StylePropInterface>
-  // /**
-  //  * Callbacks for different functions of the UI Kit
-  //  */
+  /**
+   * Callbacks for different functions of the UI Kit
+   */
   callbacks?: Partial<CallbacksInterface>
 }
 
@@ -500,7 +455,9 @@ const initialValue: PropsInterface = {
     role: 'host'
   }
 }
-
+/**
+ * React Context to manage the user props
+ */
 const PropsContext = React.createContext<PropsInterface>(initialValue)
 
 export const PropsProvider = PropsContext.Provider

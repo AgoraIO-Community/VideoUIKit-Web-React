@@ -20,7 +20,9 @@ import TracksContext from './TracksContext'
 import reducer, { initState } from './Reducer'
 
 const useClient = createClient({ codec: 'vp8', mode: 'live' }) // pass in another client if use h264
-
+/**
+ * React component that contains the RTC logic. It manages the user state and provides it the children components by wrapping them with context providers.
+ */
 const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
   const uid = useRef<UID>()
   const { localVideoTrack, localAudioTrack } = useContext(TracksContext)

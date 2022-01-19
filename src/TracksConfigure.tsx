@@ -11,7 +11,9 @@ const useTracks = createMicrophoneAndCameraTracks(
   { encoderConfig: {} },
   { encoderConfig: {} }
 )
-
+/**
+ * React component that create local camera and microphone tracks and assigns them to the child components
+ */
 const TracksConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
   const [ready, setReady] = useState<boolean>(false)
   const [localVideoTrack, setLocalVideoTrack] =

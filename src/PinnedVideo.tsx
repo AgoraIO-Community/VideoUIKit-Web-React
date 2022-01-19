@@ -6,6 +6,9 @@ import MinVideoView from './MinVideoView'
 import PropsContext from './PropsContext'
 import styles from './styles.module.css'
 
+/**
+ * React Component to render the user videos in the pinned/spotlight layout
+ */
 const PinnedVideo: React.FC = () => {
   const { styleProps, rtcProps } = useContext(PropsContext)
   const {

@@ -7,6 +7,9 @@ import SwapUser from './Controls/SwapUser'
 import PropsContext, { UIKitUser } from './PropsContext'
 import VideoPlaceholder from './VideoPlaceholder'
 
+/**
+ * React context to expose user array displayed in the smaller view
+ */
 const MinVideoView = (props: { user: UIKitUser }) => {
   const { mediaStore } = useContext(RtcContext)
   const { styleProps } = useContext(PropsContext)

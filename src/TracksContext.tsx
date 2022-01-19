@@ -5,7 +5,9 @@ export interface TracksContextInterface {
   localVideoTrack: ILocalVideoTrack | null
   localAudioTrack: ILocalAudioTrack | null
 }
-
+/**
+ * React context that contains the local audio and video tracks. It's setup by {@link TracksConfigure}.
+ */
 const TracksContext = React.createContext<TracksContextInterface>(
   {} as TracksContextInterface
 )

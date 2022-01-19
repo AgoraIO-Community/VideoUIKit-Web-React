@@ -45,7 +45,7 @@ export interface RtcContextInterface {
   localUid: UID | undefined
 }
 /**
- * Context to access local/remote tracks, client, dispatch and localuid
+ * Context to access local/remote tracks, client, dispatch and localuid. It's setup by {@link RtcConfigure}.
  */
 const RtcContext = React.createContext<RtcContextInterface>(
   {} as RtcContextInterface

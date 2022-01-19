@@ -3,7 +3,9 @@ import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
 import PropsContext, { VideoPlaceholderProps } from './PropsContext'
 import SwapUser from './Controls/SwapUser'
-
+/**
+ * React component that is renderd when the video track is muted.
+ */
 const VideoPlaceholder = (props: VideoPlaceholderProps) => {
   const { styleProps, rtcProps } = useContext(PropsContext)
   const { maxViewStyles, maxViewOverlayContainer } = styleProps || {}
