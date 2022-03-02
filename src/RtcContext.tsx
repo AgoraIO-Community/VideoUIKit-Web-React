@@ -42,7 +42,11 @@ export interface RtcContextInterface {
   /**
    * The local UID returned by the SDK when using local uid as 0.
    */
-  localUid: UID | undefined
+  localUid: React.MutableRefObject<UID | undefined>
+  /**
+   * Is the UIKit in a channel
+   */
+  channelJoined: boolean
 }
 /**
  * Context to access local/remote tracks, client, dispatch and localuid. It's setup by {@link RtcConfigure}.

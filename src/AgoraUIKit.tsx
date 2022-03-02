@@ -12,6 +12,9 @@ import LocalControls from './Controls/LocalControls'
 import PinnedVideo from './PinnedVideo'
 import GridVideo from './GridVideo'
 import TracksConfigure from './TracksConfigure'
+import RtmConfigure from './RTMConfigure'
+import LocalUserContext from './LocalUserContext'
+import PopUp from './Controls/Remote/RemoteMutePopUp'
 
 /**
  * High level component to render the UI Kit
@@ -45,8 +48,13 @@ export const VideocallUI = () => {
   const { rtcProps } = useContext(PropsContext)
   return (
     <RtcConfigure callActive={rtcProps.callActive}>
-      {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
-      <LocalControls />
+      <LocalUserContext>
+        <RtmConfigure>
+          <PopUp />
+          {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
+          <LocalControls />
+        </RtmConfigure>
+      </LocalUserContext>
     </RtcConfigure>
   )
 }

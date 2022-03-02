@@ -19,7 +19,9 @@ import {
   IMicrophoneAudioTrack,
   ICameraVideoTrack
 } from 'agora-rtc-react'
+// import {RtmChannelEvents} from 'agora-rtm-react'
 import React from 'react'
+import { rtmCallbacks } from './RtmContext'
 
 interface media {
   videoTrack?: IRemoteVideoTrack
@@ -212,6 +214,10 @@ export interface StylePropInterface {
    * Applies style to the global view containing the UI Kit
    */
   UIKitContainer?: React.CSSProperties
+  /**
+   * Applies style to the pop up container for remote mute requests
+   */
+  popUpContainer?: React.CSSProperties
 }
 
 /**
@@ -293,6 +299,29 @@ export interface RtcPropsInterface {
   enableVideo?: boolean
 }
 
+export interface RtmProperInterface {
+  /**
+   * Username for the RTM Client, this value can be accessed using the userData object
+   */
+   username?: string
+   /**
+    * (optional) Token used to join an RTM channel when using secured mode (default: null)
+    */
+   token?: string | undefined
+   /**
+    * (optional) UID for local user to join the RTM channel (default: uses the RTC UID)
+    */
+   uid?: string
+   /**
+    * (optional) Show a pop up with option to accept mute request instead of directly muting the remote user (default: true)
+    */
+   showPopUpBeforeRemoteMute?: boolean
+   /**
+    * (optional) Display RTM usernames in the Videocall (default: false)
+    */
+   displayUsername?: boolean
+}
+
 /**
  * Select a pre built layout
  */
@@ -320,6 +349,10 @@ export enum ToggleState {
   enabling // disabled -> enabling -> enabled
 }
 
+/**
+ * Callbacks exposed by the UIKit
+ */
+// export type RTMCallbacksInterface = RtmChannelEvents
 /**
  * Callbacks exposed by the UIKit
  */
@@ -397,9 +430,13 @@ export interface RtcEventsInterface {
 }
 export interface PropsInterface {
   /**
-   * Props used to customise the UI Kit's functionality
+   * Props used to customise the UIKit communication functionality
    */
   rtcProps: RtcPropsInterface
+  /**
+   * Props used to customise the UIKit signalling functionality
+   */
+  rtmProps?: RtmProperInterface
   /**
    * Props used to customise the UI Kit's appearance (accepts style object for different components)
    */
@@ -408,6 +445,10 @@ export interface PropsInterface {
    * Callbacks for different functions of the UI Kit
    */
   callbacks?: Partial<CallbacksInterface>
+  /**
+   * Callbacks for different functions of the UI Kit
+   */
+  rtmCallbacks?: rtmCallbacks
 }
 
 /**
@@ -453,7 +494,8 @@ const initialValue: PropsInterface = {
     appId: '',
     channel: '',
     role: 'host'
-  }
+  },
+  rtmProps: {}
 }
 /**
  * React Context to manage the user props

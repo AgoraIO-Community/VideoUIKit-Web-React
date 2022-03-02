@@ -129,13 +129,6 @@ const reducer = (
             }
           }
         }
-        console.log(
-          '!user unpublished',
-          action.value[0].uid,
-          action.value[1],
-          action.value[0].hasAudio,
-          action.value[0].hasVideo
-        )
       }
       break
     case 'user-published':
@@ -179,12 +172,6 @@ const reducer = (
             max: state.max
           }
         }
-        console.log(
-          '!user published',
-          action.value[0].uid,
-          action.value[0].videoTrack,
-          action.value[0].hasVideo
-        )
       }
       break
     case 'user-left':
