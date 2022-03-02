@@ -20,7 +20,7 @@ npm i agora-react-uikit
 
 ### Usage
 
-This UIKit contains a high level component called `AgoraUIKit`. You can check out code explanation here.
+This UIKit contains a high level component called `AgoraUIKit`. You can check out code explanation [here](https://github.com/AgoraIO-Community/Web-React-UIKit/wiki/Guide).
 
 **A simple sample app integrating Agora UI Kit:**
 ```jsx
