@@ -6,7 +6,8 @@ import AgoraRTM, {
   RtmEvents
 } from 'agora-rtm-react'
 import PropsContext from './PropsContext'
-import RtmContext, {
+import {
+  RtmProvider,
   messageObject,
   muteRequest,
   mutingDevice,
@@ -23,7 +24,9 @@ import muteVideo from './Controls/Local/muteVideo'
 const timeNow = () => new Date().getTime()
 const useChannel = createLazyChannel()
 const useClient = createLazyClient()
-
+/**
+ * React component that contains the RTM logic. It manages the usernames, remote mute requests and provides data to the children components by wrapping them with context providers.
+ */
 const RtmConfigure = (props: any) => {
   const { rtcProps, rtmProps } = useContext(PropsContext)
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false)
@@ -109,8 +112,22 @@ const RtmConfigure = (props: any) => {
       console.log(state, reason)
     })
 
-    rtmClient.on('TokenExpired', () => {
-      console.log('TokenExpired')
+    rtmClient.on('TokenExpired', async () => {
+      const { tokenUrl } = rtcProps
+      console.log('token expired - renewing')
+      if (tokenUrl) {
+        try {
+          const res = await fetch(
+            tokenUrl + '/rtm/' + (rtmProps?.uid || localUid.current)
+          )
+          const data = await res.json()
+          const serverToken = data.rtmToken
+          await rtmClient.renewToken(serverToken)
+          timerValueRef.current = 5
+        } catch (error) {
+          console.error('TokenExpiredError', error)
+        }
+      }
     })
 
     rtmClient.on('MessageFromPeer', (message, peerId, messageProps) => {
@@ -291,7 +308,7 @@ const RtmConfigure = (props: any) => {
   }, [rtcProps.channel, rtcProps.appId, channelJoined])
 
   return (
-    <RtmContext.Provider
+    <RtmProvider
       value={{
         rtmStatus,
         sendPeerMessage,
@@ -306,7 +323,7 @@ const RtmConfigure = (props: any) => {
       }}
     >
       {isLoggedIn ? props.children : <React.Fragment />}
-    </RtmContext.Provider>
+    </RtmProvider>
   )
 }
 

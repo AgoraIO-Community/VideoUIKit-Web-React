@@ -2,6 +2,9 @@ import { UID } from 'agora-rtc-react'
 import { RtmClient, RtmEvents } from 'agora-rtm-react'
 import { createContext } from 'react'
 
+/**
+ * Callbacks to pass to RTM events
+ */
 export type rtmCallbacks = {
   channel?: Partial<RtmEvents.RtmChannelEvents>
   client?: Partial<RtmEvents.RtmClientEvents>
@@ -68,9 +71,10 @@ export enum popUpStateEnum {
   microphone,
   camera
 }
-
+/**
+ * Interface for RTM Context
+ */
 interface rtmContext {
-  // messageStore: any
   /**
    * rtm connection status
    */
@@ -112,7 +116,11 @@ interface rtmContext {
    */
   setPopUpState: React.Dispatch<React.SetStateAction<popUpStateEnum>>
 }
-
+/**
+ * Context to access RTM data. It's setup by {@link RtmConfigure}.
+ */
 const RtmContext = createContext(null as unknown as rtmContext)
 
+export const RtmProvider = RtmContext.Provider
+export const RtmConsumer = RtmContext.Consumer
 export default RtmContext

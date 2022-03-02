@@ -250,15 +250,15 @@ export interface RtcPropsInterface {
    */
   channel: string
   /**
-   * (optional) UID for local user to join the channel (default: 0)
+   * UID for local user to join the channel (default: 0)
    */
   uid?: number
   /**
-   * (optional) Token used to join a channel when using secured mode (default: null)
+   * Token used to join a channel when using secured mode (default: null)
    */
   token?: string | null
   /**
-   * (optional) URL for token server, manages fetching and updating tokens automatically. Must follow the schema here - https://github.com/AgoraIO-Community/agora-token-service/
+   * URL for token server, manages fetching and updating tokens automatically. Must follow the schema here - https://github.com/AgoraIO-Community/agora-token-service/
    */
   tokenUrl?: string
   /**
@@ -299,25 +299,28 @@ export interface RtcPropsInterface {
   enableVideo?: boolean
 }
 
+/**
+ * Props object for customising the UI Kit signalling functionality
+ */
 export interface RtmProperInterface {
   /**
    * Username for the RTM Client, this value can be accessed using the userData object
    */
    username?: string
    /**
-    * (optional) Token used to join an RTM channel when using secured mode (default: null)
+    * Token used to join an RTM channel when using secured mode (default: null)
     */
    token?: string | undefined
    /**
-    * (optional) UID for local user to join the RTM channel (default: uses the RTC UID)
+    * UID for local user to join the RTM channel (default: uses the RTC UID)
     */
    uid?: string
    /**
-    * (optional) Show a pop up with option to accept mute request instead of directly muting the remote user (default: true)
+    * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true)
     */
    showPopUpBeforeRemoteMute?: boolean
    /**
-    * (optional) Display RTM usernames in the Videocall (default: false)
+    * Display RTM usernames in the Videocall (default: false)
     */
    displayUsername?: boolean
 }
@@ -349,10 +352,6 @@ export enum ToggleState {
   enabling // disabled -> enabling -> enabled
 }
 
-/**
- * Callbacks exposed by the UIKit
- */
-// export type RTMCallbacksInterface = RtmChannelEvents
 /**
  * Callbacks exposed by the UIKit
  */
