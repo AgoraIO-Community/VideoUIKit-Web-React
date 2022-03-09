@@ -81,6 +81,6 @@ export type {
   userData
 } from './RtmContext'
 
-export { rtmStatus, mutingDevice, popUpStateEnum } from './RtmContext'
+export { rtmStatusEnum, mutingDevice, popUpStateEnum } from './RtmContext'
 
 export { layout } from './PropsContext'

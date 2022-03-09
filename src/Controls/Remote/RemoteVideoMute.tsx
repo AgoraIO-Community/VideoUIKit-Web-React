@@ -9,7 +9,7 @@ function RemoteVideoMute(props: { UIKitUser: UIKitUser }) {
   const { remoteBtnStyles } = styleProps || {}
   const { muteRemoteVideo } = remoteBtnStyles || {}
   const { UIKitUser } = props
-  const isDisabled = UIKitUser.hasVideo === remoteTrackState.no
+  const isMuted = UIKitUser.hasVideo === remoteTrackState.no
 
   return UIKitUser.uid !== 0 ? (
     <div>
@@ -20,9 +20,8 @@ function RemoteVideoMute(props: { UIKitUser: UIKitUser }) {
             : 'videocamOff'
         }
         style={muteRemoteVideo}
-        disabled={isDisabled}
         onClick={() =>
-          isDisabled ? {} : sendMuteRequest(mutingDevice.camera, UIKitUser.uid)
+          sendMuteRequest(mutingDevice.camera, UIKitUser.uid, !isMuted)
         }
       />
     </div>

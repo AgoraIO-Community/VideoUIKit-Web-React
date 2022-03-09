@@ -10,7 +10,7 @@ export type rtmCallbacks = {
   client?: Partial<RtmEvents.RtmClientEvents>
 }
 
-export enum rtmStatus {
+export enum rtmStatusEnum {
   // Initialisation failed
   initFailed,
   // Login has not been attempted
@@ -29,7 +29,7 @@ export enum rtmStatus {
 
 export type messageType = 'UserData' | 'MuteRequest'
 
-export type messageObject = userData | muteRequest
+export type messageObject = userData | muteRequest | genericAction
 
 export enum clientRoleRaw {
   broadcaster,
@@ -39,6 +39,11 @@ export enum clientRoleRaw {
 export enum mutingDevice {
   camera,
   microphone
+}
+
+export type genericAction = {
+  messageType: 'RtmDataRequest'
+  type: 'ping' | 'pong' | 'userData'
 }
 
 export type muteRequest = {
@@ -68,8 +73,10 @@ export type userData = {
 
 export enum popUpStateEnum {
   closed,
-  microphone,
-  camera
+  muteMic,
+  muteCamera,
+  unmuteMic,
+  unmuteCamera
 }
 /**
  * Interface for RTM Context
@@ -78,15 +85,15 @@ interface rtmContext {
   /**
    * rtm connection status
    */
-  rtmStatus: rtmStatus
+  rtmStatus: rtmStatusEnum
   /**
    * send message to the channel
    */
-  sendChannelMessage: (msg: string) => void
+  sendChannelMessage: (msg: messageObject) => void
   /**
    * send message to a user
    */
-  sendPeerMessage: (msg: string, uid: string) => void
+  sendPeerMessage: (msg: messageObject, uid: string) => void
   /**
    * RTM Client instance
    */
@@ -102,7 +109,7 @@ interface rtmContext {
   /**
    * Send a mute request
    */
-  sendMuteRequest: (device: mutingDevice, rtcId: UID) => void
+  sendMuteRequest: (device: mutingDevice, rtcId: UID, mute: boolean) => void
   /**
    * RTM usernames
    */

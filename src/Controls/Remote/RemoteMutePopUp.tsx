@@ -14,28 +14,22 @@ function PopUp() {
   const local = useContext(LocalContext)
 
   return popUpState !== popUpStateEnum.closed ? (
-    // return true ? (
     <div
       style={{
-        ...{
-          backgroundColor: '#007bffaa',
-          position: 'absolute',
-          width: 240,
-          height: 80,
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 100,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-evenly',
-          alignItems: 'center'
-        },
+        ...styles.container,
         ...popUpContainer
       }}
     >
       <div style={{ color: '#fff', fontSize: 18, fontWeight: 700 }}>
-        {popUpState === popUpStateEnum.camera ? 'Camera' : 'Mic'} Mute Request
+        {popUpState === popUpStateEnum.muteCamera ||
+        popUpState === popUpStateEnum.muteMic
+          ? 'Mute '
+          : 'Unmute '}
+        {popUpState === popUpStateEnum.muteCamera ||
+        popUpState === popUpStateEnum.unmuteCamera
+          ? 'Camera'
+          : 'Mic'}
+        ?
       </div>
       <div
         style={{
@@ -47,17 +41,33 @@ function PopUp() {
       >
         <div
           onClick={() => {
-            popUpState === popUpStateEnum.camera
-              ? localVideoTrack &&
-                muteVideo(local, dispatch, localVideoTrack) &&
-                setPopUpState(popUpStateEnum.closed)
-              : localAudioTrack &&
-                muteAudio(local, dispatch, localAudioTrack) &&
-                setPopUpState(popUpStateEnum.closed)
+            switch (popUpState) {
+              case popUpStateEnum.muteCamera:
+                local.hasVideo &&
+                  localVideoTrack &&
+                  muteVideo(local, dispatch, localVideoTrack)
+                break
+              case popUpStateEnum.muteMic:
+                local.hasAudio &&
+                  localAudioTrack &&
+                  muteAudio(local, dispatch, localAudioTrack)
+                break
+              case popUpStateEnum.unmuteCamera:
+                !local.hasVideo &&
+                  localVideoTrack &&
+                  muteVideo(local, dispatch, localVideoTrack)
+                break
+              case popUpStateEnum.unmuteMic:
+                !local.hasAudio &&
+                  localAudioTrack &&
+                  muteAudio(local, dispatch, localAudioTrack)
+                break
+            }
+            setPopUpState(popUpStateEnum.closed)
           }}
           style={styles.button}
         >
-          Mute
+          Confirm
         </div>
         <div
           style={styles.buttonClose}
@@ -88,7 +98,21 @@ const styles = {
     borderColor: '#fff',
     padding: '2px 4px',
     borderRadius: 4
-  }
+  },
+  container: {
+    backgroundColor: '#007bffaa',
+    position: 'absolute',
+    width: 240,
+    height: 80,
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    zIndex: 100,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    alignItems: 'center'
+  } as CSSProperties
 }
 
 export default PopUp

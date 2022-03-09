@@ -2,18 +2,18 @@ import React, { useState, useContext, useEffect, useRef } from 'react'
 import AgoraRTM, {
   createLazyClient,
   createLazyChannel,
-  RtmTextMessage,
-  RtmEvents
+  RtmEvents,
+  RtmRawMessage
 } from 'agora-rtm-react'
 import PropsContext from './PropsContext'
 import {
   RtmProvider,
-  messageObject,
   muteRequest,
   mutingDevice,
-  rtmStatus as rtmStatusEnum,
+  rtmStatusEnum,
   userData,
-  popUpStateEnum
+  popUpStateEnum,
+  messageObject
 } from './RtmContext'
 import RtcContext from './RtcContext'
 import AgoraRTC, { UID } from 'agora-rtc-react'
@@ -42,6 +42,9 @@ const RtmConfigure = (props: any) => {
   const [popUpState, setPopUpState] = useState<popUpStateEnum>(
     popUpStateEnum.closed
   )
+  const [rtmStatus, setRtmStatus] = useState<rtmStatusEnum>(
+    rtmStatusEnum.offline
+  )
   const {
     localUid: rtcUid,
     localAudioTrack,
@@ -49,9 +52,6 @@ const RtmConfigure = (props: any) => {
     dispatch,
     channelJoined
   } = useContext(RtcContext)
-  const [rtmStatus, setRtmStatus] = useState<rtmStatusEnum>(
-    rtmStatusEnum.offline
-  )
 
   const login = async () => {
     const { tokenUrl } = rtcProps
@@ -130,32 +130,20 @@ const RtmConfigure = (props: any) => {
       }
     })
 
-    rtmClient.on('MessageFromPeer', (message, peerId, messageProps) => {
-      const payload = (message as RtmTextMessage).text
-      const ts = messageProps.serverReceivedTs
-      const messageObject = parsePayload(payload)
-      if (messageObject.messageType === 'UserData') {
-        handleUserDataMessage(messageObject)
-      } else if (messageObject.messageType === 'MuteRequest') {
-        handleMuteMessage(messageObject)
-      }
-      console.log(payload, messageObject, ts, peerId)
+    rtmClient.on('MessageFromPeer', (message, peerId) => {
+      handleReceivedMessage(message as RtmRawMessage, peerId)
     })
 
-    channel.on('ChannelMessage', (message, peerId, messageProps) => {
-      const payload = (message as RtmTextMessage).text
-      const ts = messageProps.serverReceivedTs
-      const messageObject: messageObject = parsePayload(payload)
-      if (messageObject.messageType === 'UserData') {
-        handleUserDataMessage(messageObject)
-      } else if (messageObject.messageType === 'MuteRequest') {
-        handleMuteMessage(messageObject)
-      }
-      console.log(payload, messageObject, ts, peerId)
+    channel.on('ChannelMessage', (message, peerId) => {
+      handleReceivedMessage(message as RtmRawMessage, peerId)
     })
 
-    channel.on('MemberJoined', (peerId) => {
-      sendPeerMessage(createUserData(), peerId)
+    channel.on('MemberJoined', async (peerId) => {
+      console.log('!MemberJoined', peerId)
+      await sendPeerMessage(createUserData(), peerId)
+    })
+    channel.on('MemberCountUpdated', async (count) => {
+      console.log('!MemberCountUpdated', count)
     })
 
     // handle RTM callbacks
@@ -200,6 +188,10 @@ const RtmConfigure = (props: any) => {
       return { ...p, 0: rtmProps?.username }
     })
     sendChannelMessage(createUserData())
+
+    window["sp"] = (p: string) => {
+      sendPeerMessage({ messageType: 'RtmDataRequest', type: 'userData' }, p)
+    }
   }
 
   const createUserData = () => {
@@ -221,15 +213,14 @@ const RtmConfigure = (props: any) => {
     } as userData
   }
 
-  const sendMuteRequest = (device: mutingDevice, rtcId: UID) => {
+  const sendMuteRequest = (device: mutingDevice, rtcId: UID, mute: boolean) => {
     const payload: muteRequest = {
       messageType: 'MuteRequest',
       device,
       rtcId,
-      mute: true,
+      mute,
       isForceful: rtmProps?.showPopUpBeforeRemoteMute === false
     }
-    console.log(uidMap[rtcId], uidMap, rtcId)
     const peerId = uidMap[rtcId]
     if (peerId) {
       sendPeerMessage(payload, peerId)
@@ -238,7 +229,35 @@ const RtmConfigure = (props: any) => {
     }
   }
 
-  const handleUserDataMessage = (userData: userData) => {
+  const handleReceivedMessage = (message: RtmRawMessage, peerId: string) => {
+    const payload = (message as RtmRawMessage).rawMessage
+    const messageObject: messageObject = parsePayload(payload)
+    console.log(messageObject, peerId)
+    switch (messageObject.messageType) {
+      case 'UserData':
+        handleReceivedUserDataMessage(messageObject)
+        break
+      case 'MuteRequest':
+        handleReceivedMuteMessage(messageObject)
+        break
+      case 'RtmDataRequest':
+        switch (messageObject.type) {
+          case 'ping':
+            handlePing(peerId)
+            break
+          case 'userData':
+            handleUserDataRequest(peerId)
+            break
+          default:
+            console.log(peerId)
+        }
+        break
+      default:
+        console.log('unknown message type')
+    }
+  }
+
+  const handleReceivedUserDataMessage = (userData: userData) => {
     setUidMap((p) => {
       return { ...p, [userData.rtcId]: userData.rtmId }
     })
@@ -251,39 +270,54 @@ const RtmConfigure = (props: any) => {
     console.log('!userData', userData, userDataMap, uidMap)
   }
 
-  const handleMuteMessage = (muteRequest: muteRequest) => {
+  const handleReceivedMuteMessage = (muteRequest: muteRequest) => {
     console.log('!muteRequest', muteRequest)
     if (rtcUid.current === muteRequest.rtcId) {
       if (muteRequest.isForceful) {
-        if (muteRequest.device === mutingDevice.microphone) {
-          console.log('!mute send mic', local)
-          localAudioTrack && muteAudio(local, dispatch, localAudioTrack)
-        } else if (muteRequest.device === mutingDevice.camera) {
-          console.log('!mute send cam')
-          localVideoTrack && muteVideo(local, dispatch, localVideoTrack)
-        }
+        if (muteRequest.mute) {
+          if (muteRequest.device === mutingDevice.microphone) {
+            localAudioTrack && muteAudio(local, dispatch, localAudioTrack)
+          } else if (muteRequest.device === mutingDevice.camera) {
+            localVideoTrack && muteVideo(local, dispatch, localVideoTrack)
+          }
+        } else console.error('cannot force unmute')
       } else {
         if (muteRequest.device === mutingDevice.microphone) {
-          setPopUpState(popUpStateEnum.microphone)
+          if (muteRequest.mute) setPopUpState(popUpStateEnum.muteMic)
+          else setPopUpState(popUpStateEnum.unmuteMic)
         } else if (muteRequest.device === mutingDevice.camera) {
-          setPopUpState(popUpStateEnum.camera)
+          if (muteRequest.mute) setPopUpState(popUpStateEnum.muteCamera)
+          else setPopUpState(popUpStateEnum.unmuteCamera)
         }
       }
     }
   }
 
-  const sendChannelMessage = async (payload: any) => {
-    const text = stringifyPayload(payload)
+  const handlePing = (peerId: string) => {
+    sendPeerMessage({ messageType: 'RtmDataRequest', type: 'pong' }, peerId)
+  }
+
+  const handleUserDataRequest = (peerId: string) => {
+    sendPeerMessage(createUserData(), peerId)
+  }
+
+  const sendChannelMessage = async (payload: messageObject) => {
+    const rawMessage = createRawMessage(payload)
     const message = rtmClient.createMessage({
-      text,
-      messageType: AgoraRTM.MessageType.TEXT
+      rawMessage: rawMessage,
+      messageType: AgoraRTM.MessageType.RAW,
+      description: 'AgoraUIKit'
     })
     await channel.sendMessage(message)
   }
 
-  const sendPeerMessage = async (payload: any, peerId: string) => {
-    const text = stringifyPayload(payload)
-    const message = rtmClient.createMessage({ text })
+  const sendPeerMessage = async (payload: messageObject, peerId: string) => {
+    const rawMessage = createRawMessage(payload)
+    const message = rtmClient.createMessage({
+      rawMessage: rawMessage,
+      messageType: AgoraRTM.MessageType.RAW,
+      description: 'AgoraUIKit'
+    })
     await rtmClient.sendMessageToPeer(message, peerId)
   }
 
@@ -327,12 +361,24 @@ const RtmConfigure = (props: any) => {
   )
 }
 
-const stringifyPayload = (msg: any) => {
-  return JSON.stringify(msg)
-}
+const enc = new TextEncoder()
+const dec = new TextDecoder()
 
-const parsePayload = (data: string) => {
-  return JSON.parse(data)
+/**
+ * Create an RTM raw message from any serilizable JS Object, decode using the {@link parsePayload} function
+ * @param msg message object
+ * @returns Uint8Array
+ */
+export const createRawMessage = (msg: any) => {
+  return enc.encode(JSON.stringify(msg))
+}
+/**
+ * Decode the received RTM message or message created using {@link createRawMessage}
+ * @param data encoded raw RTM message
+ * @returns JS Object
+ */
+export const parsePayload = (data: BufferSource) => {
+  return JSON.parse(dec.decode(data))
 }
 
 export default RtmConfigure

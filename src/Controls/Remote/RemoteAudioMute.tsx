@@ -9,18 +9,15 @@ function RemoteAudioMute(props: { UIKitUser: UIKitUser }) {
   const { sendMuteRequest } = useContext(RtmContext)
   const { muteRemoteAudio } = remoteBtnStyles || {}
   const { UIKitUser } = props
-  const isDisabled = UIKitUser.hasAudio === remoteTrackState.no
+  const isMuted = UIKitUser.hasAudio === remoteTrackState.no
 
   return UIKitUser.uid !== 0 ? (
     <div>
       <BtnTemplate
         style={muteRemoteAudio}
         name={UIKitUser.hasAudio === remoteTrackState.subbed ? 'mic' : 'micOff'}
-        disabled={isDisabled}
         onClick={() =>
-          isDisabled
-            ? {}
-            : sendMuteRequest(mutingDevice.microphone, UIKitUser.uid)
+          sendMuteRequest(mutingDevice.microphone, UIKitUser.uid, !isMuted)
         }
       />
     </div>
