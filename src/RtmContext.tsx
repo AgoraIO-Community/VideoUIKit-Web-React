@@ -87,11 +87,11 @@ interface rtmContext {
    */
   rtmStatus: rtmStatusEnum
   /**
-   * send message to the channel
+   * send message to everyone in the channel
    */
   sendChannelMessage: (msg: messageObject) => void
   /**
-   * send message to a user
+   * send message to a specific user
    */
   sendPeerMessage: (msg: messageObject, uid: string) => void
   /**

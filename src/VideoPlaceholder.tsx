@@ -35,8 +35,8 @@ const VideoPlaceholder = (props: VideoPlaceholderProps) => {
         >
           {props.showButtons && (
             <React.Fragment>
-              <RemoteVideoMute UIKitUser={user} />
-              <RemoteAudioMute UIKitUser={user} />
+              {!rtcProps.disableRtm && <RemoteVideoMute UIKitUser={user} />}
+              {!rtcProps.disableRtm && <RemoteAudioMute UIKitUser={user} />}
               {props.showSwap && <SwapUser UIKitUser={user} />}
             </React.Fragment>
           )}

@@ -214,15 +214,18 @@ const RtmConfigure = (props: any) => {
   }
 
   const sendMuteRequest = (device: mutingDevice, rtcId: UID, mute: boolean) => {
+    const forced = rtmProps?.showPopUpBeforeRemoteMute === false
     const payload: muteRequest = {
       messageType: 'MuteRequest',
       device,
       rtcId,
       mute,
-      isForceful: rtmProps?.showPopUpBeforeRemoteMute === false
+      isForceful: forced
     }
     const peerId = uidMap[rtcId]
-    if (peerId) {
+    if (forced && !mute) {
+      console.log('cannot send force unmute request')
+    } else if (peerId) {
       sendPeerMessage(payload, peerId)
     } else {
       console.log('peer not found')

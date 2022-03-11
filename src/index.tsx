@@ -20,7 +20,7 @@ import MaxVideoView from './MaxVideoView'
 import MinVideoView from './MinVideoView'
 import VideoPlaceholder from './VideoPlaceholder'
 import RtcConfigure from './RTCConfigure'
-import RtmConfigure from './RTMConfigure'
+import RtmConfigure, { createRawMessage, parsePayload } from './RTMConfigure'
 import LocalUserContext from './LocalUserContext'
 import MinUidContext from './MinUidContext'
 import MaxUidContext from './MaxUidContext'
@@ -61,7 +61,9 @@ export {
   RtmConsumer,
   RtmConfigure,
   RtcProvider,
-  RtcConsumer
+  RtcConsumer,
+  createRawMessage,
+  parsePayload
 }
 
 export type {

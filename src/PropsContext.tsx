@@ -218,6 +218,10 @@ export interface StylePropInterface {
    * Applies style to the pop up container for remote mute requests
    */
   popUpContainer?: React.CSSProperties
+  /**
+   * Applies style to the displayed username text container
+   */
+  usernameText?: React.CSSProperties
 }
 
 /**
@@ -297,6 +301,10 @@ export interface RtcPropsInterface {
    * Enable the camera before joining the call. Only use for initiak(default: true)
    */
   enableVideo?: boolean
+  /**
+   * Disable Agora RTM, this also disables the use of usernames and remote mute functionality
+   */
+  disableRtm?: boolean
 }
 
 /**
@@ -316,7 +324,7 @@ export interface RtmProperInterface {
     */
    uid?: string
    /**
-    * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true)
+    * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true), if set to false you cannot unmute users. 
     */
    showPopUpBeforeRemoteMute?: boolean
    /**

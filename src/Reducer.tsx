@@ -28,6 +28,7 @@ const reducer = (
 ) => {
   let stateUpdate: Partial<stateType> = initState
   const uids: UID[] = [...state.max, ...state.min].map((u: UIKitUser) => u.uid)
+
   switch (action.type) {
     case 'update-user-video':
       if (actionTypeGuard(action, action.type)) {
@@ -336,55 +337,7 @@ const reducer = (
         }
       }
       break
-    // if (action.value[0] === undefined) {
-    //   stateUpdate = { ...state }
-    // } else {
-    //   if (uid.current === undefined) {
-    //     stateUpdate = { ...state }
-    //   } else if (
-    //     uid.current === action.value[0] &&
-    //     state.max[0].uid === 0
-    //   ) {
-    //     stateUpdate = { ...state }
-    //   } else if (uid.current === action.value[0]) {
-    //     stateUpdate = {
-    //       max: [state.min.find((user) => user.uid === 0) as UIKitUser],
-    //       min: [
-    //         ...state.min.filter((user: UIKitUser) => user.uid !== 0),
-    //         state.max[0]
-    //       ]
-    //     }
-    //   } else {
-    //     if (action.value[0] !== undefined) {
-    //       if (state.max[0].uid !== action.value[0]) {
-    //         stateUpdate = {
-    //           max: [
-    //             state.min.find(
-    //               (user) => user.uid === action.value[0]
-    //             ) as UIKitUser
-    //           ],
-    //           min: [
-    //             ...state.min.filter(
-    //               (user: UIKitUser) => user.uid !== action.value[0]
-    //             ),
-    //             state.max[0]
-    //           ]
-    //         }
-    //       } else {
-    //         stateUpdate = { ...state }
-    //       }
-    //     } else {
-    //       stateUpdate = { ...state }
-    //     }
-    //   }
-    // }
   }
-  // console.log(callbacks, callbacks[action.type])
-
-  // if (callbacks && callbacks[action.type]) {
-  //   callbacks[action.type].apply(null, action.value)
-  //   console.log('callback executed', callbacks[action.type])
-  // }
 
   console.log('!state-update', { ...state, ...stateUpdate }, stateUpdate)
   return { ...state, ...stateUpdate }

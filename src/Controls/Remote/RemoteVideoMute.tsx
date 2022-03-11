@@ -5,13 +5,13 @@ import RtmContext, { mutingDevice } from '../../RtmContext'
 
 function RemoteVideoMute(props: { UIKitUser: UIKitUser }) {
   const { styleProps } = useContext(PropsContext)
-  const { sendMuteRequest } = useContext(RtmContext)
+  const { sendMuteRequest, uidMap } = useContext(RtmContext)
   const { remoteBtnStyles } = styleProps || {}
   const { muteRemoteVideo } = remoteBtnStyles || {}
   const { UIKitUser } = props
   const isMuted = UIKitUser.hasVideo === remoteTrackState.no
 
-  return UIKitUser.uid !== 0 ? (
+  return UIKitUser.uid !== 0 && uidMap[UIKitUser.uid] ? (
     <div>
       <BtnTemplate
         name={

@@ -5,7 +5,7 @@ import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
 import PropsContext, { UIKitUser } from './PropsContext'
 import VideoPlaceholder from './VideoPlaceholder'
-import RtmContext from './RtmContext'
+import Username from './Username'
 /**
  * React component to display the user video in maximized view
  */
@@ -14,8 +14,7 @@ const MaxVideoView = (props: {
   style?: React.CSSProperties
 }) => {
   const { mediaStore } = useContext(RtcContext)
-  const { usernames } = useContext(RtmContext)
-  const { styleProps, rtmProps } = useContext(PropsContext)
+  const { styleProps, rtcProps } = useContext(PropsContext)
   const { maxViewStyles, videoMode, maxViewOverlayContainer } = styleProps || {}
   const renderModeProp = videoMode?.max
   const [isShown, setIsShown] = useState(false)
@@ -34,9 +33,7 @@ const MaxVideoView = (props: {
       {user.hasVideo === 1 ? (
         // hasVideo is 1 if the local user has video enabled, or if remote user video is subbed
         <div style={styles.videoContainer}>
-          {rtmProps?.displayUsername && (
-            <p style={styles.username}>{usernames[user.uid]}</p>
-          )}
+          {!rtcProps.disableRtm && <Username user={user} />}
           <AgoraVideoPlayer
             style={styles.videoplayer}
             config={{
@@ -51,13 +48,16 @@ const MaxVideoView = (props: {
                 ...maxViewOverlayContainer
               }}
             >
-              <RemoteVideoMute UIKitUser={user} />
-              <RemoteAudioMute UIKitUser={user} />
+              {!rtcProps.disableRtm && <RemoteVideoMute UIKitUser={user} />}
+              {!rtcProps.disableRtm && <RemoteAudioMute UIKitUser={user} />}
             </div>
           )}
         </div>
       ) : (
-        <VideoPlaceholder user={user} isShown={isShown} showButtons />
+        <div style={styles.videoContainer}>
+          {!rtcProps.disableRtm && <Username user={user} />}
+          <VideoPlaceholder user={user} isShown={isShown} showButtons />
+        </div>
       )}
     </div>
   )

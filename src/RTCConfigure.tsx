@@ -293,7 +293,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
         value: [localAudioTrack, localVideoTrack]
       })
     }
-  }, [])
+  }, [rtcProps.channel, channelJoined])
 
   // renew token if token is updated
   useEffect(() => {

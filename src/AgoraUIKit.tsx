@@ -49,11 +49,18 @@ export const VideocallUI = () => {
   return (
     <RtcConfigure callActive={rtcProps.callActive}>
       <LocalUserContext>
-        <RtmConfigure>
-          <PopUp />
-          {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
-          <LocalControls />
-        </RtmConfigure>
+        {rtcProps.disableRtm ? (
+          <React.Fragment>
+            {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
+            <LocalControls />
+          </React.Fragment>
+        ) : (
+          <RtmConfigure>
+            <PopUp />
+            {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
+            <LocalControls />
+          </RtmConfigure>
+        )}
       </LocalUserContext>
     </RtcConfigure>
   )
