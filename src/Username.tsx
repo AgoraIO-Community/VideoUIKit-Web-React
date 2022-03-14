@@ -1,5 +1,5 @@
 import React, { CSSProperties, useContext } from 'react'
-import { RtmContext } from '.'
+import RtmContext from './RtmContext'
 import PropsContext, { UIKitUser } from './PropsContext'
 
 const Username = (props: { user: UIKitUser; style?: React.CSSProperties }) => {

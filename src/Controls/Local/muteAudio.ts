@@ -7,7 +7,7 @@ export default async (
   dispatch: DispatchType,
   localAudioTrack: ILocalAudioTrack
 ) => {
-  console.log('!mute audio', user)
+  // console.log('!mute audio', user)
   if (user.uid === 0) {
     const localState = user.hasAudio
     if (
@@ -25,7 +25,7 @@ export default async (
       })
       try {
         await localAudioTrack?.setEnabled(localState !== ToggleState.enabled)
-        console.log('muted audio', localState)
+        // console.log('muted audio', localState)
         // Enable UI
         dispatch({
           type: 'local-user-mute-audio',
