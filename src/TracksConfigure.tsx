@@ -24,11 +24,9 @@ const TracksConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
   const mediaStore = useRef<mediaStore>({})
 
   useEffect(() => {
-    console.log('!tracksReady', trackReady, error)
     if (tracks !== null) {
       setLocalAudioTrack(tracks[0])
       setLocalVideoTrack(tracks[1])
-      console.log('!update-video', tracks)
       mediaStore.current[0] = {
         audioTrack: tracks[0],
         videoTrack: tracks[1]

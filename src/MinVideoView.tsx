@@ -12,7 +12,7 @@ import VideoPlaceholder from './VideoPlaceholder'
  */
 const MinVideoView = (props: { user: UIKitUser }) => {
   const { mediaStore } = useContext(RtcContext)
-  const { styleProps } = useContext(PropsContext)
+  const { styleProps, rtcProps } = useContext(PropsContext)
   const { minViewStyles, videoMode, minViewOverlayContainer } = styleProps || {}
   const renderModeProp = videoMode?.min
   const [isShown, setIsShown] = useState(false)
@@ -57,8 +57,8 @@ const MinVideoView = (props: { user: UIKitUser }) => {
                 ...minViewOverlayContainer
               }}
             >
-              <RemoteVideoMute UIKitUser={user} />
-              <RemoteAudioMute UIKitUser={user} />
+              {!rtcProps.disableRtm && <RemoteVideoMute UIKitUser={user} />}
+              {!rtcProps.disableRtm && <RemoteAudioMute UIKitUser={user} />}
               <SwapUser UIKitUser={user} />
             </div>
           )}

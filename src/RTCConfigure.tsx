@@ -67,7 +67,6 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
         console.log(client)
         client.on('user-joined', async (...args) => {
           const [remoteUser] = args
-          console.log('!user-joined', remoteUser)
           mediaStore.current[remoteUser.uid] = {}
           dispatch({
             type: 'user-joined',
@@ -142,7 +141,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           client.on('token-privilege-will-expire', async () => {
             console.log('token will expire')
             const res = await fetch(
-              tokenUrl + '/rtc/' + channel + '/admin/uid/' + (uid || 0) + '/'
+              tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (uid || 0) + '/'
             )
             const data = await res.json()
             const token = data.rtcToken
@@ -151,7 +150,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
 
           client.on('token-privilege-did-expire', async () => {
             const res = await fetch(
-              tokenUrl + '/rtc/' + channel + '/admin/uid/' + (uid || 0) + '/'
+              tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (uid || 0) + '/'
             )
             const data = await res.json()
             const token = data.rtcToken
@@ -210,7 +209,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
               tokenUrl +
                 '/rtc/' +
                 channel +
-                '/admin/uid/' +
+                '/publisher/uid/' +
                 (userUid || 0) +
                 '/'
             )
@@ -228,7 +227,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
             userUid || 0
           )
         }
-        console.log('uid: ', uid)
+        console.log('!uid: ', uid.current)
       } else {
         console.error('trying to join before RTC Engine was initialized')
       }
@@ -294,7 +293,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
         value: [localAudioTrack, localVideoTrack]
       })
     }
-  }, [])
+  }, [rtcProps.channel, channelJoined])
 
   // renew token if token is updated
   useEffect(() => {
@@ -364,12 +363,13 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
   return (
     <RtcProvider
       value={{
-        client: client,
+        client,
         mediaStore: mediaStore.current,
-        localVideoTrack: localVideoTrack,
-        localAudioTrack: localAudioTrack,
-        dispatch: dispatch,
-        localUid: uid.current
+        localVideoTrack,
+        localAudioTrack,
+        dispatch,
+        localUid: uid,
+        channelJoined
       }}
     >
       <MaxUidProvider value={uidState.max}>
