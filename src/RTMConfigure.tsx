@@ -187,10 +187,6 @@ const RtmConfigure = (props: any) => {
       return { ...p, 0: rtmProps?.username }
     })
     sendChannelMessage(createUserData())
-
-    window["sp"] = (p: string) => {
-      sendPeerMessage({ messageType: 'RtmDataRequest', type: 'userData' }, p)
-    }
   }
 
   const createUserData = () => {
