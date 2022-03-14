@@ -68,7 +68,7 @@ export {
 
 export type {
   RtcPropsInterface,
-  RtmProperInterface,
+  RtmPropsInterface,
   CallbacksInterface,
   StylePropInterface,
   PropsInterface,

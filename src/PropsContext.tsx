@@ -310,7 +310,7 @@ export interface RtcPropsInterface {
 /**
  * Props object for customising the UI Kit signalling functionality
  */
-export interface RtmProperInterface {
+export interface RtmPropsInterface {
   /**
    * Username for the RTM Client, this value can be accessed using the userData object
    */
@@ -443,7 +443,7 @@ export interface PropsInterface {
   /**
    * Props used to customise the UIKit signalling functionality
    */
-  rtmProps?: RtmProperInterface
+  rtmProps?: RtmPropsInterface
   /**
    * Props used to customise the UI Kit's appearance (accepts style object for different components)
    */

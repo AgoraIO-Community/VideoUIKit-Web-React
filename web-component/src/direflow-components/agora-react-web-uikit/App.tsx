@@ -1,8 +1,17 @@
 import React, { FC, useContext } from 'react';
 import { EventContext } from 'direflow-component';
-import AgoraUIKit, { layout, RtcPropsInterface } from 'agora-react-uikit';
+import AgoraUIKit, { layout, RtcPropsInterface, RtmPropsInterface } from 'agora-react-uikit';
 
-const App: FC<RtcPropsInterface> = (props) => {
+// cannot extend from RTM simultaneously as token and uid are rewritten
+interface Props extends RtcPropsInterface {
+  rtmToken: RtmPropsInterface['token']
+  rtmUid: RtmPropsInterface['uid']
+  username: RtmPropsInterface['username']
+  showPopUpBeforeRemoteMute: RtmPropsInterface['showPopUpBeforeRemoteMute']
+  displayUsername: RtmPropsInterface['displayUsername']
+}
+
+const App: FC<Props> = (props) => {
   const dispatch = useContext(EventContext);
 
   const handleEndCallClick = () => {
@@ -24,6 +33,16 @@ const App: FC<RtcPropsInterface> = (props) => {
         dualStreamMode: props.dualStreamMode,
         layout: props.layout,
         role: props.role,
+        disableRtm: props.disableRtm,
+        enableAudio: props.enableAudio,
+        enableVideo: props.enableVideo
+      }}
+      rtmProps={{
+        username: props.username,
+        token: props.rtmToken,
+        uid: props.rtmUid,
+        showPopUpBeforeRemoteMute: props.showPopUpBeforeRemoteMute,
+        displayUsername: props.displayUsername,
       }}
       callbacks={{
         EndCall: () => {
@@ -36,6 +55,7 @@ const App: FC<RtcPropsInterface> = (props) => {
 
 App.defaultProps = {
   appId: '',
+  disableRtm: false,
   channel: 'test',
   uid: 0,
   token: null,
@@ -46,6 +66,12 @@ App.defaultProps = {
   dualStreamMode: undefined,
   layout: layout.grid,
   role: 'host',
+  enableVideo: true,
+  enableAudio: true,
+  username: 'user',
+  rtmToken: undefined,
+  showPopUpBeforeRemoteMute: true,
+  displayUsername: false,
 }
 
 export default App;
