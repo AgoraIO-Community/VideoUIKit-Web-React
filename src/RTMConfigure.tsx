@@ -139,11 +139,10 @@ const RtmConfigure = (props: any) => {
     })
 
     channel.on('MemberJoined', async (peerId) => {
-      console.log('!MemberJoined', peerId)
       await sendPeerMessage(createUserData(), peerId)
     })
     channel.on('MemberCountUpdated', async (count) => {
-      console.log('!MemberCountUpdated', count)
+      console.log('RTM-MemberCountUpdated: ', count)
     })
 
     // handle RTM callbacks
@@ -183,7 +182,7 @@ const RtmConfigure = (props: any) => {
     setRtmStatus(rtmStatusEnum.loggedIn)
     await joinChannel()
     setRtmStatus(rtmStatusEnum.connected)
-    console.log('!rtcUid', rtcUid, channelJoined)
+    // console.log('!rtcUid', rtcUid, channelJoined)
     setUsernames((p) => {
       return { ...p, 0: rtmProps?.username }
     })
@@ -270,11 +269,11 @@ const RtmConfigure = (props: any) => {
     setUserDataMap((p) => {
       return { ...p, [userData.rtmId]: userData }
     })
-    console.log('!userData', userData, userDataMap, uidMap)
+    // console.log('userData', userData, userDataMap, uidMap)
   }
 
   const handleReceivedMuteMessage = (muteRequest: muteRequest) => {
-    console.log('!muteRequest', muteRequest)
+    // console.log('!muteRequest', muteRequest)
     if (rtcUid.current === muteRequest.rtcId) {
       if (muteRequest.isForceful) {
         if (muteRequest.mute) {

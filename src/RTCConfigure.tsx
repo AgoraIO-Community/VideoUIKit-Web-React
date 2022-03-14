@@ -80,8 +80,8 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           console.log('user-published', remoteUser.uid)
           client
             .subscribe(remoteUser, mediaType)
-            .then((e) => {
-              console.log('subscribe', e)
+            .then((_e) => {
+              // console.log('subscribe', e)
               mediaStore.current[remoteUser.uid][mediaType + 'Track'] =
                 remoteUser[mediaType + 'Track']
               if (mediaType === 'audio') {
@@ -227,7 +227,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
             userUid || 0
           )
         }
-        console.log('!uid: ', uid.current)
+        // console.log('!uid: ', uid.current)
       } else {
         console.error('trying to join before RTC Engine was initialized')
       }

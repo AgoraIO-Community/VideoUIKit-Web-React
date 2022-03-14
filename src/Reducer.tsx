@@ -80,7 +80,7 @@ const reducer = (
               max: state.max
             }
           }
-          console.log('new user joined!\n', action.value[0].uid)
+          // console.log('new user joined!\n', action.value[0].uid)
         }
       }
       break
@@ -339,7 +339,7 @@ const reducer = (
       break
   }
 
-  console.log('!state-update', { ...state, ...stateUpdate }, stateUpdate)
+  // console.log('!state-update', { ...state, ...stateUpdate }, stateUpdate)
   return { ...state, ...stateUpdate }
 }
 
