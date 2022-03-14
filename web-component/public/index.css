@@ -4,6 +4,7 @@ body {
   width: 100vw;
   display: flex;
   justify-content: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   align-items: center;
   background-color: #F6FAFA;
 }
