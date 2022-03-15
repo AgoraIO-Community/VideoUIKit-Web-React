@@ -6,9 +6,24 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #333;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+input {
+  border-top: 0px;
+  border-left: 0px;
+  border-right: 0px;
+  font-size: 18px;
+}
+
+input:focus-visible {
+  outline-width: 0;
+  border-bottom: 3px;
+  border-style: solid;
+  border-color: #333;
 }
