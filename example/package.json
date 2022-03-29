@@ -5,9 +5,11 @@
   "private": true,
   "scripts": {
     "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
-    "build": "node ../node_modules/react-scripts/bin/react-scripts.js build",
+    "build": "node ../node_modules/react-scripts/bin/react-scripts.js build && cp -r .vercel build/.vercel",
     "test": "node ../node_modules/react-scripts/bin/react-scripts.js test",
-    "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject"
+    "eject": "node ../node_modules/react-scripts/bin/react-scripts.js eject",
+    "deploy": "cd build && vercel",
+    "deploy:prod": "cd build && vercel --prod"
   },
   "dependencies": {
     "@testing-library/jest-dom": "file:../node_modules/@testing-library/jest-dom",
