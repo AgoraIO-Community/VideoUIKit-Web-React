@@ -104,6 +104,9 @@ const RtmConfigure = (props: any) => {
 
   const init = async () => {
     setRtmStatus(rtmStatusEnum.initialising)
+    // rtmProps?.uid
+    //   ? (localUid.current = String(rtmProps.uid))
+    //   :
     rtcProps.uid
       ? (localUid.current = String(rtcProps.uid))
       : (localUid.current = String(timeNow()))
@@ -192,7 +195,7 @@ const RtmConfigure = (props: any) => {
   const createUserData = () => {
     return {
       messageType: 'UserData',
-      rtmId: localUid.current,
+      rtmId: rtmProps?.uid || localUid.current,
       rtcId: rtcUid.current,
       username: rtmProps?.username,
       role: rtcProps.role === 'audience' ? 1 : 0,
