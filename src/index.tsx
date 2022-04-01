@@ -28,6 +28,7 @@ import PropsContext from './PropsContext'
 import RtcContext, { RtcConsumer, RtcProvider } from './RtcContext'
 import RtmContext, { RtmConsumer, RtmProvider } from './RtmContext'
 import TracksConfigure from './TracksConfigure'
+import TracksContext from './TracksContext'
 
 export default AgoraUIKit
 export {
@@ -52,6 +53,7 @@ export {
   MinUidContext,
   PropsContext,
   RtcContext,
+  TracksContext,
   VideocallUI,
   muteAudio,
   muteVideo,
