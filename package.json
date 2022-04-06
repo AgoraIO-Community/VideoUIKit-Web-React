@@ -25,7 +25,7 @@
     "docs": "typedoc src"
   },
   "peerDependencies": {
-    "react": "^16.0.0 || ^17.0.0"
+    "react": "^16.0.0 || ^17.0.0 || ^18.0.0"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -57,14 +57,14 @@
     "react-dom": "^16.13.1",
     "react-scripts": "^3.4.1",
     "typedoc": "^0.22.10",
-    "typescript": "^4.5.4"
+    "typescript": "^4.5.4",
+    "typedoc-plugin-missing-exports": "^0.22.6"
   },
   "files": [
     "dist"
   ],
   "dependencies": {
     "agora-rtc-react": "^1.1.0",
-    "agora-rtm-react": "^1.1.0",
-    "typedoc-plugin-missing-exports": "^0.22.6"
+    "agora-rtm-react": "^1.1.0"
   }
 }
