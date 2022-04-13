@@ -1,11 +1,13 @@
 import { DispatchType } from '../../RtcContext'
 import { LocalUIKitUser, ToggleState } from '../../PropsContext'
 import { ILocalAudioTrack } from 'agora-rtc-react'
+import { CallbacksInterface } from '../..'
 
 export default async (
   user: LocalUIKitUser,
   dispatch: DispatchType,
-  localAudioTrack: ILocalAudioTrack
+  localAudioTrack: ILocalAudioTrack,
+  callbacks?: Partial<CallbacksInterface>
 ) => {
   // console.log('!mute audio', user)
   if (user.uid === 0) {
@@ -15,18 +17,27 @@ export default async (
       localState === ToggleState.disabled
     ) {
       // Disable UI
+      let newState =
+        localState === ToggleState.enabled
+          ? ToggleState.disabling
+          : ToggleState.enabling
       dispatch({
         type: 'local-user-mute-audio',
-        value: [
-          localState === ToggleState.enabled
-            ? ToggleState.disabling
-            : ToggleState.enabling
-        ]
+        value: [newState]
       })
+      callbacks &&
+        callbacks['local-user-mute-audio'] &&
+        callbacks['local-user-mute-audio'](newState)
       try {
         await localAudioTrack?.setEnabled(localState !== ToggleState.enabled)
-        // console.log('muted audio', localState)
         // Enable UI
+        newState =
+          localState === ToggleState.enabled
+            ? ToggleState.disabled
+            : ToggleState.enabled
+        callbacks &&
+          callbacks['local-user-mute-audio'] &&
+          callbacks['local-user-mute-audio'](newState)
         dispatch({
           type: 'local-user-mute-audio',
           value: [

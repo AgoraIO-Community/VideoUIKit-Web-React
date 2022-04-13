@@ -6,7 +6,7 @@ import PropsContext, { ToggleState } from '../../PropsContext'
 import muteAudio from './muteAudio'
 
 function LocalAudioMute() {
-  const { styleProps } = useContext(PropsContext)
+  const { styleProps, callbacks } = useContext(PropsContext)
   const { localBtnStyles } = styleProps || {}
   const { muteLocalAudio } = localBtnStyles || {}
   const { dispatch, localAudioTrack } = useContext(RtcContext)
@@ -18,7 +18,8 @@ function LocalAudioMute() {
         style={muteLocalAudio}
         name={local.hasAudio === ToggleState.enabled ? 'mic' : 'micOff'}
         onClick={() =>
-          localAudioTrack && muteAudio(local, dispatch, localAudioTrack)
+          localAudioTrack &&
+          muteAudio(local, dispatch, localAudioTrack, callbacks)
         }
       />
     </div>

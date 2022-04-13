@@ -87,4 +87,4 @@ export type {
 
 export { rtmStatusEnum, mutingDevice, popUpStateEnum } from './RtmContext'
 
-export { layout } from './PropsContext'
+export { layout, ToggleState } from './PropsContext'

@@ -1,11 +1,16 @@
 import { DispatchType } from '../../RtcContext'
-import { LocalUIKitUser, ToggleState } from '../../PropsContext'
+import {
+  CallbacksInterface,
+  LocalUIKitUser,
+  ToggleState
+} from '../../PropsContext'
 import { ILocalVideoTrack } from 'agora-rtc-react'
 
 export default async (
   user: LocalUIKitUser,
   dispatch: DispatchType,
-  localVideoTrack: ILocalVideoTrack
+  localVideoTrack: ILocalVideoTrack,
+  callbacks?: Partial<CallbacksInterface>
 ) => {
   if (user.uid === 0) {
     const localState = user.hasVideo
@@ -14,24 +19,30 @@ export default async (
       localState === ToggleState.disabled
     ) {
       // Disable UI
+      let newState =
+        localState === ToggleState.enabled
+          ? ToggleState.disabling
+          : ToggleState.enabling
       dispatch({
         type: 'local-user-mute-video',
-        value: [
-          localState === ToggleState.enabled
-            ? ToggleState.disabling
-            : ToggleState.enabling
-        ]
+        value: [newState]
       })
+      callbacks &&
+        callbacks['local-user-mute-video'] &&
+        callbacks['local-user-mute-video'](newState)
       try {
         await localVideoTrack?.setEnabled(localState !== ToggleState.enabled)
         // Enable UI
+        newState =
+          localState === ToggleState.enabled
+            ? ToggleState.disabled
+            : ToggleState.enabled
+        callbacks &&
+          callbacks['local-user-mute-video'] &&
+          callbacks['local-user-mute-video'](newState)
         dispatch({
           type: 'local-user-mute-video',
-          value: [
-            localState === ToggleState.enabled
-              ? ToggleState.disabled
-              : ToggleState.enabled
-          ]
+          value: [newState]
         })
       } catch (e) {
         dispatch({

@@ -6,7 +6,7 @@ import PropsContext, { ToggleState } from '../../PropsContext'
 import muteVideo from './muteVideo'
 
 function LocalVideoMute() {
-  const { styleProps } = useContext(PropsContext)
+  const { styleProps, callbacks } = useContext(PropsContext)
   const { localBtnStyles } = styleProps || {}
   const { muteLocalVideo } = localBtnStyles || {}
   const { dispatch, localVideoTrack } = useContext(RtcContext)
@@ -20,7 +20,8 @@ function LocalVideoMute() {
           local.hasVideo === ToggleState.enabled ? 'videocam' : 'videocamOff'
         }
         onClick={() =>
-          localVideoTrack && muteVideo(local, dispatch, localVideoTrack)
+          localVideoTrack &&
+          muteVideo(local, dispatch, localVideoTrack, callbacks)
         }
       />
     </div>
