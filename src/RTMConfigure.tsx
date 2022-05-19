@@ -3,7 +3,7 @@ import AgoraRTM, {
   createLazyClient,
   createLazyChannel,
   RtmEvents,
-  RtmRawMessage
+  RtmMessage
 } from 'agora-rtm-react'
 import PropsContext from './PropsContext'
 import {
@@ -90,7 +90,6 @@ const RtmConfigure = (props: any) => {
   }
 
   const joinChannel = async () => {
-    await rtcUid
     try {
       await channel.join()
       timerValueRef.current = 5
@@ -134,11 +133,11 @@ const RtmConfigure = (props: any) => {
     })
 
     rtmClient.on('MessageFromPeer', (message, peerId) => {
-      handleReceivedMessage(message as RtmRawMessage, peerId)
+      handleReceivedMessage(message, peerId)
     })
 
     channel.on('ChannelMessage', (message, peerId) => {
-      handleReceivedMessage(message as RtmRawMessage, peerId)
+      handleReceivedMessage(message, peerId)
     })
 
     channel.on('MemberJoined', async (peerId) => {
@@ -230,31 +229,39 @@ const RtmConfigure = (props: any) => {
     }
   }
 
-  const handleReceivedMessage = (message: RtmRawMessage, peerId: string) => {
-    const payload = (message as RtmRawMessage).rawMessage
-    const messageObject: messageObject = parsePayload(payload)
+  const handleReceivedMessage = (message: RtmMessage, peerId: string) => {
+    let messageObject: messageObject | undefined
+    if (message.messageType === 'RAW') {
+      messageObject = parsePayload(message.rawMessage)
+    } else if (message.messageType === 'TEXT') {
+      messageObject = JSON.parse(message.text)
+    }
     console.log(messageObject, peerId)
-    switch (messageObject.messageType) {
-      case 'UserData':
-        handleReceivedUserDataMessage(messageObject)
-        break
-      case 'MuteRequest':
-        handleReceivedMuteMessage(messageObject)
-        break
-      case 'RtmDataRequest':
-        switch (messageObject.type) {
-          case 'ping':
-            handlePing(peerId)
-            break
-          case 'userData':
-            handleUserDataRequest(peerId)
-            break
-          default:
-            console.log(peerId)
-        }
-        break
-      default:
-        console.log('unknown message type')
+    if (messageObject) {
+      switch (messageObject.messageType) {
+        case 'UserData':
+          handleReceivedUserDataMessage(messageObject)
+          break
+        case 'MuteRequest':
+          handleReceivedMuteMessage(messageObject)
+          break
+        case 'RtmDataRequest':
+          switch (messageObject.type) {
+            case 'ping':
+              handlePing(peerId)
+              break
+            case 'userData':
+              handleUserDataRequest(peerId)
+              break
+            default:
+              console.log(peerId)
+          }
+          break
+        default:
+          console.log('unknown message content')
+      }
+    } else {
+      console.log('unknown rtm message type')
     }
   }
 
@@ -303,23 +310,19 @@ const RtmConfigure = (props: any) => {
   }
 
   const sendChannelMessage = async (payload: messageObject) => {
-    const rawMessage = createRawMessage(payload)
     const message = rtmClient.createMessage({
-      rawMessage: rawMessage,
-      messageType: AgoraRTM.MessageType.RAW,
-      description: 'AgoraUIKit'
+      text: JSON.stringify(payload),
+      messageType: AgoraRTM.MessageType.TEXT
     })
     await channel.sendMessage(message)
   }
 
   const sendPeerMessage = async (payload: messageObject, peerId: string) => {
-    const rawMessage = createRawMessage(payload)
     const message = rtmClient.createMessage({
-      rawMessage: rawMessage,
-      messageType: AgoraRTM.MessageType.RAW,
-      description: 'AgoraUIKit'
+      text: JSON.stringify(payload),
+      messageType: AgoraRTM.MessageType.TEXT
     })
-    await rtmClient.sendMessageToPeer(message, peerId)
+    await rtmClient.sendMessageToPeer(message, String(peerId))
   }
 
   const end = async () => {
