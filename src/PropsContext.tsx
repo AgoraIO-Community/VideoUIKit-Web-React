@@ -138,6 +138,7 @@ export interface StylePropInterface {
     max?: VideoPlayerConfig['fit']
     min?: VideoPlayerConfig['fit']
   }
+  videoMirror?: VideoPlayerConfig['mirror']
   /**
    * Color tint for icons
    */
@@ -314,23 +315,23 @@ export interface RtmPropsInterface {
   /**
    * Username for the RTM Client, this value can be accessed using the userData object
    */
-   username?: string
-   /**
-    * Token used to join an RTM channel when using secured mode (default: null)
-    */
-   token?: string | undefined
-   /**
-    * UID for local user to join the RTM channel (default: uses the RTC UID)
-    */
-   uid?: string
-   /**
-    * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true), if set to false you cannot unmute users. 
-    */
-   showPopUpBeforeRemoteMute?: boolean
-   /**
-    * Display RTM usernames in the Videocall (default: false)
-    */
-   displayUsername?: boolean
+  username?: string
+  /**
+   * Token used to join an RTM channel when using secured mode (default: null)
+   */
+  token?: string | undefined
+  /**
+   * UID for local user to join the RTM channel (default: uses the RTC UID)
+   */
+  uid?: string
+  /**
+   * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true), if set to false you cannot unmute users. 
+   */
+  showPopUpBeforeRemoteMute?: boolean
+  /**
+   * Display RTM usernames in the Videocall (default: false)
+   */
+  displayUsername?: boolean
 }
 
 /**
