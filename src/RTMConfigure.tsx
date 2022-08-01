@@ -314,7 +314,11 @@ const RtmConfigure = (props: any) => {
       text: JSON.stringify(payload),
       messageType: AgoraRTM.MessageType.TEXT
     })
-    await channel.sendMessage(message)
+    try {
+      await channel.sendMessage(message)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   const sendPeerMessage = async (payload: messageObject, peerId: string) => {
@@ -322,7 +326,11 @@ const RtmConfigure = (props: any) => {
       text: JSON.stringify(payload),
       messageType: AgoraRTM.MessageType.TEXT
     })
-    await rtmClient.sendMessageToPeer(message, String(peerId))
+    try {
+      await rtmClient.sendMessageToPeer(message, String(peerId))
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   const end = async () => {

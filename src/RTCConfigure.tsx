@@ -166,14 +166,14 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           events.map((e) => {
             try {
               client.on(e, (...args: any[]) => {
-                ;(callbacks[e] as Function).apply(null, args)
+                ; (callbacks[e] as Function).apply(null, args)
               })
             } catch (e) {
               console.log(e)
             }
           })
         }
-        ;(joinRes as (arg0: boolean) => void)(true)
+        ; (joinRes as (arg0: boolean) => void)(true)
         setReady(true)
       } catch (e) {
         console.log(e)
@@ -189,15 +189,16 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           console.log(e)
         }
       }
-    } else return () => {}
+    } else return () => { }
   }, [rtcProps.appId]) //, ready])
 
   // Dynamically switches channel when channel prop changes
   useEffect(() => {
+    let ignore = false;
     async function join(): Promise<void> {
       await canJoin.current
       const { tokenUrl, channel, uid: userUid, appId, token } = rtcProps
-      if (client) {
+      if (client && !ignore) {
         if (rtcProps.role === 'audience') {
           client.setClientRole(rtcProps.role)
         } else {
@@ -207,11 +208,11 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           try {
             const res = await fetch(
               tokenUrl +
-                '/rtc/' +
-                channel +
-                '/publisher/uid/' +
-                (userUid || 0) +
-                '/'
+              '/rtc/' +
+              channel +
+              '/publisher/uid/' +
+              (userUid || 0) +
+              '/'
             )
             const data = await res.json()
             const token = data.rtcToken
@@ -239,6 +240,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
       console.log('In precall - waiting to join')
     }
     return (): void => {
+      ignore = true;
       if (callActive) {
         console.log('Leaving channel')
         canJoin.current = client
