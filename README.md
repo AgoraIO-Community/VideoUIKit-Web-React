@@ -1,6 +1,6 @@
 # Agora React Web UIKit
 
-> Instantly integrate Agora video calling or streaming into your web application using a React based UIKit for the Agora Web SDK.
+> Instantly integrate Agora video calling or streaming into your web application using a React based VideoUIKit.
 
 [![NPM](https://img.shields.io/npm/v/agora-react-uikit.svg)](https://www.npmjs.com/package/agora-react-uikit) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
@@ -20,7 +20,7 @@ npm i agora-react-uikit
 
 ### Usage
 
-This UIKit contains a high level component called `AgoraUIKit`. You can check out code explanation [here](https://github.com/AgoraIO-Community/Web-React-UIKit/wiki/Guide).
+This UIKit contains a high level component called `AgoraUIKit`. You can check out code explanation [here](https://github.com/AgoraIO-Community//VideoUIKit-Web-React/wiki/Guide).
 
 **A simple sample app integrating Agora UI Kit:**
 ```jsx
@@ -52,7 +52,7 @@ export default App;
 **Insert your Agora AppID and Token**.
 
 ### Demo Project
-There's a demo project in the repo [here](https://github.com/AgoraIO-Community/Web-React-UIKit/tree/main/example).
+There's a demo project in the repo [here](https://github.com/AgoraIO-Community/VideoUIKit-Web-React/tree/main/example).
 
 ### Instructions for running the demo:
 1. Add your Agora App ID to `/example/src/App.tsx`
@@ -61,11 +61,11 @@ There's a demo project in the repo [here](https://github.com/AgoraIO-Community/W
 
 ## Documentation
 
-For full documentation, see our [docs page](https://agoraio-community.github.io/Web-React-UIKit/).
+For full documentation, see our [docs page](https://agoraio-community.github.io/VideoUIKit-Web-React/).
 
-You can visit the [wiki](https://github.com/AgoraIO-Community/Web-React-UIKit/wiki) for other examples and in depth guide.
+You can visit the [wiki](https://github.com/AgoraIO-Community/VideoUIKit-Web-React/wiki) for other examples and in depth guide.
 
 
 ## UIKits
 
-The plan is to grow this library and have similar offerings across all supported platforms. There are already similar libraries for [Android](https://github.com/AgoraIO-Community/Android-UIKit/), [iOS](https://github.com/AgoraIO-Community/iOS-UIKit), [React Native](https://github.com/AgoraIO-Community/ReactNative-UIKit), and [Flutter](https://github.com/AgoraIO-Community/Flutter-UIKit/), so be sure to check them out.
+The plan is to grow this library and have similar offerings across all supported platforms. There are already similar libraries for [Android](https://github.com/AgoraIO-Community/VideoUIKit-Android), [iOS](https://github.com/AgoraIO-Community/VideoUIKit-iOS), [React Native](https://github.com/AgoraIO-Community/VideoUIKit-ReactNative), and [Flutter](https://github.com/AgoraIO-Community/VideoUIKit-Web-Flutter), so be sure to check them out.
