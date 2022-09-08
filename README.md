@@ -1,4 +1,4 @@
-# Agora React Web UIKit
+# Agora React VideoUIKit 
 
 > Instantly integrate Agora video calling or streaming into your web application using a React based VideoUIKit.
 
@@ -8,8 +8,6 @@
 ### Requirements
 - [An Agora developer account](https://sso.agora.io/en/signup?utm_source=github&utm_repo=Web-React-UIKit)
 - A React project
-
-You can also use the UIKit outside a React project (for example in a vanilla-js project) using web-components. Find out more in the `/web-component` directory.
 
 ### Installation
 To a react application, add the following:
@@ -65,6 +63,7 @@ For full documentation, see our [docs page](https://agoraio-community.github.io/
 
 You can visit the [wiki](https://github.com/AgoraIO-Community/VideoUIKit-Web-React/wiki) for other examples and in depth guide.
 
+You can also export the UIKit to use outside a React project (for example in a vanilla-js project) using web-components. Find out more in the `/web-component` directory.
 
 ## UIKits
 
