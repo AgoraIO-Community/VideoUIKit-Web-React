@@ -15,7 +15,7 @@ const MaxVideoView = (props: {
 }) => {
   const { mediaStore } = useContext(RtcContext)
   const { styleProps, rtcProps } = useContext(PropsContext)
-  const { maxViewStyles, videoMode, maxViewOverlayContainer } = styleProps || {}
+  const { maxViewStyles, videoMode, maxViewOverlayContainer, videoMirror } = styleProps || {}
   const renderModeProp = videoMode?.max
   const [isShown, setIsShown] = useState(false)
   const { user } = props
@@ -37,7 +37,8 @@ const MaxVideoView = (props: {
           <AgoraVideoPlayer
             style={styles.videoplayer}
             config={{
-              fit: renderModeProp || 'cover'
+              fit: renderModeProp || 'cover',
+              mirror: videoMirror
             }}
             videoTrack={mediaStore[user.uid].videoTrack as IRemoteVideoTrack}
           />

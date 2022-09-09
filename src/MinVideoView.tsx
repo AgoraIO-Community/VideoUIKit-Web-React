@@ -13,7 +13,7 @@ import VideoPlaceholder from './VideoPlaceholder'
 const MinVideoView = (props: { user: UIKitUser }) => {
   const { mediaStore } = useContext(RtcContext)
   const { styleProps, rtcProps } = useContext(PropsContext)
-  const { minViewStyles, videoMode, minViewOverlayContainer } = styleProps || {}
+  const { minViewStyles, videoMode, minViewOverlayContainer, videoMirror } = styleProps || {}
   const renderModeProp = videoMode?.min
   const [isShown, setIsShown] = useState(false)
   const { user } = props
@@ -40,7 +40,8 @@ const MinVideoView = (props: { user: UIKitUser }) => {
           <AgoraVideoPlayer
             style={{ flex: 10, display: 'flex' }}
             config={{
-              fit: renderModeProp !== undefined ? renderModeProp : 'cover'
+              fit: renderModeProp || 'cover',
+              mirror: videoMirror
             }}
             videoTrack={mediaStore[user.uid].videoTrack as IRemoteVideoTrack}
           />
