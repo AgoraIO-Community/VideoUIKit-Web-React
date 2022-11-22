@@ -19,7 +19,7 @@ function Screenshare() {
     <div>
       <BtnTemplate
         style={muteLocalVideo}
-        name='a'
+        name='screen'
         onClick={() => toggleScreensharing()}
       />
     </div>

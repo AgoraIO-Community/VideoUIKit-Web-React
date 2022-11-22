@@ -246,6 +246,10 @@ export interface RtcPropsInterface {
    */
   CustomVideoPlaceholder?: React.FunctionComponent<VideoPlaceholderProps>
   /**
+   * enable experimental screensharing feature
+   */
+  enableScreensharing?: boolean
+  /**
    * Agora App ID - used to authenticate the request
    */
   appId: string

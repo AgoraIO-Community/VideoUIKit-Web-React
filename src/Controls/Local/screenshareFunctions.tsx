@@ -2,42 +2,26 @@
 // button -> click -> start screenshare -> onsucess -> mutate state -> on mutate -> render screen
 
 import AgoraRTC, { ILocalVideoTrack, UID } from 'agora-rtc-react'
-// import { mediaStore } from '../../PropsContext'
-// import { DispatchType } from '../../RtcContext'
-// import { screenshareState } from '../../Utils/screenshareState'
 
 const startScreenshare = async (
   appId: string,
   channel: string,
   track: ILocalVideoTrack,
-  // dispatch: DispatchType,
-  // mediaStore: mediaStore,
   screenshareToken?: string | null,
   screenshareUid?: number,
   tokenUrl?: string,
   enableDualStream?: boolean
 ) => {
-  console.log('!!vsc', track)
-  // let client = useScreenClient()
-  // const {tracks, error, ready} = useScreenTrack()
   const screenClient = AgoraRTC.createClient({
     mode: 'live',
     role: 'host',
     codec: 'vp8'
   })
   let returnedUid: UID = 0
-  // const track = await AgoraRTC.createScreenVideoTrack({}, 'disable')
 
   const uid = screenshareUid || 1 // 1 is default
 
-  // mediaStore[uid] = { videoTrack: track }
-  // console.log('!!!11', mediaStore)
-  // mediaStore[uid].videoTrack = track
-  // console.log('!!!', mediaStore, track)
-  // mediaStore[uid].audioTrack = { play: () => {} } as ILocalAudioTrack
-
   let localVideoTrackHasPublished = false
-  // let localAudioTrackHasPublished = false\
 
   async function init() {
     try {
@@ -64,22 +48,7 @@ const startScreenshare = async (
         })
       }
 
-      // screenClient.on('connection-state-change', (cur) => {
-      //   if (cur === 'CONNECTED') {
-      //     // dispatch({
-      //     //   type: 'Screensharing',
-      //     //   value: [true]
-      //     // })
-      //     // don't set screenshareState.isScreensharing here
-      //   }
-      // })
-
       track.on('track-ended', () => {
-        // screenshareState.isScreensharing = false
-        // dispatch({
-        //   type: 'Screensharing',
-        //   value: [false]
-        // })
         screenClient.leave()
         screenClient.removeAllListeners()
       })
@@ -117,14 +86,6 @@ const startScreenshare = async (
     if (enableDualStream) {
       await screenClient.enableDualStream()
     }
-    // handle publish fail if track is not enabled
-    // if (tracks[0].enabled) {
-    //   if (!localAudioTrackHasPublished) {
-    //     await screenClient.publish([tracks[0]]).then(() => {
-    //       localAudioTrackHasPublished = true
-    //     })
-    //   }
-    // }
     if (track.enabled) {
       if (!localVideoTrackHasPublished) {
         await screenClient.publish([track]).then(() => {
@@ -139,8 +100,6 @@ const startScreenshare = async (
       track.close()
       await screenClient.leave()
       screenClient.removeAllListeners()
-      // dispatch({ type: 'Screensharing', value: [false] })
-      // screenshareState.isScreensharing = false
     } catch (e) {
       console.log(e)
     }
@@ -149,17 +108,9 @@ const startScreenshare = async (
   stopScreenshare = stop
 
   await init()
-  // screenshareState.isScreensharing = true
-  // flushSync(() => {
-  //   dispatch({
-  //     type: 'Screensharing',
-  //     value: [true]
-  //   })
-  // })
   await join()
   await publish()
   if (returnedUid) console.log(returnedUid)
-  // return track
 }
 
 let stopScreenshare = () => {}

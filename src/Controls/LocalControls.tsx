@@ -27,8 +27,10 @@ function LocalControls() {
     >
       {rtcProps.role !== 'audience' && <LocalVideoMute />}
       {rtcProps.role !== 'audience' && <LocalAudioMute />}
+      {rtcProps.role !== 'audience' && rtcProps.enableScreensharing && (
+        <Screenshare />
+      )}
       <EndCall />
-      {rtcProps.role !== 'audience' && <Screenshare />}
     </div>
   )
 }
