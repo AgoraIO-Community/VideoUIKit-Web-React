@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, PropsWithChildren } from 'react'
 import { RtcPropsInterface, mediaStore } from './PropsContext'
 import {
   ILocalVideoTrack,
@@ -14,7 +14,7 @@ const useTracks = createMicrophoneAndCameraTracks(
 /**
  * React component that create local camera and microphone tracks and assigns them to the child components
  */
-const TracksConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
+const TracksConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (props) => {
   const [ready, setReady] = useState<boolean>(false)
   const [localVideoTrack, setLocalVideoTrack] =
     useState<ILocalVideoTrack | null>(null)

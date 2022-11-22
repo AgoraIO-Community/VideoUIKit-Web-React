@@ -3,7 +3,8 @@ import React, {
   useEffect,
   useContext,
   useRef,
-  useReducer
+  useReducer,
+  PropsWithChildren
 } from 'react'
 import { RtcProvider } from './RtcContext'
 import PropsContext, {
@@ -14,17 +15,26 @@ import PropsContext, {
   CallbacksInterface
 } from './PropsContext'
 import { MaxUidProvider } from './MaxUidContext'
-import { createClient, UID } from 'agora-rtc-react'
+import AgoraRTC, { createClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
 import { MinUidProvider } from './MinUidContext'
 import TracksContext from './TracksContext'
 import reducer, { initState } from './Reducer'
+import {
+  startScreenshare,
+  stopScreenshare
+} from './Controls/Local/screenshareFunctions'
 
 const useClient = createClient({ codec: 'vp8', mode: 'live' }) // pass in another client if use h264
+
 /**
  * React component that contains the RTC logic. It manages the user state and provides it the children components by wrapping them with context providers.
  */
-const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
+const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
+  props
+) => {
   const uid = useRef<UID>()
+  const screenTrack = useRef<ILocalVideoTrack>()
+  const isScreensharingRef = useRef<boolean>(false)
   const { localVideoTrack, localAudioTrack } = useContext(TracksContext)
   const { callbacks, rtcProps } = useContext(PropsContext)
   const [ready, setReady] = useState<boolean>(false)
@@ -54,7 +64,10 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
     callActive = true
   }
 
-  type stateType = { max: UIKitUser[]; min: UIKitUser[] }
+  type stateType = {
+    max: UIKitUser[]
+    min: UIKitUser[]
+  }
   const [uidState, dispatch] = useReducer<React.Reducer<stateType, any>>(
     reducer,
     initState
@@ -67,7 +80,18 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
         console.log(client)
         client.on('user-joined', async (...args) => {
           const [remoteUser] = args
-          mediaStore.current[remoteUser.uid] = {}
+          if (
+            (remoteUser.uid === props.screenshareUid &&
+              isScreensharingRef.current) ||
+            (remoteUser.uid === 1 && isScreensharingRef.current)
+          ) {
+          } else {
+            mediaStore.current[remoteUser.uid] = {}
+            // dispatch({
+            //   type: 'user-joined',
+            //   value: args
+            // })
+          }
           dispatch({
             type: 'user-joined',
             value: args
@@ -78,35 +102,51 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           // Get current peer IDs
           const [remoteUser, mediaType] = args
           console.log('user-published', remoteUser.uid)
-          client
-            .subscribe(remoteUser, mediaType)
-            .then((_e) => {
-              // console.log('subscribe', e)
-              mediaStore.current[remoteUser.uid][mediaType + 'Track'] =
-                remoteUser[mediaType + 'Track']
-              if (mediaType === 'audio') {
-                // eslint-disable-next-line no-unused-expressions
-                remoteUser.audioTrack?.play()
-              } else {
-                if (rtcProps.enableDualStream && rtcProps.dualStreamMode) {
-                  client.setStreamFallbackOption(
-                    remoteUser.uid,
-                    rtcProps.dualStreamMode
-                  )
-                }
-              }
-              dispatch({
-                type: 'user-published',
-                value: args
-              })
+          if (
+            (remoteUser.uid === props.screenshareUid &&
+              isScreensharingRef.current) ||
+            (remoteUser.uid === 1 && isScreensharingRef.current)
+          ) {
+            dispatch({
+              type: 'user-published',
+              value: args
             })
-            .catch((e) => console.log(e))
-          // }
+          } else {
+            client
+              .subscribe(remoteUser, mediaType)
+              .then((_e) => {
+                // console.log('subscribe', e)
+                mediaStore.current[remoteUser.uid][mediaType + 'Track'] =
+                  remoteUser[mediaType + 'Track']
+                if (mediaType === 'audio') {
+                  // eslint-disable-next-line no-unused-expressions
+                  remoteUser.audioTrack?.play()
+                } else {
+                  if (rtcProps.enableDualStream && rtcProps.dualStreamMode) {
+                    client.setStreamFallbackOption(
+                      remoteUser.uid,
+                      rtcProps.dualStreamMode
+                    )
+                  }
+                }
+                dispatch({
+                  type: 'user-published',
+                  value: args
+                })
+              })
+              .catch((e) => console.log(e))
+          }
         })
 
         client.on('user-unpublished', async (...args) => {
           const [remoteUser, mediaType] = args
           console.log('user-unpublished', remoteUser.uid)
+          // if (
+          //   (remoteUser.uid === props.screenshareUid &&
+          //     screenshareState.isScreensharing) ||
+          //   (remoteUser.uid === 1 && screenshareState.isScreensharing)
+          // ) {
+          // } else {
           if (mediaType === 'audio') {
             // eslint-disable-next-line no-unused-expressions
             remoteUser.audioTrack?.stop()
@@ -115,6 +155,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
             type: 'user-unpublished',
             value: args
           })
+          // }
         })
 
         client.on('connection-state-change', async (...args) => {
@@ -123,6 +164,11 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           if (curState === 'CONNECTED') {
             setChannelJoined(true)
           } else if (curState === 'DISCONNECTED') {
+            try {
+              stopScreenshare()
+            } catch (e) {
+              console.log('stopscreenshare', e)
+            }
             dispatch({ type: 'leave-channel', value: null })
           } else {
             setChannelJoined(false)
@@ -130,10 +176,18 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
         })
 
         client.on('user-left', (...args) => {
+          // const [remoteUser] = args
+          // if (
+          //   (remoteUser.uid === props.screenshareUid &&
+          //     screenshareState.isScreensharing) ||
+          //   (remoteUser.uid === 1 && screenshareState.isScreensharing)
+          // ) {
+          // } else {
           dispatch({
             type: 'user-left',
             value: args
           })
+          // }
         })
 
         if (rtcProps.tokenUrl) {
@@ -141,7 +195,12 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           client.on('token-privilege-will-expire', async () => {
             console.log('token will expire')
             const res = await fetch(
-              tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (uid || 0) + '/'
+              tokenUrl +
+                '/rtc/' +
+                channel +
+                '/publisher/uid/' +
+                (uid || 0) +
+                '/'
             )
             const data = await res.json()
             const token = data.rtcToken
@@ -150,7 +209,12 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
 
           client.on('token-privilege-did-expire', async () => {
             const res = await fetch(
-              tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (uid || 0) + '/'
+              tokenUrl +
+                '/rtc/' +
+                channel +
+                '/publisher/uid/' +
+                (uid || 0) +
+                '/'
             )
             const data = await res.json()
             const token = data.rtcToken
@@ -166,17 +230,18 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           events.map((e) => {
             try {
               client.on(e, (...args: any[]) => {
-                ; (callbacks[e] as Function).apply(null, args)
+                // eslint-disable-next-line prefer-spread
+                ;(callbacks[e] as Function).apply(null, args)
               })
             } catch (e) {
               console.log(e)
             }
           })
         }
-        ; (joinRes as (arg0: boolean) => void)(true)
+        ;(joinRes as (arg0: boolean) => void)(true)
         setReady(true)
       } catch (e) {
-        console.log(e)
+        console.log('!!!', e)
       }
     }
 
@@ -189,12 +254,12 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           console.log(e)
         }
       }
-    } else return () => { }
+    } else return () => {}
   }, [rtcProps.appId]) //, ready])
 
   // Dynamically switches channel when channel prop changes
   useEffect(() => {
-    let ignore = false;
+    let ignore = false
     async function join(): Promise<void> {
       await canJoin.current
       const { tokenUrl, channel, uid: userUid, appId, token } = rtcProps
@@ -208,11 +273,11 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
           try {
             const res = await fetch(
               tokenUrl +
-              '/rtc/' +
-              channel +
-              '/publisher/uid/' +
-              (userUid || 0) +
-              '/'
+                '/rtc/' +
+                channel +
+                '/publisher/uid/' +
+                (userUid || 0) +
+                '/'
             )
             const data = await res.json()
             const token = data.rtcToken
@@ -240,7 +305,7 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
       console.log('In precall - waiting to join')
     }
     return (): void => {
-      ignore = true;
+      ignore = true
       if (callActive) {
         console.log('Leaving channel')
         canJoin.current = client
@@ -362,6 +427,54 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
     }
   }, [rtcProps.activeSpeaker, rtcProps.layout])
 
+  const toggleScreensharing = async () => {
+    const start = async () => {
+      dispatch({
+        type: 'Screensharing',
+        value: [true]
+      })
+      screenTrack.current = await AgoraRTC.createScreenVideoTrack({}, 'disable')
+      const uid = rtcProps.screenshareUid || 1 // 1 is default
+      mediaStore.current[uid] = { videoTrack: screenTrack.current }
+      screenTrack.current.on('track-ended', () => {
+        isScreensharingRef.current = false
+        dispatch({
+          type: 'Screensharing',
+          value: [false]
+        })
+      })
+      console.log(
+        '!!vtrack',
+        screenTrack.current,
+        mediaStore.current[0],
+        mediaStore.current[1]
+      )
+      isScreensharingRef.current = true
+      await startScreenshare(
+        rtcProps.appId,
+        rtcProps.channel,
+        // dispatch,
+        // mediaStore,
+        screenTrack.current,
+        rtcProps.screenshareToken,
+        rtcProps.screenshareUid,
+        rtcProps.tokenUrl,
+        rtcProps.enableDualStream
+      )
+    }
+
+    const stop = () => {
+      stopScreenshare()
+      isScreensharingRef.current = false
+    }
+
+    if (isScreensharingRef.current) {
+      stop()
+    } else {
+      start()
+    }
+  }
+
   return (
     <RtcProvider
       value={{
@@ -371,7 +484,9 @@ const RtcConfigure: React.FC<Partial<RtcPropsInterface>> = (props) => {
         localAudioTrack,
         dispatch,
         localUid: uid,
-        channelJoined
+        channelJoined,
+        toggleScreensharing: toggleScreensharing
+        // isScreensharing: isScreensharingRef.current
       }}
     >
       <MaxUidProvider value={uidState.max}>

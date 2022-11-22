@@ -258,9 +258,17 @@ export interface RtcPropsInterface {
    */
   uid?: number
   /**
+   * UID for local user to join the channel (default: 1)
+   */
+  screenshareUid?: number
+  /**
    * Token used to join a channel when using secured mode (default: null)
    */
   token?: string | null
+  /**
+   * Token used to join a channel when using secured mode (default: null)
+   */
+   screenshareToken?: string | null
   /**
    * URL for token server, manages fetching and updating tokens automatically. Must follow the schema here - https://github.com/AgoraIO-Community/agora-token-service/
    */
@@ -368,6 +376,7 @@ export type CallbacksInterface = UIKitEventsInterface &
 export interface UIKitEventsInterface {
   EndCall(): void
   ActiveSpeaker(uid: UID): void
+  Screensharing(state: boolean): void
   ['update-user-video'](
     tracks: [IMicrophoneAudioTrack, ICameraVideoTrack]
   ): void
