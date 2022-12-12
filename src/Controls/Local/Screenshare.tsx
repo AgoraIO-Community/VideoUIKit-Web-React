@@ -12,14 +12,14 @@ import PropsContext from '../../PropsContext'
 function Screenshare() {
   const { styleProps } = useContext(PropsContext)
   const { localBtnStyles } = styleProps || {}
-  const { muteLocalVideo } = localBtnStyles || {}
-  const { toggleScreensharing } = useContext(RtcContext)
+  const { screenshare } = localBtnStyles || {}
+  const { toggleScreensharing, isScreensharing } = useContext(RtcContext)
 
   return (
     <div>
       <BtnTemplate
-        style={muteLocalVideo}
-        name='screen'
+        style={screenshare}
+        name={isScreensharing ? 'stop' : 'screen'}
         onClick={() => toggleScreensharing()}
       />
     </div>

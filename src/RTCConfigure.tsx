@@ -166,6 +166,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
           } else if (curState === 'DISCONNECTED') {
             try {
               stopScreenshare()
+              isScreensharingRef.current = false
             } catch (e) {
               console.log('stopscreenshare', e)
             }
@@ -308,6 +309,12 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
       ignore = true
       if (callActive) {
         console.log('Leaving channel')
+        try {
+          stopScreenshare()
+          isScreensharingRef.current = false
+        } catch (e) {
+          console.log(e)
+        }
         canJoin.current = client
           .leave()
           .catch((err: unknown) => console.log(err))
@@ -443,18 +450,10 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
           value: [false]
         })
       })
-      console.log(
-        '!!vtrack',
-        screenTrack.current,
-        mediaStore.current[0],
-        mediaStore.current[1]
-      )
       isScreensharingRef.current = true
       await startScreenshare(
         rtcProps.appId,
         rtcProps.channel,
-        // dispatch,
-        // mediaStore,
         screenTrack.current,
         rtcProps.screenshareToken,
         rtcProps.screenshareUid,
@@ -485,8 +484,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         dispatch,
         localUid: uid,
         channelJoined,
-        toggleScreensharing: toggleScreensharing
-        // isScreensharing: isScreensharingRef.current
+        toggleScreensharing: toggleScreensharing,
+        isScreensharing: isScreensharingRef.current
       }}
     >
       <MaxUidProvider value={uidState.max}>

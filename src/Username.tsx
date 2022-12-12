@@ -9,7 +9,7 @@ const Username = (props: { user: UIKitUser; style?: React.CSSProperties }) => {
 
   return rtmProps?.displayUsername ? (
     <p style={{ ...styles.username, ...styleProps?.usernameText }}>
-      {usernames[user.uid]}
+      {user.uid === 1 ? 'Screenshare' : usernames[user.uid]}
     </p>
   ) : (
     <React.Fragment />

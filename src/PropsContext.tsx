@@ -114,6 +114,10 @@ interface localBtnStylesInterface {
    */
   muteLocalAudio?: React.CSSProperties
   /**
+   * Style for the local screenshare button
+   */
+  screenshare?: React.CSSProperties
+  /**
    * Style for the local mute video button
    */
   muteLocalVideo?: React.CSSProperties

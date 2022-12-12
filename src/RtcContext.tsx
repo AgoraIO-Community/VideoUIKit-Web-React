@@ -48,6 +48,7 @@ export interface RtcContextInterface {
    */
   channelJoined: boolean
   toggleScreensharing: () => Promise<void>
+  isScreensharing: boolean
 }
 /**
  * Context to access local/remote tracks, client, dispatch and localuid. It's setup by {@link RtcConfigure}.
