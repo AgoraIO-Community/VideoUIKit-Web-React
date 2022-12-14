@@ -1,6 +1,3 @@
-// UIcomp             util func                        dipatch                      State-UI
-// button -> click -> start screenshare -> onsucess -> mutate state -> on mutate -> render screen
-
 import AgoraRTC, { ILocalVideoTrack, UID } from 'agora-rtc-react'
 
 const startScreenshare = async (
@@ -27,7 +24,6 @@ const startScreenshare = async (
     try {
       console.log(screenClient)
       if (tokenUrl) {
-        // const { tokenUrl, channel, uid } = rtcProps
         screenClient.on('token-privilege-will-expire', async () => {
           console.log('token will expire')
           const res = await fetch(
@@ -57,7 +53,6 @@ const startScreenshare = async (
     }
   }
 
-  // Dynamically switches channel when channel prop changes
   async function join(): Promise<void> {
     screenClient.setClientRole('host')
 

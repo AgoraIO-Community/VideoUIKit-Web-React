@@ -201,7 +201,7 @@ const RtmConfigure = (props: any) => {
       uikit: {
         platform: 'web',
         framework: 'react',
-        version: '1.0.8'
+        version: '1.2.0'
       },
       agora: {
         rtm: AgoraRTM.VERSION,

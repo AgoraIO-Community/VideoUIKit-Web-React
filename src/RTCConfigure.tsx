@@ -87,10 +87,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
           ) {
           } else {
             mediaStore.current[remoteUser.uid] = {}
-            // dispatch({
-            //   type: 'user-joined',
-            //   value: args
-            // })
           }
           dispatch({
             type: 'user-joined',
@@ -115,7 +111,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             client
               .subscribe(remoteUser, mediaType)
               .then((_e) => {
-                // console.log('subscribe', e)
                 mediaStore.current[remoteUser.uid][mediaType + 'Track'] =
                   remoteUser[mediaType + 'Track']
                 if (mediaType === 'audio') {
@@ -141,12 +136,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         client.on('user-unpublished', async (...args) => {
           const [remoteUser, mediaType] = args
           console.log('user-unpublished', remoteUser.uid)
-          // if (
-          //   (remoteUser.uid === props.screenshareUid &&
-          //     screenshareState.isScreensharing) ||
-          //   (remoteUser.uid === 1 && screenshareState.isScreensharing)
-          // ) {
-          // } else {
           if (mediaType === 'audio') {
             // eslint-disable-next-line no-unused-expressions
             remoteUser.audioTrack?.stop()
@@ -177,18 +166,10 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         })
 
         client.on('user-left', (...args) => {
-          // const [remoteUser] = args
-          // if (
-          //   (remoteUser.uid === props.screenshareUid &&
-          //     screenshareState.isScreensharing) ||
-          //   (remoteUser.uid === 1 && screenshareState.isScreensharing)
-          // ) {
-          // } else {
           dispatch({
             type: 'user-left',
             value: args
           })
-          // }
         })
 
         if (rtcProps.tokenUrl) {

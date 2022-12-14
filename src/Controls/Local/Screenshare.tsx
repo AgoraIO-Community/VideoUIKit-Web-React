@@ -1,13 +1,7 @@
-// todo:
-// don't sub to screen local
-// onEndcall -> screen stop
-
 import React, { useContext } from 'react'
 import RtcContext from '../../RtcContext'
 import BtnTemplate from '../BtnTemplate'
-// import { LocalContext } from '../../LocalUserContext'
 import PropsContext from '../../PropsContext'
-// import { startScreenshare } from './screenshareFunctions'
 
 function Screenshare() {
   const { styleProps } = useContext(PropsContext)

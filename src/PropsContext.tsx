@@ -250,7 +250,7 @@ export interface RtcPropsInterface {
    */
   CustomVideoPlaceholder?: React.FunctionComponent<VideoPlaceholderProps>
   /**
-   * enable experimental screensharing feature
+   * enable screensharing feature
    */
   enableScreensharing?: boolean
   /**
