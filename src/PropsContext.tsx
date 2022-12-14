@@ -114,6 +114,10 @@ interface localBtnStylesInterface {
    */
   muteLocalAudio?: React.CSSProperties
   /**
+   * Style for the local screenshare button
+   */
+  screenshare?: React.CSSProperties
+  /**
    * Style for the local mute video button
    */
   muteLocalVideo?: React.CSSProperties
@@ -246,6 +250,10 @@ export interface RtcPropsInterface {
    */
   CustomVideoPlaceholder?: React.FunctionComponent<VideoPlaceholderProps>
   /**
+   * enable screensharing feature
+   */
+  enableScreensharing?: boolean
+  /**
    * Agora App ID - used to authenticate the request
    */
   appId: string
@@ -258,9 +266,17 @@ export interface RtcPropsInterface {
    */
   uid?: number
   /**
+   * UID for local user to join the channel (default: 1)
+   */
+  screenshareUid?: number
+  /**
    * Token used to join a channel when using secured mode (default: null)
    */
   token?: string | null
+  /**
+   * Token used to join a channel when using secured mode (default: null)
+   */
+   screenshareToken?: string | null
   /**
    * URL for token server, manages fetching and updating tokens automatically. Must follow the schema here - https://github.com/AgoraIO-Community/agora-token-service/
    */
@@ -368,6 +384,7 @@ export type CallbacksInterface = UIKitEventsInterface &
 export interface UIKitEventsInterface {
   EndCall(): void
   ActiveSpeaker(uid: UID): void
+  Screensharing(state: boolean): void
   ['update-user-video'](
     tracks: [IMicrophoneAudioTrack, ICameraVideoTrack]
   ): void

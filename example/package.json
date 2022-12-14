@@ -21,13 +21,11 @@
     "react-dom": "file:../node_modules/react-dom",
     "react-scripts": "file:../node_modules/react-scripts",
     "typescript": "file:../node_modules/typescript",
-    "agora-react-uikit": "file:.."
+    "agora-react-uikit": "file:..",
+    "postcss-preset-env": "file:../node_modules/postcss-preset-env"
   },
   "devDependencies": {
     "@babel/plugin-syntax-object-rest-spread": "^7.8.3"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
   },
   "browserslist": {
     "production": [

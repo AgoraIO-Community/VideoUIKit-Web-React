@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import EndCall from './Local/EndCall'
 import LocalAudioMute from './Local/LocalAudioMute'
+import Screenshare from './Local/Screenshare'
 import LocalVideoMute from './Local/LocalVideoMute'
 import PropsContext from '../PropsContext'
 
@@ -26,6 +27,9 @@ function LocalControls() {
     >
       {rtcProps.role !== 'audience' && <LocalVideoMute />}
       {rtcProps.role !== 'audience' && <LocalAudioMute />}
+      {rtcProps.role !== 'audience' && rtcProps.enableScreensharing && (
+        <Screenshare />
+      )}
       <EndCall />
     </div>
   )

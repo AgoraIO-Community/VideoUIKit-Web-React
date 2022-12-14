@@ -1,5 +1,5 @@
 /**
- * @module agora-rn-uikit
+ * @module agora-react-uikit
  */
 import AgoraUIKit, { VideocallUI } from './AgoraUIKit'
 import LocalVideoMute from './Controls/Local/LocalVideoMute'

@@ -9,7 +9,11 @@ import {
 import { UID } from 'agora-rtc-react'
 import { actionTypeGuard } from './Utils/actionTypeGuard'
 
-type stateType = { max: UIKitUser[]; min: UIKitUser[] }
+type stateType = {
+  max: UIKitUser[]
+  min: UIKitUser[]
+  isScreensharing: boolean
+}
 
 export const initState = {
   max: [
@@ -19,7 +23,8 @@ export const initState = {
       hasVideo: remoteTrackState.no
     }
   ] as UIKitUser[],
-  min: [] as UIKitUser[]
+  min: [] as UIKitUser[],
+  isScreensharing: false
 }
 
 const reducer = (
@@ -30,6 +35,12 @@ const reducer = (
   const uids: UID[] = [...state.max, ...state.min].map((u: UIKitUser) => u.uid)
 
   switch (action.type) {
+    case 'Screensharing':
+      if (actionTypeGuard(action, action.type)) {
+        stateUpdate = { ...state, isScreensharing: action.value[0] }
+        console.log('!Screensharingstate', state, stateUpdate)
+      }
+      break
     case 'update-user-video':
       if (actionTypeGuard(action, action.type)) {
         stateUpdate = {
@@ -54,7 +65,8 @@ const reducer = (
             } else {
               return user
             }
-          })
+          }),
+          isScreensharing: state.isScreensharing
         }
       }
       break
@@ -72,12 +84,14 @@ const reducer = (
           if (minUpdate.length === 1 && state.max[0].uid === 0) {
             stateUpdate = {
               max: minUpdate,
-              min: state.max
+              min: state.max,
+              isScreensharing: state.isScreensharing
             }
           } else {
             stateUpdate = {
               min: minUpdate,
-              max: state.max
+              max: state.max,
+              isScreensharing: state.isScreensharing
             }
           }
           // console.log('new user joined!\n', action.value[0].uid)
@@ -101,7 +115,8 @@ const reducer = (
                     : (state.max[0].hasVideo as remoteTrackState)
               }
             ],
-            min: state.min
+            min: state.min,
+            isScreensharing: state.isScreensharing
           }
         } else {
           const UIKitUser = state.min.find(
@@ -126,7 +141,8 @@ const reducer = (
             ]
             stateUpdate = {
               min: minUpdate,
-              max: state.max
+              max: state.max,
+              isScreensharing: state.isScreensharing
             }
           }
         }
@@ -149,7 +165,8 @@ const reducer = (
                     : (state.max[0].hasVideo as remoteTrackState)
               }
             ],
-            min: state.min
+            min: state.min,
+            isScreensharing: state.isScreensharing
           }
         } else {
           stateUpdate = {
@@ -170,7 +187,8 @@ const reducer = (
                 }
               }
             }),
-            max: state.max
+            max: state.max,
+            isScreensharing: state.isScreensharing
           }
         }
       }
@@ -181,12 +199,14 @@ const reducer = (
           const minUpdate = [...state.min]
           stateUpdate = {
             max: [minUpdate.pop() as UIKitUser],
-            min: minUpdate
+            min: minUpdate,
+            isScreensharing: state.isScreensharing
           }
         } else {
           stateUpdate = {
             min: state.min.filter((user) => user.uid !== action.value[0].uid),
-            max: state.max
+            max: state.max,
+            isScreensharing: state.isScreensharing
           }
         }
       }
@@ -202,7 +222,8 @@ const reducer = (
                 (user: UIKitUser) => user.uid !== action.value[0].uid
               ),
               state.max[0]
-            ]
+            ],
+            isScreensharing: state.isScreensharing
           }
         }
       }
@@ -231,7 +252,8 @@ const reducer = (
             } else {
               return user
             }
-          })
+          }),
+          isScreensharing: state.isScreensharing
         }
       }
       break
@@ -259,7 +281,8 @@ const reducer = (
             } else {
               return user
             }
-          })
+          }),
+          isScreensharing: state.isScreensharing
         }
       }
       break
@@ -285,7 +308,8 @@ const reducer = (
                 hasAudio: user.hasAudio
               } as RemoteUIKitUser
             else return user
-          })
+          }),
+          isScreensharing: state.isScreensharing
         }
       }
       break
@@ -309,7 +333,8 @@ const reducer = (
                 hasVideo: user.hasVideo
               } as RemoteUIKitUser
             else return user
-          })
+          }),
+          isScreensharing: state.isScreensharing
         }
       }
       break
@@ -332,14 +357,15 @@ const reducer = (
                 (user: UIKitUser) => user.uid !== action.value[0]
               ),
               state.max[0]
-            ]
+            ],
+            isScreensharing: state.isScreensharing
           }
         }
       }
       break
   }
 
-  // console.log('!state-update', { ...state, ...stateUpdate }, stateUpdate)
+  console.log('!state-update', { ...state, ...stateUpdate }, stateUpdate)
   return { ...state, ...stateUpdate }
 }
 

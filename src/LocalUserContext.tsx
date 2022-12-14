@@ -1,4 +1,4 @@
-import React, { useContext, createContext } from 'react'
+import React, { useContext, createContext, PropsWithChildren } from 'react'
 import MaxUidContext from './MaxUidContext'
 import MinUidContext from './MinUidContext'
 import { LocalUIKitUser } from './PropsContext'
@@ -13,7 +13,9 @@ interface LocalUserContextInterface {
 /**
  * React context that exposes the {@link LocalUIKitUser} data object
  */
-const LocalUserContext: React.FC<LocalUserContextInterface> = (props) => {
+const LocalUserContext: React.FC<
+  PropsWithChildren<LocalUserContextInterface>
+> = (props) => {
   const max = useContext(MaxUidContext)
   const min = useContext(MinUidContext)
 
