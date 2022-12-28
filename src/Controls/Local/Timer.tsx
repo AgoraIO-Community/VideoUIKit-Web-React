@@ -11,7 +11,7 @@ const Timer = () => {
   const minutes = Math.trunc(counter / 60)
   const seconds = counter - minutes * 60
 
-  return <p style={{color: 'white', fontSize: 14, paddingHorizontal: 30}}>{`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}</p>
+  return <p style={{color: 'white', fontSize: 14, paddingLeft: 30, paddingRight: 30}}>{`${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`}</p>
 }
 
 export default Timer
