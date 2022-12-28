@@ -1,13 +1,14 @@
 import React, { useContext } from 'react'
+import PropsContext from '../PropsContext'
 import EndCall from './Local/EndCall'
 import LocalAudioMute from './Local/LocalAudioMute'
-import Screenshare from './Local/Screenshare'
 import LocalVideoMute from './Local/LocalVideoMute'
-import PropsContext from '../PropsContext'
+import Screenshare from './Local/Screenshare'
+import Timer from './Local/Timer'
 
 function LocalControls() {
   const { styleProps, rtcProps } = useContext(PropsContext)
-  const { localBtnContainer } = styleProps || {}
+  const {localBtnContainer, showTimer = false} = styleProps || {}
 
   return (
     <div
@@ -25,6 +26,7 @@ function LocalControls() {
         ...localBtnContainer
       }}
     >
+      {rtcProps.role !== 'audience' && showTimer && <Timer />}
       {rtcProps.role !== 'audience' && <LocalVideoMute />}
       {rtcProps.role !== 'audience' && <LocalAudioMute />}
       {rtcProps.role !== 'audience' && rtcProps.enableScreensharing && (

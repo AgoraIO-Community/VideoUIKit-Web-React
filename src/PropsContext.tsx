@@ -1,23 +1,7 @@
 import {
-  IAgoraRTCClient,
-  VideoPlayerConfig,
-  IRemoteAudioTrack,
-  IRemoteVideoTrack,
-  ILocalVideoTrack,
-  ILocalAudioTrack,
-  UID,
-  RemoteStreamFallbackType,
-  ConnectionState,
-  ConnectionDisconnectedReason,
-  IAgoraRTCRemoteUser,
-  RemoteStreamType,
-  ChannelMediaRelayState,
-  ChannelMediaRelayError,
-  ChannelMediaRelayEvent,
-  NetworkQuality,
-  AgoraRTCError,
-  IMicrophoneAudioTrack,
-  ICameraVideoTrack
+  AgoraRTCError, ChannelMediaRelayError,
+  ChannelMediaRelayEvent, ChannelMediaRelayState, ConnectionDisconnectedReason, ConnectionState, IAgoraRTCClient, IAgoraRTCRemoteUser, ICameraVideoTrack, ILocalAudioTrack, ILocalVideoTrack, IMicrophoneAudioTrack, IRemoteAudioTrack,
+  IRemoteVideoTrack, NetworkQuality, RemoteStreamFallbackType, RemoteStreamType, UID, VideoPlayerConfig
 } from 'agora-rtc-react'
 // import {RtmChannelEvents} from 'agora-rtm-react'
 import React from 'react'
@@ -129,6 +113,10 @@ interface localBtnStylesInterface {
    * Style for the end call button
    */
   endCall?: React.CSSProperties
+  /**
+   * Style for the expand video button
+   */
+   fullScreen?: React.CSSProperties
 }
 
 /**
@@ -154,6 +142,14 @@ export interface StylePropInterface {
    * Custom base64 string for icon
    */
   customIcon?: Partial<IconsInterface>
+  /**
+   * Show/Hide buttons labels
+   */
+  showButtonsLabel?: boolean;
+  /**
+  * Show Timer with minutes and second of call duration
+  */
+  showTimer?: boolean;
   /**
    * Globals style for the local buttons (except end call)
    */
@@ -340,7 +336,7 @@ export interface RtmPropsInterface {
     */
    uid?: string
    /**
-    * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true), if set to false you cannot unmute users. 
+    * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true), if set to false you cannot unmute users.
     */
    showPopUpBeforeRemoteMute?: boolean
    /**
@@ -394,6 +390,14 @@ export interface UIKitEventsInterface {
   ['remote-user-mute-video'](user: UIKitUser, status: remoteTrackState): void
   ['remote-user-mute-audio'](user: UIKitUser, status: remoteTrackState): void
   ['leave-channel'](): void
+  /**
+   * Callback for: when a user expand to full screen the video
+   */
+   FullScreen(): void
+   /**
+    * Callback for when a user click to go back to normal screen the video
+    */
+   NormalScreen(): void
 }
 export interface RtcEventsInterface {
   ['connection-state-change'](
@@ -511,6 +515,10 @@ export interface IconsInterface {
    * Icon to close the overlay in floating layout
    */
   close: string
+  /**
+   * Icon to expand video screen
+   */
+  fullScreen: string
 }
 
 const initialValue: PropsInterface = {
