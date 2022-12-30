@@ -36,7 +36,7 @@ const BtnTemplate = (props: BtnTemplateInterface) => {
       }}
       onClick={onClick}
     >
-      {customIcon ? (
+      {customIcon && customIcon[name] ? (
         <img src={customIcon[name]} alt={name} />
       ) : (
         <svg
