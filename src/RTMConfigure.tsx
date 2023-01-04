@@ -1,25 +1,28 @@
-import React, { useState, useContext, useEffect, useRef } from 'react'
+import VirtualBackgroundExtension, {
+  IVirtualBackgroundProcessor
+} from 'agora-extension-virtual-background'
+import AgoraRTC, { UID } from 'agora-rtc-react'
 import AgoraRTM, {
-  createLazyClient,
   createLazyChannel,
+  createLazyClient,
   RtmEvents,
   RtmMessage
 } from 'agora-rtm-react'
-import PropsContext from './PropsContext'
-import {
-  RtmProvider,
-  muteRequest,
-  mutingDevice,
-  rtmStatusEnum,
-  userData,
-  popUpStateEnum,
-  messageObject
-} from './RtmContext'
-import RtcContext from './RtcContext'
-import AgoraRTC, { UID } from 'agora-rtc-react'
-import { LocalContext } from './LocalUserContext'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import muteAudio from './Controls/Local/muteAudio'
 import muteVideo from './Controls/Local/muteVideo'
+import { LocalContext } from './LocalUserContext'
+import PropsContext from './PropsContext'
+import RtcContext from './RtcContext'
+import {
+  messageObject,
+  muteRequest,
+  mutingDevice,
+  popUpStateEnum,
+  RtmProvider,
+  rtmStatusEnum,
+  userData
+} from './RtmContext'
 
 const timeNow = () => new Date().getTime()
 const useChannel = createLazyChannel()
@@ -34,6 +37,9 @@ const RtmConfigure = (props: any) => {
   const channel = useChannel(rtmClient, rtcProps.channel)
   const localUid = useRef<string>('')
   const timerValueRef: any = useRef(5)
+  const ext = useRef(new VirtualBackgroundExtension())
+
+  const processor = useRef<IVirtualBackgroundProcessor>()
   const local = useContext(LocalContext)
   const { rtmCallbacks } = useContext(PropsContext)
   const [uidMap, setUidMap] = useState<Object>({})
@@ -52,6 +58,15 @@ const RtmConfigure = (props: any) => {
     dispatch,
     channelJoined
   } = useContext(RtcContext)
+
+  useEffect(() => {
+    const initExtension = async () => {
+      AgoraRTC.registerExtensions([ext.current])
+      processor.current = ext.current.createProcessor()
+      await processor.current.init('<Path to WASM module>')
+    }
+    initExtension()
+  }, [])
 
   const login = async () => {
     const { tokenUrl } = rtcProps
@@ -89,7 +104,20 @@ const RtmConfigure = (props: any) => {
     }
   }
 
+  const blurBackground = async () => {
+    if (processor.current && localVideoTrack) {
+      localVideoTrack
+        .pipe(processor.current)
+        .pipe(localVideoTrack.processorDestination)
+      processor.current.setOptions({ type: 'blur', blurDegree: 2 })
+      await processor.current.enable()
+    }
+  }
+
   const joinChannel = async () => {
+    if (rtcProps?.enableBlurBackground) {
+      await blurBackground()
+    }
     try {
       await channel.join()
       timerValueRef.current = 5

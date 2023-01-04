@@ -13,7 +13,6 @@ const BtnTemplate = (props: BtnTemplateInterface) => {
   const { onClick, name, disabled, style } = props
   const { styleProps } = useContext(PropsContext)
   const { theme, BtnTemplateStyles, iconSize, customIcon } = styleProps || {}
-
   return (
     <div
       style={{
@@ -36,7 +35,7 @@ const BtnTemplate = (props: BtnTemplateInterface) => {
       }}
       onClick={onClick}
     >
-      {customIcon ? (
+      {customIcon && customIcon[name] ? (
         <img src={customIcon[name]} alt={name} />
       ) : (
         <svg

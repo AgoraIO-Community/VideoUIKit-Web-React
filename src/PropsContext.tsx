@@ -1,7 +1,23 @@
 import {
-  AgoraRTCError, ChannelMediaRelayError,
-  ChannelMediaRelayEvent, ChannelMediaRelayState, ConnectionDisconnectedReason, ConnectionState, IAgoraRTCClient, IAgoraRTCRemoteUser, ICameraVideoTrack, ILocalAudioTrack, ILocalVideoTrack, IMicrophoneAudioTrack, IRemoteAudioTrack,
-  IRemoteVideoTrack, NetworkQuality, RemoteStreamFallbackType, RemoteStreamType, UID, VideoPlayerConfig
+  AgoraRTCError,
+  ChannelMediaRelayError,
+  ChannelMediaRelayEvent,
+  ChannelMediaRelayState,
+  ConnectionDisconnectedReason,
+  ConnectionState,
+  IAgoraRTCClient,
+  IAgoraRTCRemoteUser,
+  ICameraVideoTrack,
+  ILocalAudioTrack,
+  ILocalVideoTrack,
+  IMicrophoneAudioTrack,
+  IRemoteAudioTrack,
+  IRemoteVideoTrack,
+  NetworkQuality,
+  RemoteStreamFallbackType,
+  RemoteStreamType,
+  UID,
+  VideoPlayerConfig
 } from 'agora-rtc-react'
 // import {RtmChannelEvents} from 'agora-rtm-react'
 import React from 'react'
@@ -116,7 +132,7 @@ interface localBtnStylesInterface {
   /**
    * Style for the expand video button
    */
-   fullScreen?: React.CSSProperties
+  fullScreen?: React.CSSProperties
 }
 
 /**
@@ -145,11 +161,11 @@ export interface StylePropInterface {
   /**
    * Show/Hide buttons labels
    */
-  showButtonsLabel?: boolean;
+  showButtonsLabel?: boolean
   /**
-  * Show Timer with minutes and second of call duration
-  */
-  showTimer?: boolean;
+   * Show Timer with minutes and second of call duration
+   */
+  showTimer?: boolean
   /**
    * Globals style for the local buttons (except end call)
    */
@@ -194,6 +210,10 @@ export interface StylePropInterface {
    * Style for the local button container
    */
   localBtnContainer?: React.CSSProperties
+  /**
+   * Style for the local button wrapper
+   */
+  localBtnWrapper?: React.CSSProperties
   /**
    * Applies style to the individual cell (view) containing the video in the grid layout
    */
@@ -272,7 +292,7 @@ export interface RtcPropsInterface {
   /**
    * Token used to join a channel when using secured mode (default: null)
    */
-   screenshareToken?: string | null
+  screenshareToken?: string | null
   /**
    * URL for token server, manages fetching and updating tokens automatically. Must follow the schema here - https://github.com/AgoraIO-Community/agora-token-service/
    */
@@ -317,6 +337,10 @@ export interface RtcPropsInterface {
    * Disable Agora RTM, this also disables the use of usernames and remote mute functionality
    */
   disableRtm?: boolean
+  /**
+   * Enable blur background for local video. By default is false
+   */
+  enableBlurBackground?: boolean
 }
 
 /**
@@ -326,23 +350,23 @@ export interface RtmPropsInterface {
   /**
    * Username for the RTM Client, this value can be accessed using the userData object
    */
-   username?: string
-   /**
-    * Token used to join an RTM channel when using secured mode (default: null)
-    */
-   token?: string | undefined
-   /**
-    * UID for local user to join the RTM channel (default: uses the RTC UID)
-    */
-   uid?: string
-   /**
-    * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true), if set to false you cannot unmute users.
-    */
-   showPopUpBeforeRemoteMute?: boolean
-   /**
-    * Display RTM usernames in the Videocall (default: false)
-    */
-   displayUsername?: boolean
+  username?: string
+  /**
+   * Token used to join an RTM channel when using secured mode (default: null)
+   */
+  token?: string | undefined
+  /**
+   * UID for local user to join the RTM channel (default: uses the RTC UID)
+   */
+  uid?: string
+  /**
+   * Show a pop up with option to accept mute request instead of directly muting the remote user (default: true), if set to false you cannot unmute users.
+   */
+  showPopUpBeforeRemoteMute?: boolean
+  /**
+   * Display RTM usernames in the Videocall (default: false)
+   */
+  displayUsername?: boolean
 }
 
 /**
@@ -364,7 +388,6 @@ export enum layout {
  */
 type role = 'audience' | 'host'
 
-
 export enum ToggleState {
   disabled, // set as 0 - to evaluate falsy
   enabled, // set as 1 - to evaluate truthy
@@ -375,8 +398,7 @@ export enum ToggleState {
 /**
  * Callbacks exposed by the UIKit
  */
-export type CallbacksInterface = UIKitEventsInterface &
-  RtcEventsInterface
+export type CallbacksInterface = UIKitEventsInterface & RtcEventsInterface
 export interface UIKitEventsInterface {
   EndCall(): void
   ActiveSpeaker(uid: UID): void
@@ -393,11 +415,11 @@ export interface UIKitEventsInterface {
   /**
    * Callback for: when a user expand to full screen the video
    */
-   FullScreen(): void
-   /**
-    * Callback for when a user click to go back to normal screen the video
-    */
-   NormalScreen(): void
+  FullScreen(): void
+  /**
+   * Callback for when a user click to go back to normal screen the video
+   */
+  NormalScreen(): void
 }
 export interface RtcEventsInterface {
   ['connection-state-change'](
