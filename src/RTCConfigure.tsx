@@ -245,6 +245,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   useEffect(() => {
     let ignore = false
     async function join(): Promise<void> {
+      console.log('AOGRAAAAA, estoy dentro de un Join?')
       await canJoin.current
       const { tokenUrl, channel, uid: userUid, appId, token } = rtcProps
       if (client && !ignore) {
