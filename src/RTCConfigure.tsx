@@ -173,7 +173,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         })
 
         if (rtcProps.tokenUrl) {
-          console.log('dentro del if del token???? ')
           const { tokenUrl, channel, uid } = rtcProps
           client.on('token-privilege-will-expire', async () => {
             console.log('token will expire')
@@ -277,11 +276,9 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
               userUid || 0
             )
           } catch (e) {
-            console.error('AGORAA soy un error del client join????', e)
+            console.error(e)
             callbacks?.ErrorJoining && callbacks.ErrorJoining()
           }
-
-          console.log('AGORAA just after join!')
         }
         // console.log('!uid: ', uid.current)
       } else {
