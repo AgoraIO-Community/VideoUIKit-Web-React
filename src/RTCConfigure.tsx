@@ -247,19 +247,13 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
       console.log('AGORAA, estoy dentro de un Join?')
       await canJoin.current
       const { tokenUrl, channel, uid: userUid, appId, token } = rtcProps
-      console.log('AGORAA rtcProps', rtcProps)
-
       if (client && !ignore) {
-        console.log('AGORAA inside if ignore')
-
         if (rtcProps.role === 'audience') {
           client.setClientRole(rtcProps.role)
         } else {
           client.setClientRole('host')
         }
         if (tokenUrl) {
-          console.log('AGORAA inside tokenUrl')
-
           try {
             const res = await fetch(
               tokenUrl +
@@ -276,12 +270,14 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             console.log(e)
           }
         } else {
+          console.log('AGORAA just before join!')
           uid.current = await client.join(
             appId,
             channel,
             token || null,
             userUid || 0
           )
+          console.log('AGORAA just after join!')
         }
         // console.log('!uid: ', uid.current)
       } else {
