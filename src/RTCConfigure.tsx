@@ -269,7 +269,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             console.log(e)
           }
         } else {
-          console.log('AGORAA just before join!')
           try {
             uid.current = await client.join(
               appId,
@@ -278,7 +277,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
               userUid || 0
             )
           } catch (e) {
-            console.error('AGORAA soy un error del client join????')
+            console.error('AGORAA soy un error del client join????', e)
+            callbacks?.ErrorJoining && callbacks.ErrorJoining()
           }
 
           console.log('AGORAA just after join!')
