@@ -78,7 +78,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     async function init() {
       try {
         console.log(client)
-        console.log('dentro de init ')
         client.on('user-joined', async (...args) => {
           const [remoteUser] = args
           if (
@@ -245,16 +244,22 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   useEffect(() => {
     let ignore = false
     async function join(): Promise<void> {
-      console.log('AOGRAAAAA, estoy dentro de un Join?')
+      console.log('AGORAA, estoy dentro de un Join?')
       await canJoin.current
       const { tokenUrl, channel, uid: userUid, appId, token } = rtcProps
+      console.log('AGORAA rtcProps', rtcProps)
+
       if (client && !ignore) {
+        console.log('AGORAA inside if ignore')
+
         if (rtcProps.role === 'audience') {
           client.setClientRole(rtcProps.role)
         } else {
           client.setClientRole('host')
         }
         if (tokenUrl) {
+          console.log('AGORAA inside tokenUrl')
+
           try {
             const res = await fetch(
               tokenUrl +
