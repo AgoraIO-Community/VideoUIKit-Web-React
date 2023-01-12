@@ -244,7 +244,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   useEffect(() => {
     let ignore = false
     async function join(): Promise<void> {
-      console.log('AGORAA, estoy dentro de un Join?')
       await canJoin.current
       const { tokenUrl, channel, uid: userUid, appId, token } = rtcProps
       if (client && !ignore) {
@@ -271,12 +270,17 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
           }
         } else {
           console.log('AGORAA just before join!')
-          uid.current = await client.join(
-            appId,
-            channel,
-            token || null,
-            userUid || 0
-          )
+          try {
+            uid.current = await client.join(
+              appId,
+              channel,
+              token || null,
+              userUid || 0
+            )
+          } catch (e) {
+            console.error('AGORAA soy un error del client join????')
+          }
+
           console.log('AGORAA just after join!')
         }
         // console.log('!uid: ', uid.current)
