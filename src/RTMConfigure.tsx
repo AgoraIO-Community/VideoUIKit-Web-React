@@ -70,19 +70,24 @@ const RtmConfigure = (props: any) => {
 
   const login = async () => {
     const { tokenUrl } = rtcProps
+    console.log('token in agora', tokenUrl)
     if (tokenUrl) {
+      console.log('inside token if')
       try {
         const res = await fetch(
           tokenUrl + '/rtm/' + (rtmProps?.uid || localUid.current)
         )
+        console.log('still in login after res')
         const data = await res.json()
         const serverToken = data.rtmToken
+        console.log('this is server token', serverToken)
         await rtmClient.login({
           uid: rtmProps?.uid || localUid.current,
           token: serverToken
         })
         timerValueRef.current = 5
       } catch (error) {
+        console.log('estoy en un error del login')
         setTimeout(async () => {
           timerValueRef.current = timerValueRef.current + timerValueRef.current
           login()
