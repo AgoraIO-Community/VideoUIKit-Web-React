@@ -126,6 +126,7 @@ const RtmConfigure = (props: any) => {
         timerValueRef.current = timerValueRef.current + timerValueRef.current
         joinChannel()
       }, timerValueRef.current * 1000)
+      console.log('AGORA', 'no funciona el login')
     }
   }
 
