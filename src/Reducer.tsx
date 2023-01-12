@@ -1,12 +1,12 @@
-import { ActionType } from './RtcContext'
-import {
-  UIKitUser,
-  remoteTrackState,
-  CallbacksInterface,
-  RemoteUIKitUser,
-  ToggleState
-} from './PropsContext'
 import { UID } from 'agora-rtc-react'
+import {
+  CallbacksInterface,
+  remoteTrackState,
+  RemoteUIKitUser,
+  ToggleState,
+  UIKitUser
+} from './PropsContext'
+import { ActionType } from './RtcContext'
 import { actionTypeGuard } from './Utils/actionTypeGuard'
 
 type stateType = {
@@ -94,7 +94,7 @@ const reducer = (
               isScreensharing: state.isScreensharing
             }
           }
-          // console.log('new user joined!\n', action.value[0].uid)
+          console.log('****** new user joined!\n', action.value[0].uid)
         }
       }
       break
