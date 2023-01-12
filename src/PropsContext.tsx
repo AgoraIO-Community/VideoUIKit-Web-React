@@ -420,6 +420,10 @@ export interface UIKitEventsInterface {
    * Callback for when a user click to go back to normal screen the video
    */
   NormalScreen(): void
+  /**
+   * Callback for when a user click to go back to normal screen the video
+   */
+  ErrorJoining(): void
 }
 export interface RtcEventsInterface {
   ['connection-state-change'](
