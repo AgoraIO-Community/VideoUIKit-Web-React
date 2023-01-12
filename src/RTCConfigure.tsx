@@ -1,28 +1,28 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useRef,
-  useReducer,
-  PropsWithChildren
-} from 'react'
-import { RtcProvider } from './RtcContext'
-import PropsContext, {
-  RtcPropsInterface,
-  UIKitUser,
-  mediaStore,
-  layout,
-  CallbacksInterface
-} from './PropsContext'
-import { MaxUidProvider } from './MaxUidContext'
 import AgoraRTC, { createClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
-import { MinUidProvider } from './MinUidContext'
-import TracksContext from './TracksContext'
-import reducer, { initState } from './Reducer'
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState
+} from 'react'
 import {
   startScreenshare,
   stopScreenshare
 } from './Controls/Local/screenshareFunctions'
+import { MaxUidProvider } from './MaxUidContext'
+import { MinUidProvider } from './MinUidContext'
+import PropsContext, {
+  CallbacksInterface,
+  layout,
+  mediaStore,
+  RtcPropsInterface,
+  UIKitUser
+} from './PropsContext'
+import reducer, { initState } from './Reducer'
+import { RtcProvider } from './RtcContext'
+import TracksContext from './TracksContext'
 
 const useClient = createClient({ codec: 'vp8', mode: 'live' }) // pass in another client if use h264
 
@@ -78,6 +78,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     async function init() {
       try {
         console.log(client)
+        console.log('dentro de init ')
         client.on('user-joined', async (...args) => {
           const [remoteUser] = args
           if (
@@ -173,6 +174,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         })
 
         if (rtcProps.tokenUrl) {
+          console.log('dentro del if del token???? ')
           const { tokenUrl, channel, uid } = rtcProps
           client.on('token-privilege-will-expire', async () => {
             console.log('token will expire')
