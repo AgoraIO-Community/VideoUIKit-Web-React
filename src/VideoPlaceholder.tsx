@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
-import PropsContext, { VideoPlaceholderProps } from './PropsContext'
+import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import SwapUser from './Controls/SwapUser'
+import PropsContext, { VideoPlaceholderProps } from './PropsContext'
 /**
  * React component that is renderd when the video track is muted.
  */
@@ -68,7 +68,8 @@ const style = {
     alignSelf: 'center',
     justifySelf: 'center',
     margin: 'auto',
-    display: 'flex'
+    display: 'flex',
+    fill: 'white'
   } as React.CSSProperties,
   btnContainer: {
     position: 'absolute',
