@@ -69,7 +69,8 @@ const style = {
     justifySelf: 'center',
     margin: 'auto',
     display: 'flex',
-    fill: 'white'
+    fill: 'white',
+    background: 'white'
   } as React.CSSProperties,
   btnContainer: {
     position: 'absolute',
