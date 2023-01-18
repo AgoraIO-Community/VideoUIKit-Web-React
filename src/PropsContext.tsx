@@ -167,6 +167,10 @@ export interface StylePropInterface {
    */
   showTimer?: boolean
   /**
+   * Show End Call Button
+   */
+  showEndCallButton?: boolean
+  /**
    * Globals style for the local buttons (except end call)
    */
   BtnTemplateStyles?: React.CSSProperties

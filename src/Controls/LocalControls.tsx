@@ -12,6 +12,7 @@ function LocalControls() {
   const {
     localBtnContainer,
     showTimer = false,
+    showEndCallButton = true,
     localBtnWrapper = {}
   } = styleProps || {}
 
@@ -47,7 +48,7 @@ function LocalControls() {
         {rtcProps.role !== 'audience' && rtcProps.enableScreensharing && (
           <Screenshare />
         )}
-        <EndCall />
+        {showEndCallButton && <EndCall />}
       </div>
     </div>
   )
