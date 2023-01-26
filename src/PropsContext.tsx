@@ -141,6 +141,10 @@ interface localBtnStylesInterface {
    * Style for the expand video button
    */
   fullScreen?: React.CSSProperties
+  /**
+   * Style for the un-expand video button
+   */
+  normalScreen?: React.CSSProperties
 }
 
 /**

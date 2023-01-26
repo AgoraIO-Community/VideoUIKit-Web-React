@@ -5,7 +5,7 @@ import BtnTemplate from '../BtnTemplate'
 function FullScreen() {
   const { styleProps, callbacks } = useContext(PropsContext)
   const { localBtnStyles } = styleProps || {}
-  const { fullScreen } = localBtnStyles || {}
+  const { fullScreen, normalScreen } = localBtnStyles || {}
   const [action, setAction] = useState('fullScreen')
 
   const onClick = () => {
@@ -21,7 +21,13 @@ function FullScreen() {
 
   return (
     <div>
-      <BtnTemplate style={fullScreen} name='fullScreen' onClick={onClick} />
+      <BtnTemplate
+        style={
+          action === 'fullScreen' ? fullScreen : normalScreen || fullScreen
+        }
+        name='fullScreen'
+        onClick={onClick}
+      />
     </div>
   )
 }
