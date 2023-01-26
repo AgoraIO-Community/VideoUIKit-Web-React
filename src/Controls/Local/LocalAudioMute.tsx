@@ -11,7 +11,13 @@ function LocalAudioMute() {
   const { muteLocalAudio, unmuteLocalAudio } = localBtnStyles || {}
   const { dispatch, localAudioTrack } = useContext(RtcContext)
   const local = useContext(LocalContext)
-
+  console.log('mute', muteLocalAudio, unmuteLocalAudio)
+  console.log(local.hasAudio === ToggleState.enabled)
+  console.log(
+    local.hasAudio === ToggleState.enabled
+      ? muteLocalAudio
+      : unmuteLocalAudio || muteLocalAudio
+  )
   return (
     <div>
       <BtnTemplate
