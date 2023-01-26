@@ -16,7 +16,7 @@ function LocalVideoMute() {
     <div>
       <BtnTemplate
         style={
-          local.hasAudio === ToggleState.enabled
+          local.hasVideo === ToggleState.enabled
             ? muteLocalVideo
             : unmuteLocalVideo || muteLocalVideo
         }
