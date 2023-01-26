@@ -114,6 +114,10 @@ interface localBtnStylesInterface {
    */
   muteLocalAudio?: React.CSSProperties
   /**
+   * Style for the local unmute audio button
+   */
+  unmuteLocalAudio?: React.CSSProperties
+  /**
    * Style for the local screenshare button
    */
   screenshare?: React.CSSProperties
@@ -121,6 +125,10 @@ interface localBtnStylesInterface {
    * Style for the local mute video button
    */
   muteLocalVideo?: React.CSSProperties
+  /**
+   * Style for the local unmute video button
+   */
+  unmuteLocalVideo?: React.CSSProperties
   /**
    * Style for the switch camera button
    */
