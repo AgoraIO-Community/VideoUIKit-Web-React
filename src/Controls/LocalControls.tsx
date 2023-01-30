@@ -15,7 +15,6 @@ function LocalControls() {
     showEndCallButton = true,
     localBtnWrapper = {}
   } = styleProps || {}
-  console.log('estoy en local controls')
   return (
     <div
       style={{
