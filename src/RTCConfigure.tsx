@@ -264,7 +264,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             const data = await res.json()
             const token = data.rtcToken
             uid.current = await client.join(appId, channel, token, userUid || 0)
-            console.log('UID CURRENT', uid.current)
           } catch (e) {
             console.log(e)
           }
@@ -276,7 +275,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
               token || null,
               userUid || 0
             )
-            console.log('UID CURRENT 2', uid.current)
           } catch (e) {
             console.error(e)
             callbacks?.ErrorJoining && callbacks.ErrorJoining()
@@ -312,6 +310,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
 
   // publish local stream
   useEffect(() => {
+    console.log('uid', uid, uid.current)
     async function publish() {
       console.log('%c****inside PUBLISH FUNCTION***', 'color: blue')
 
@@ -351,7 +350,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     callActive,
     localVideoTrack?.enabled,
     localAudioTrack?.enabled,
-    channelJoined
+    channelJoined,
+    uid
   ])
 
   // update local state if tracks are not null
