@@ -331,7 +331,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
       }
     }
     console.log('Publish', localVideoTrack, localAudioTrack, callActive)
-    if (callActive) {
+    if (callActive && channelJoined) {
+      console.log('%c****inside publish if***', 'color: green')
       publish()
     }
   }, [
