@@ -264,6 +264,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             const data = await res.json()
             const token = data.rtcToken
             uid.current = await client.join(appId, channel, token, userUid || 0)
+            console.log('UID CURRENT', uid.current)
           } catch (e) {
             console.log(e)
           }
@@ -275,6 +276,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
               token || null,
               userUid || 0
             )
+            console.log('UID CURRENT 2', uid.current)
           } catch (e) {
             console.error(e)
             callbacks?.ErrorJoining && callbacks.ErrorJoining()
