@@ -310,7 +310,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
 
   // publish local stream
   useEffect(() => {
-    console.log('uid', uid, uid.current)
+    console.log('uid', uid, uid.current, rtcProps.uid)
     async function publish() {
       console.log('%c****inside PUBLISH FUNCTION***', 'color: blue')
 
@@ -351,7 +351,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     localVideoTrack?.enabled,
     localAudioTrack?.enabled,
     channelJoined,
-    uid
+    uid,
+    rtcProps.uid
   ])
 
   // update local state if tracks are not null
