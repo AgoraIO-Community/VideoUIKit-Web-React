@@ -319,16 +319,25 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
       // handle publish fail if track is not enabled
       if (localAudioTrack?.enabled && channelJoined) {
         if (!localAudioTrackHasPublished) {
-          await client.publish([localAudioTrack]).then(() => {
-            localAudioTrackHasPublished = true
-          })
+          // await client.publish([localAudioTrack]).then(() => {
+
+          client
+            .publish([localAudioTrack])
+            .then(() => {
+              localAudioTrackHasPublished = true
+            })
+            .catch((e) => console.error('ERROR EN EL PUBLISH 1', e))
         }
       }
       if (localVideoTrack?.enabled && channelJoined) {
         if (!localVideoTrackHasPublished) {
-          await client.publish([localVideoTrack]).then(() => {
-            localVideoTrackHasPublished = true
-          })
+          // await
+          client
+            .publish([localVideoTrack])
+            .then(() => {
+              localVideoTrackHasPublished = true
+            })
+            .catch((e) => console.error('ERROR EN EL PUBLISH 2', e))
         }
       }
     }
