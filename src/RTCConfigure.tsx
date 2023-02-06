@@ -351,8 +351,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     localVideoTrack?.enabled,
     localAudioTrack?.enabled,
     channelJoined,
-    uid,
-    rtcProps.uid
+    uid?.current
   ])
 
   // update local state if tracks are not null
