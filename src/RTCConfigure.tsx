@@ -311,6 +311,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   // publish local stream
   useEffect(() => {
     async function publish() {
+      console.log('%c****inside PUBLISH FUNCTION***', 'color: blue')
+
       if (rtcProps.enableDualStream) {
         await client.enableDualStream()
       }
@@ -330,7 +332,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         }
       }
     }
-    console.log('Publish', localVideoTrack, localAudioTrack, callActive)
     if (callActive && channelJoined) {
       console.log('%c****inside publish if***', 'color: green')
       publish()
