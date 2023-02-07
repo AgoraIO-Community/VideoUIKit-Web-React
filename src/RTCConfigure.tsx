@@ -310,40 +310,27 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
 
   // publish local stream
   useEffect(() => {
-    console.log('uid', uid, uid.current, rtcProps.uid)
     async function publish() {
-      console.log('%c****inside PUBLISH FUNCTION***', 'color: blue')
-
       if (rtcProps.enableDualStream) {
         await client.enableDualStream()
       }
       // handle publish fail if track is not enabled
       if (localAudioTrack?.enabled && channelJoined) {
         if (!localAudioTrackHasPublished) {
-          // await client.publish([localAudioTrack]).then(() => {
-
-          client
-            .publish([localAudioTrack])
-            .then(() => {
-              localAudioTrackHasPublished = true
-            })
-            .catch((e) => console.error('ERROR EN EL PUBLISH 1', e))
+          await client.publish([localAudioTrack]).then(() => {
+            localAudioTrackHasPublished = true
+          })
         }
       }
       if (localVideoTrack?.enabled && channelJoined) {
         if (!localVideoTrackHasPublished) {
-          // await
-          client
-            .publish([localVideoTrack])
-            .then(() => {
-              localVideoTrackHasPublished = true
-            })
-            .catch((e) => console.error('ERROR EN EL PUBLISH 2', e))
+          await client.publish([localVideoTrack]).then(() => {
+            localVideoTrackHasPublished = true
+          })
         }
       }
     }
-    if (callActive && channelJoined) {
-      console.log('%c****inside publish if***', 'color: green')
+    if (callActive && channelJoined && uid?.current !== undefined) {
       publish()
     }
   }, [
