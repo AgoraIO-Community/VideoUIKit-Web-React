@@ -23,7 +23,7 @@ Inside yoour React application, install dependencies:
 yarn add agora-video-uikit-react
 ```
 
-####NPM
+#### NPM
 
 ```bash
 npm i agora-react-uikit
@@ -109,6 +109,7 @@ This project has been created to support some improvements and fix some imortant
 `fullScreen`: style for FullScreen button
 
 Toggle styles have been added too. It they're not setted, buttons have same style for both states (on/off or mute/unmute)
+
 `unmuteLocalVideo`: (paired with `muteLocalVideo`)
 `unmuteLocalAudio`: (paired with `muteLocalAudio`)
 `normalScreen`: (paired with `fullScreen`)
