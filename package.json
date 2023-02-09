@@ -1,6 +1,6 @@
 {
   "name": "agora-video-uikit-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A React UIKit for the Agora Web SDK (based on EkaanshArora project)",
   "author": "elenitaex5 <elena.martincastillo@gmail.com>",
   "license": "MIT",
