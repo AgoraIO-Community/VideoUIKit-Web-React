@@ -1,13 +1,26 @@
 {
-  "name": "agora-react-uikit",
-  "version": "1.2.0",
-  "description": "A React based UIKit for the Agora Web SDK",
-  "author": "EkaanshArora",
+  "name": "agora-video-uikit-react",
+  "version": "1.0.0",
+  "description": "A React UIKit for the Agora Web SDK (based on EkaanshArora project)",
+  "author": "elenitaex5 <elena.martincastillo@gmail.com>",
   "license": "MIT",
-  "repository": "EkaanshArora/agora-react-uikit",
+  "repository": "elenitaex5/agora-video-uikit-react",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
+  "keywords": [
+    "react",
+    "agora",
+    "video"
+  ],
+  "homepage": "https://github.com/elenitaex5/agora-video-uikit-react",
+  "bugs": "https://github.com/elenitaex5/agora-video-uikit-react/issues",
+  "contributors": [
+    "ylagef (https://github.com/ylagef)"
+  ],
+  "bin": {
+    "agora-video-uikit-react": "bin/agora-video-uikit-react.js"
+  },
   "engines": {
     "node": ">=10"
   },
