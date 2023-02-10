@@ -106,15 +106,18 @@ This project has been created to support some improvements and fix some imortant
 
 ### Styles
 
+`localBtnWrapper` styles for button wrapper inside button container
+
 `fullScreen`: style for FullScreen button
 
 Toggle styles have been added too. It they're not setted, buttons have same style for both states (on/off or mute/unmute)
 
 `unmuteLocalVideo`: (paired with `muteLocalVideo`)
+
 `unmuteLocalAudio`: (paired with `muteLocalAudio`)
+
 `normalScreen`: (paired with `fullScreen`)
 
-`localBtnWrapper` styles for button wrapper inside button container
 
 ### Issues fixed (not in main project)
 
