@@ -77,12 +77,15 @@ You can also export the UIKit to use outside a React project (for example in a v
 
 ## Improvements
 
-This project has been created to support some improvements and fix some imortant issues inside UIKit official project that developers and collaborators aren't including in main project.
+This project has been created to support some improvements and fix some important issues inside UIKit official project that developers and collaborators aren't including in main project.
+
+- **_Camera switch_**: It's not possible to switch camera in UIKit official project. This project includes a button to switch camera on mobile devices.
 
 ### Controls
 
 - TIMER
 - FULLSCREEN
+- SWITCHCAMERA
 
 ### Props
 
@@ -104,11 +107,15 @@ This project has been created to support some improvements and fix some imortant
 
 `fullScreen`: custom Icon for Full Screen Button
 
+`switchCamera`: custom Icon for Switch Camera Button
+
 ### Styles
 
 `localBtnWrapper` styles for button wrapper inside button container
 
 `fullScreen`: style for FullScreen button
+
+`switchCamera`: style for SwitchCamera button
 
 Toggle styles have been added too. It they're not setted, buttons have same style for both states (on/off or mute/unmute)
 
@@ -118,7 +125,6 @@ Toggle styles have been added too. It they're not setted, buttons have same styl
 
 `normalScreen`: (paired with `fullScreen`)
 
-
 ### Issues fixed (not in main project)
 
 - **_Error showing custom icons_**: Was no possible include only one or some custom icons and have others by default.
@@ -127,4 +133,4 @@ Toggle styles have been added too. It they're not setted, buttons have same styl
 
 ### Issues
 
-This project gonna be actively maintened so feel free to report your issues and create PRs to improve our code.
+This project gonna be actively maintained so feel free to report your issues and create PRs to improve our code.
