@@ -4,7 +4,7 @@
 
 > Based on EkaanshArora project [AgoraIO-Community/VideoUIKit-Web-React](https://github.com/AgoraIO-Community/VideoUIKit-Web-React)
 
-[![NPM](https://img.shields.io/npm/v/agora-react-uikit.svg)](https://www.npmjs.com/package/agora-react-uikit) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/agora-video-uikit-react.svg)](https://www.npmjs.com/package/agora-video-uikit-react) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Getting started
 
