@@ -35,7 +35,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   const uid = useRef<UID>()
   const screenTrack = useRef<ILocalVideoTrack>()
   const isScreensharingRef = useRef<boolean>(false)
-  const { localVideoTrack, localAudioTrack } = useContext(TracksContext)
+  const { localVideoTrack, localAudioTrack, switchCamera } =
+    useContext(TracksContext)
   const { callbacks, rtcProps } = useContext(PropsContext)
   const [ready, setReady] = useState<boolean>(false)
   const [channelJoined, setChannelJoined] = useState<boolean>(false)
@@ -311,9 +312,30 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   // publish local stream
   useEffect(() => {
     async function publish() {
+      const currentPublishedTrack = await client.localTracks.find(
+        (lt) => lt.trackMediaType === 'video'
+      )
+
+      if (
+        currentPublishedTrack &&
+        currentPublishedTrack.getTrackId() !== localVideoTrack?.getTrackId()
+      ) {
+        await client.unpublish([currentPublishedTrack])
+        localVideoTrackHasPublished = false
+
+        if (localVideoTrack) {
+          await localVideoTrack.setEnabled(true)
+
+          await client.publish([localVideoTrack]).then(() => {
+            localVideoTrackHasPublished = true
+          })
+        }
+      }
+
       if (rtcProps.enableDualStream) {
         await client.enableDualStream()
       }
+
       // handle publish fail if track is not enabled
       if (localAudioTrack?.enabled && channelJoined) {
         if (!localAudioTrackHasPublished) {
@@ -322,6 +344,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
           })
         }
       }
+
       if (localVideoTrack?.enabled && channelJoined) {
         if (!localVideoTrackHasPublished) {
           await client.publish([localVideoTrack]).then(() => {
@@ -330,13 +353,14 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         }
       }
     }
+
     if (callActive && channelJoined && uid?.current !== undefined) {
       publish()
     }
   }, [
     callActive,
-    localVideoTrack?.enabled,
-    localAudioTrack?.enabled,
+    localVideoTrack,
+    localAudioTrack,
     channelJoined,
     uid?.current
   ])
@@ -353,7 +377,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         value: [localAudioTrack, localVideoTrack]
       })
     }
-  }, [rtcProps.channel, channelJoined])
+  }, [rtcProps.channel, channelJoined, localVideoTrack])
 
   // renew token if token is updated
   useEffect(() => {
@@ -471,7 +495,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         localUid: uid,
         channelJoined,
         toggleScreensharing: toggleScreensharing,
-        isScreensharing: isScreensharingRef.current
+        isScreensharing: isScreensharingRef.current,
+        switchCamera
       }}
     >
       <MaxUidProvider value={uidState.max}>

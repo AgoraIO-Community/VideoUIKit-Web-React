@@ -6,6 +6,7 @@ import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
 import SwapUser from './Controls/SwapUser'
 import PropsContext, { UIKitUser } from './PropsContext'
 import VideoPlaceholder from './VideoPlaceholder'
+import TracksContext from './TracksContext'
 
 /**
  * React context to expose user array displayed in the smaller view
@@ -13,6 +14,8 @@ import VideoPlaceholder from './VideoPlaceholder'
 const MinVideoView = (props: { user: UIKitUser }) => {
   const { mediaStore } = useContext(RtcContext)
   const { styleProps, rtcProps } = useContext(PropsContext)
+  const { facingMode } = useContext(TracksContext)
+
   const { minViewStyles, videoMode, minViewOverlayContainer } = styleProps || {}
   const renderModeProp = videoMode?.min
   const [isShown, setIsShown] = useState(false)
@@ -38,7 +41,11 @@ const MinVideoView = (props: { user: UIKitUser }) => {
           }}
         >
           <AgoraVideoPlayer
-            style={{ flex: 10, display: 'flex' }}
+            style={{
+              flex: 10,
+              display: 'flex',
+              transform: facingMode === 'environment' ? 'scaleX(-1)' : 'none'
+            }}
             config={{
               fit: renderModeProp !== undefined ? renderModeProp : 'cover'
             }}

@@ -2,6 +2,7 @@ import React, { useContext, createContext, PropsWithChildren } from 'react'
 import MaxUidContext from './MaxUidContext'
 import MinUidContext from './MinUidContext'
 import { LocalUIKitUser } from './PropsContext'
+import TracksContext from './TracksContext'
 
 export const LocalContext = createContext<LocalUIKitUser>({} as LocalUIKitUser)
 export const LocalProvider = LocalContext.Provider
@@ -16,6 +17,7 @@ interface LocalUserContextInterface {
 const LocalUserContext: React.FC<
   PropsWithChildren<LocalUserContextInterface>
 > = (props) => {
+  const { localAudioTrack } = useContext(TracksContext)
   const max = useContext(MaxUidContext)
   const min = useContext(MinUidContext)
 
@@ -25,6 +27,10 @@ const LocalUserContext: React.FC<
   } else {
     localUser = min.find((u) => u.uid === 0) as LocalUIKitUser
   }
+
+  // Preserve audio state on changes
+  localUser.hasAudio = localAudioTrack?.enabled ? 1 : 0
+
   return (
     <LocalContext.Provider value={localUser}>
       {props.children}

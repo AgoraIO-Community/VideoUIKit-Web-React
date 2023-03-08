@@ -4,6 +4,8 @@ import { ILocalAudioTrack, ILocalVideoTrack } from 'agora-rtc-react'
 export interface TracksContextInterface {
   localVideoTrack: ILocalVideoTrack | null
   localAudioTrack: ILocalAudioTrack | null
+  switchCamera: () => void
+  facingMode: 'user' | 'environment'
 }
 /**
  * React context that contains the local audio and video tracks. It's setup by {@link TracksConfigure}.

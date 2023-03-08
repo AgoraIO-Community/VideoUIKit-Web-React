@@ -365,7 +365,6 @@ const reducer = (
       break
   }
 
-  console.log('!state-update', { ...state, ...stateUpdate }, stateUpdate)
   return { ...state, ...stateUpdate }
 }
 
