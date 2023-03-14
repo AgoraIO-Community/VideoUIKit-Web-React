@@ -13,6 +13,7 @@ function LocalControls() {
   const {
     localBtnContainer,
     showTimer = false,
+    showSwapButton = false,
     showEndCallButton = true,
     localBtnWrapper = {}
   } = styleProps || {}
@@ -47,7 +48,9 @@ function LocalControls() {
         {rtcProps.role !== 'audience' && showTimer && <Timer />}
         {rtcProps.role !== 'audience' && <LocalVideoMute />}
         {rtcProps.role !== 'audience' && <LocalAudioMute />}
-        {isMobile && rtcProps.role !== 'audience' && <LocalCameraSwitch />}
+        {isMobile && rtcProps.role !== 'audience' && showSwapButton && (
+          <LocalCameraSwitch />
+        )}
         {rtcProps.role !== 'audience' && <FullScreen />}
         {rtcProps.role !== 'audience' && rtcProps.enableScreensharing && (
           <Screenshare />

@@ -130,7 +130,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
                   value: args
                 })
               })
-              .catch((e) => console.log(e))
+              .catch((e) => console.error(e))
           }
         })
 
@@ -217,14 +217,14 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
                 ;(callbacks[e] as Function).apply(null, args)
               })
             } catch (e) {
-              console.log(e)
+              console.error(e)
             }
           })
         }
         ;(joinRes as (arg0: boolean) => void)(true)
         setReady(true)
       } catch (e) {
-        console.log('!!!', e)
+        console.error(e)
       }
     }
 
@@ -234,7 +234,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         try {
           client.removeAllListeners()
         } catch (e) {
-          console.log(e)
+          console.error(e)
         }
       }
     } else return () => {}
@@ -266,7 +266,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             const token = data.rtcToken
             uid.current = await client.join(appId, channel, token, userUid || 0)
           } catch (e) {
-            console.log(e)
+            console.error(e)
           }
         } else {
           try {
@@ -300,7 +300,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
           stopScreenshare()
           isScreensharingRef.current = false
         } catch (e) {
-          console.log(e)
+          console.error(e)
         }
         canJoin.current = client
           .leave()
@@ -312,7 +312,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   // publish local stream
   useEffect(() => {
     async function publish() {
-      const currentPublishedTrack = await client.localTracks.find(
+      const currentPublishedTrack = client.localTracks.find(
         (lt) => lt.trackMediaType === 'video'
       )
 
@@ -324,11 +324,11 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         localVideoTrackHasPublished = false
 
         if (localVideoTrack) {
-          await localVideoTrack.setEnabled(true)
+          if (!localVideoTrack.enabled) await localVideoTrack.setEnabled(true)
 
-          await client.publish([localVideoTrack]).then(() => {
-            localVideoTrackHasPublished = true
-          })
+          await client.publish([localVideoTrack])
+
+          localVideoTrackHasPublished = true
         }
       }
 
@@ -345,11 +345,13 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         }
       }
 
-      if (localVideoTrack?.enabled && channelJoined) {
+      if (localVideoTrack && channelJoined) {
         if (!localVideoTrackHasPublished) {
-          await client.publish([localVideoTrack]).then(() => {
-            localVideoTrackHasPublished = true
-          })
+          if (!localVideoTrack.enabled) await localVideoTrack.setEnabled(true)
+
+          await client.publish([localVideoTrack])
+
+          localVideoTrackHasPublished = true
         }
       }
     }
@@ -367,7 +369,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
 
   // update local state if tracks are not null
   useEffect(() => {
-    if (localVideoTrack && localAudioTrack !== (null && undefined)) {
+    if (localVideoTrack && localAudioTrack) {
       mediaStore.current[0] = {
         audioTrack: localAudioTrack,
         videoTrack: localVideoTrack
@@ -377,7 +379,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         value: [localAudioTrack, localVideoTrack]
       })
     }
-  }, [rtcProps.channel, channelJoined, localVideoTrack])
+  }, [localVideoTrack, localAudioTrack])
 
   // renew token if token is updated
   useEffect(() => {

@@ -97,6 +97,8 @@ This project has been created to support some improvements and fix some importan
 
 `enableBlurBackground?: boolean` optional param to enable blur background for local video. By default is `false`.
 
+`showSwapButton?: boolean` optional param to show/hide swap button. Only will be shown if this param is set to `true` and mobile devices. Default value is `false`.
+
 ### Callbacks
 
 `FullScreen(): void`: Callback for: when a user expand to full screen the video

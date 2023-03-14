@@ -258,6 +258,10 @@ export interface StylePropInterface {
    * Applies style to the displayed username text container
    */
   usernameText?: React.CSSProperties
+  /**
+   * Show swap camera button
+   */
+  showSwapButton?: boolean
 }
 
 /**

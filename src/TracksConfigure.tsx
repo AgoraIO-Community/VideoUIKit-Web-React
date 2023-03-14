@@ -1,16 +1,16 @@
-import React, { useState, useEffect, PropsWithChildren } from 'react'
-import { RtcPropsInterface } from './PropsContext'
 import {
-  ILocalVideoTrack,
-  ILocalAudioTrack,
+  createCameraVideoTrack,
   createMicrophoneAndCameraTracks,
-  createCameraVideoTrack
+  ILocalAudioTrack,
+  ILocalVideoTrack
 } from 'agora-rtc-react'
+import React, { PropsWithChildren, useEffect, useState } from 'react'
+import { RtcPropsInterface } from './PropsContext'
 import { TracksProvider } from './TracksContext'
 
 const useTracks = createMicrophoneAndCameraTracks(
   { encoderConfig: {} },
-  { encoderConfig: {} }
+  { encoderConfig: {}, facingMode: 'user' }
 )
 
 const useEnvironmentTrack = createCameraVideoTrack({
@@ -24,8 +24,6 @@ const useEnvironmentTrack = createCameraVideoTrack({
 const TracksConfigure: React.FC<
   PropsWithChildren<Partial<RtcPropsInterface>>
 > = (props) => {
-  const [ready, setReady] = useState<boolean>(false)
-
   const [localVideoTrack, setLocalVideoTrack] =
     useState<ILocalVideoTrack | null>(null)
   const [localAudioTrack, setLocalAudioTrack] =
@@ -33,55 +31,51 @@ const TracksConfigure: React.FC<
 
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
   const { ready: trackReady, tracks, error } = useTracks()
-  const {
-    ready: environmentReady,
-    track: environmentTrack,
-    error: environmentError
-  } = useEnvironmentTrack()
+  const { track: environmentTrack } = useEnvironmentTrack()
 
-  const switchCamera = () => {
-    console.log('switchCamera', {
-      trackReady,
-      tracks,
-      error,
-      environmentReady,
-      environmentTrack,
-      environmentError
-    })
+  const switchCamera = async () => {
+    if (!tracks || !tracks[1] || !environmentTrack) return
 
-    if (!tracks) return
-    setReady(false)
-
-    setFacingMode(facingMode === 'user' ? 'environment' : 'user')
-    setLocalVideoTrack(facingMode === 'user' ? environmentTrack : tracks[1])
-
-    setReady(true)
+    const facing = facingMode === 'user' ? 'environment' : 'user'
+    setLocalVideoTrack(facing === 'user' ? tracks[1] : environmentTrack)
+    setFacingMode(facing)
   }
+
+  useEffect(() => {
+    if (!localVideoTrack) return
+    localVideoTrack?.setEnabled(false)
+  }, [localVideoTrack])
 
   useEffect(() => {
     if (tracks !== null) {
       setLocalAudioTrack(tracks[0])
       setLocalVideoTrack(tracks[1])
-
-      setReady(true)
     } else if (error) {
       console.error(error)
-      setReady(false)
     }
 
     return () => {
       if (tracks) {
         // eslint-disable-next-line no-unused-expressions
         tracks[0]?.close()
+        tracks[0]?.stop()
         // eslint-disable-next-line no-unused-expressions
         tracks[1]?.close()
+        tracks[1]?.stop()
+      }
+      if (environmentTrack) {
+        environmentTrack.close()
+        environmentTrack.stop()
+      }
 
-        environmentTrack?.close()
+      if (localVideoTrack) {
+        localVideoTrack.close()
+        localVideoTrack.stop()
       }
     }
   }, [trackReady, error])
 
-  if (!ready) return null
+  const ready = localAudioTrack !== null && localVideoTrack !== null
 
   return (
     <TracksProvider
