@@ -1,6 +1,4 @@
-import VirtualBackgroundExtension, {
-  IVirtualBackgroundProcessor
-} from 'agora-extension-virtual-background'
+import { IVirtualBackgroundProcessor } from 'agora-extension-virtual-background'
 import AgoraRTC, { UID } from 'agora-rtc-react'
 import AgoraRTM, {
   createLazyChannel,
@@ -37,7 +35,7 @@ const RtmConfigure = (props: any) => {
   const channel = useChannel(rtmClient, rtcProps.channel)
   const localUid = useRef<string>('')
   const timerValueRef: any = useRef(5)
-  const ext = useRef(new VirtualBackgroundExtension())
+  // const ext = useRef(new VirtualBackgroundExtension())
 
   const processor = useRef<IVirtualBackgroundProcessor>()
   const local = useContext(LocalContext)
