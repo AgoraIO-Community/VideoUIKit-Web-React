@@ -60,12 +60,12 @@ const RtmConfigure = (props: any) => {
   } = useContext(RtcContext)
 
   useEffect(() => {
-    const initExtension = async () => {
-      AgoraRTC.registerExtensions([ext.current])
-      processor.current = ext.current.createProcessor()
-      await processor.current.init('<Path to WASM module>')
-    }
-    initExtension()
+    // const initExtension = async () => {
+    //   AgoraRTC.registerExtensions([ext.current])
+    //   processor.current = ext.current.createProcessor()
+    //   await processor.current.init('<Path to WASM module>')
+    // }
+    // initExtension()
   }, [])
 
   const login = async () => {
@@ -115,9 +115,9 @@ const RtmConfigure = (props: any) => {
   }
 
   const joinChannel = async () => {
-    if (rtcProps?.enableBlurBackground) {
-      await blurBackground()
-    }
+    // if (rtcProps?.enableBlurBackground) {
+    //   await blurBackground()
+    // }
     try {
       await channel.join()
       timerValueRef.current = 5
