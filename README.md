@@ -8,7 +8,7 @@
 
 ## Getting started
 
-### Requirements
+### Requirements c
 
 - [An Agora developer account](https://sso.agora.io/en/signup?utm_source=github&utm_repo=Web-React-UIKit)
 - A React project
