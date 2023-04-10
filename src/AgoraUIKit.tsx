@@ -15,6 +15,7 @@ import PropsContext, {
 import RtcConfigure from './RTCConfigure'
 import RtmConfigure from './RTMConfigure'
 import TracksConfigure from './TracksConfigure'
+import VirtualBackground from './VirtualBackground'
 
 /**
  * High level component to render the UI Kit
@@ -53,12 +54,14 @@ export const VideocallUI = () => {
           <React.Fragment>
             {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
             <LocalControls />
+            <VirtualBackground />
           </React.Fragment>
         ) : (
           <RtmConfigure>
             <PopUp />
             {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
             <LocalControls />
+            <VirtualBackground />
           </RtmConfigure>
         )}
       </LocalUserContext>

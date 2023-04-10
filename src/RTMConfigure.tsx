@@ -1,6 +1,6 @@
-import VirtualBackgroundExtension, {
-  IVirtualBackgroundProcessor
-} from 'agora-extension-virtual-background'
+// import VirtualBackgroundExtension, {
+//   IVirtualBackgroundProcessor
+// } from 'agora-extension-virtual-background'
 import AgoraRTC, { UID } from 'agora-rtc-react'
 import AgoraRTM, {
   createLazyChannel,
@@ -37,9 +37,9 @@ const RtmConfigure = (props: any) => {
   const channel = useChannel(rtmClient, rtcProps.channel)
   const localUid = useRef<string>('')
   const timerValueRef: any = useRef(5)
-  const ext = useRef(new VirtualBackgroundExtension())
+  // const ext = useRef(new VirtualBackgroundExtension())
 
-  const processor = useRef<IVirtualBackgroundProcessor>()
+  // const processor = useRef<IVirtualBackgroundProcessor>()
   const local = useContext(LocalContext)
   const { rtmCallbacks } = useContext(PropsContext)
   const [uidMap, setUidMap] = useState<Object>({})
@@ -59,14 +59,14 @@ const RtmConfigure = (props: any) => {
     channelJoined
   } = useContext(RtcContext)
 
-  useEffect(() => {
-    const initExtension = async () => {
-      AgoraRTC.registerExtensions([ext.current])
-      processor.current = ext.current.createProcessor()
-      await processor.current.init('<Path to WASM module>')
-    }
-    initExtension()
-  }, [])
+  // useEffect(() => {
+  //   const initExtension = async () => {
+  //     AgoraRTC.registerExtensions([ext.current])
+  //     processor.current = ext.current.createProcessor()
+  //     await processor.current.init('<Path to WASM module>')
+  //   }
+  //   initExtension()
+  // }, [])
 
   const login = async () => {
     const { tokenUrl } = rtcProps
@@ -104,20 +104,20 @@ const RtmConfigure = (props: any) => {
     }
   }
 
-  const blurBackground = async () => {
-    if (processor.current && localVideoTrack) {
-      localVideoTrack
-        .pipe(processor.current)
-        .pipe(localVideoTrack.processorDestination)
-      processor.current.setOptions({ type: 'blur', blurDegree: 2 })
-      await processor.current.enable()
-    }
-  }
+  // const blurBackground = async () => {
+  //   if (processor.current && localVideoTrack) {
+  //     localVideoTrack
+  //       .pipe(processor.current)
+  //       .pipe(localVideoTrack.processorDestination)
+  //     processor.current.setOptions({ type: 'blur', blurDegree: 2 })
+  //     await processor.current.enable()
+  //   }
+  // }
 
   const joinChannel = async () => {
-    if (rtcProps?.enableBlurBackground) {
-      await blurBackground()
-    }
+    // if (rtcProps?.enableBlurBackground) {
+    //   await blurBackground()
+    // }
     try {
       await channel.join()
       timerValueRef.current = 5
