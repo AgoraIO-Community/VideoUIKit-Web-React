@@ -102,15 +102,15 @@ const RtmConfigure = (props: any) => {
     }
   }
 
-  const blurBackground = async () => {
-    if (processor.current && localVideoTrack) {
-      localVideoTrack
-        .pipe(processor.current)
-        .pipe(localVideoTrack.processorDestination)
-      processor.current.setOptions({ type: 'blur', blurDegree: 2 })
-      await processor.current.enable()
-    }
-  }
+  // const blurBackground = async () => {
+  //   if (processor.current && localVideoTrack) {
+  //     localVideoTrack
+  //       .pipe(processor.current)
+  //       .pipe(localVideoTrack.processorDestination)
+  //     processor.current.setOptions({ type: 'blur', blurDegree: 2 })
+  //     await processor.current.enable()
+  //   }
+  // }
 
   const joinChannel = async () => {
     // if (rtcProps?.enableBlurBackground) {
