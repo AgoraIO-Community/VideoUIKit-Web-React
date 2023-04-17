@@ -1,11 +1,11 @@
-import React, { CSSProperties, useContext, useState } from 'react'
-import RtcContext from './RtcContext'
 import { AgoraVideoPlayer, IRemoteVideoTrack } from 'agora-rtc-react'
-import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
+import React, { CSSProperties, useContext, useState } from 'react'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
+import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import PropsContext, { UIKitUser } from './PropsContext'
-import VideoPlaceholder from './VideoPlaceholder'
+import RtcContext from './RtcContext'
 import Username from './Username'
+import VideoPlaceholder from './VideoPlaceholder'
 /**
  * React component to display the user video in maximized view
  */
@@ -22,6 +22,7 @@ const MaxVideoView = (props: {
 
   return (
     <div
+      id='maxvideoview'
       style={{
         ...styles.container,
         ...props.style,
@@ -32,7 +33,7 @@ const MaxVideoView = (props: {
     >
       {user.hasVideo === 1 ? (
         // hasVideo is 1 if the local user has video enabled, or if remote user video is subbed
-        <div style={styles.videoContainer}>
+        <div id='finishvideocontainer' style={styles.videoContainer}>
           {!rtcProps.disableRtm && <Username user={user} />}
           <AgoraVideoPlayer
             style={styles.videoplayer}

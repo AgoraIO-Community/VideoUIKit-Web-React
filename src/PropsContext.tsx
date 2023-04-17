@@ -262,6 +262,10 @@ export interface StylePropInterface {
    * Show swap camera button
    */
   showSwapButton?: boolean
+  /**
+   * Show swap user button inside other users Thumbnails
+   */
+  showSwapUser?: boolean
 }
 
 /**

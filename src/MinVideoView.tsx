@@ -1,12 +1,12 @@
-import React, { useContext, useState } from 'react'
-import RtcContext from './RtcContext'
 import { AgoraVideoPlayer, IRemoteVideoTrack } from 'agora-rtc-react'
-import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
+import React, { useContext, useState } from 'react'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
+import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import SwapUser from './Controls/SwapUser'
 import PropsContext, { UIKitUser } from './PropsContext'
-import VideoPlaceholder from './VideoPlaceholder'
+import RtcContext from './RtcContext'
 import TracksContext from './TracksContext'
+import VideoPlaceholder from './VideoPlaceholder'
 
 /**
  * React context to expose user array displayed in the smaller view
@@ -16,7 +16,12 @@ const MinVideoView = (props: { user: UIKitUser }) => {
   const { styleProps, rtcProps } = useContext(PropsContext)
   const { facingMode } = useContext(TracksContext)
 
-  const { minViewStyles, videoMode, minViewOverlayContainer } = styleProps || {}
+  const {
+    minViewStyles,
+    videoMode,
+    minViewOverlayContainer,
+    showSwapUser = false
+  } = styleProps || {}
   const renderModeProp = videoMode?.min
   const [isShown, setIsShown] = useState(false)
   const { user } = props
@@ -66,7 +71,7 @@ const MinVideoView = (props: { user: UIKitUser }) => {
             >
               {!rtcProps.disableRtm && <RemoteVideoMute UIKitUser={user} />}
               {!rtcProps.disableRtm && <RemoteAudioMute UIKitUser={user} />}
-              <SwapUser UIKitUser={user} />
+              {showSwapUser && <SwapUser UIKitUser={user} />}
             </div>
           )}
         </div>

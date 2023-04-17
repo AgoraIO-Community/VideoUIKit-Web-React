@@ -59,6 +59,7 @@ const PinnedVideo: React.FC = () => {
       }}
     >
       <div
+        id='maxviewcontainer'
         style={{
           ...{
             display: 'flex',
@@ -96,7 +97,7 @@ const PinnedVideo: React.FC = () => {
                   <div
                     style={{
                       ...{
-                        minHeight: isLandscape ? '35vh' : '99%',
+                        minHeight: isLandscape ? '25vh' : '99%',
                         minWidth: isLandscape ? '99%' : '40vw',
                         margin: 2,
                         display: 'flex'

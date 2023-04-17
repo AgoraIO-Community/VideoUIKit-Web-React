@@ -99,6 +99,8 @@ This project has been created to support some improvements and fix some importan
 
 `showSwapButton?: boolean` optional param to show/hide swap button. Only will be shown if this param is set to `true` and mobile devices. Default value is `false`.
 
+`showSwapUser?: boolean` optional param to show/hide swap user button inside other users thumbnails. Default value is `false`.
+
 ### Callbacks
 
 `FullScreen(): void`: Callback for: when a user expand to full screen the video
