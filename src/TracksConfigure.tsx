@@ -4,8 +4,13 @@ import {
   ILocalAudioTrack,
   ILocalVideoTrack
 } from 'agora-rtc-react'
-import React, { PropsWithChildren, useEffect, useState } from 'react'
-import { RtcPropsInterface } from './PropsContext'
+import React, {
+  PropsWithChildren,
+  useContext,
+  useEffect,
+  useState
+} from 'react'
+import PropsContext, { RtcPropsInterface } from './PropsContext'
 import { TracksProvider } from './TracksContext'
 
 const useTracks = createMicrophoneAndCameraTracks(
@@ -28,6 +33,8 @@ const TracksConfigure: React.FC<
     useState<ILocalVideoTrack | null>(null)
   const [localAudioTrack, setLocalAudioTrack] =
     useState<ILocalAudioTrack | null>(null)
+
+  const { callbacks } = useContext(PropsContext)
 
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
   const { ready: trackReady, tracks, error } = useTracks()
@@ -52,6 +59,7 @@ const TracksConfigure: React.FC<
       setLocalVideoTrack(tracks[1])
     } else if (error) {
       console.error(error)
+      callbacks?.EndCall && callbacks.EndCall()
     }
 
     return () => {
@@ -72,6 +80,7 @@ const TracksConfigure: React.FC<
         localVideoTrack.close()
         localVideoTrack.stop()
       }
+      callbacks?.EndCall && callbacks.EndCall()
     }
   }, [trackReady, error])
 
