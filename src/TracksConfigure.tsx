@@ -29,6 +29,14 @@ const TracksConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> =
         videoTrack: localCameraTrack as ILocalVideoTrack
       }
     } 
+    return () => {
+      if (localMicrophoneTrack || localCameraTrack) {
+        // eslint-disable-next-line no-unused-expressions
+        localMicrophoneTrack?.close()
+        // eslint-disable-next-line no-unused-expressions
+        localCameraTrack?.close()
+      }
+    }
   },[ready])
 
   return (
