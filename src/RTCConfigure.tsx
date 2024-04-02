@@ -109,8 +109,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             client
               .subscribe(remoteUser, mediaType)
               .then((_e) => {
-                mediaStore.current[remoteUser.uid][mediaType + 'Track'] =
-                  remoteUser[mediaType + 'Track']
+                // @ts-ignore - Suppress Implicit Any Index Errors
+                mediaStore.current[remoteUser.uid][mediaType + 'Track'] = remoteUser[mediaType + 'Track']
                 if (mediaType === 'audio') {
                   // eslint-disable-next-line no-unused-expressions
                   remoteUser.audioTrack?.play()
