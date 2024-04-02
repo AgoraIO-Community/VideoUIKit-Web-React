@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react'
-// import RtcContext from './RtcContext'
-import { RemoteUser, useRemoteUsers } from 'agora-rtc-react'
+import RtcContext from './RtcContext'
+import { LocalUser, RemoteUser, useRemoteUsers } from 'agora-rtc-react'
 import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
 import SwapUser from './Controls/SwapUser'
-import PropsContext, { UIKitUser } from './PropsContext'
+import PropsContext, { LocalUIKitUser, UIKitUser } from './PropsContext'
 import VideoPlaceholder from './VideoPlaceholder'
 
 /**
@@ -12,11 +12,14 @@ import VideoPlaceholder from './VideoPlaceholder'
  */
 const MinVideoView = (props: { user: UIKitUser }) => {
   // const { mediaStore } = useContext(RtcContext)
+  const { localVideoTrack, localAudioTrack } = useContext(RtcContext)
   const { styleProps, rtcProps } = useContext(PropsContext)
   const { minViewStyles, minViewOverlayContainer } = styleProps || {}
   const [isShown, setIsShown] = useState(false)
   const { user } = props
   const remoteUsers = useRemoteUsers()
+
+  const isLocalUser = (user: UIKitUser): user is LocalUIKitUser => user.uid === 0
 
   return (
     <div
@@ -37,10 +40,22 @@ const MinVideoView = (props: { user: UIKitUser }) => {
             }
           }}
         >
-          <RemoteUser 
+          {isLocalUser(user) ? (
+            <LocalUser
+              videoTrack={localVideoTrack} 
+              audioTrack={localAudioTrack}
+              cameraOn
+              micOn
+              playAudio
+              playVideo
+              style={{ flex: 10, display: 'flex' }}
+            />
+          ) : (
+            <RemoteUser 
               user={remoteUsers.find(remoteUser => remoteUser.uid === user.uid)}
               style={{ flex: 10, display: 'flex' }}
             />
+          )}
           {/* <AgoraVideoPlayer
             style={{ flex: 10, display: 'flex' }}
             config={{
