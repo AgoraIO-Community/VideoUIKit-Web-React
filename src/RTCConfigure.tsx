@@ -15,7 +15,7 @@ import PropsContext, {
   CallbacksInterface
 } from './PropsContext'
 import { MaxUidProvider } from './MaxUidContext'
-import AgoraRTC, { createClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
+import AgoraRTC, { useRTCClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
 import { MinUidProvider } from './MinUidContext'
 import TracksContext from './TracksContext'
 import reducer, { initState } from './Reducer'
@@ -24,7 +24,7 @@ import {
   stopScreenshare
 } from './Controls/Local/screenshareFunctions'
 
-const useClient = createClient({ codec: 'vp8', mode: 'live' }) // pass in another client if use h264
+let client = useRTCClient(AgoraRTC.createClient({ codec: 'vp8', mode: 'live' })) // pass in another client if use h264
 
 /**
  * React component that contains the RTC logic. It manages the user state and provides it the children components by wrapping them with context providers.
@@ -47,11 +47,10 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     })
   )
 
-  let client = useClient()
   if (rtcProps.customRtcClient) {
     // if customRtcClient prop is set then use custom client
     client.removeAllListeners()
-    client = rtcProps.customRtcClient
+    client = useRTCClient(rtcProps.customRtcClient)
   }
 
   let localVideoTrackHasPublished = false
