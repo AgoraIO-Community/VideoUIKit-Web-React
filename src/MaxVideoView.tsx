@@ -15,8 +15,7 @@ const MaxVideoView = (props: {
 }) => {
   const { localVideoTrack, localAudioTrack } = useContext(RtcContext)
   const { styleProps, rtcProps } = useContext(PropsContext)
-  const { maxViewStyles, videoMode, maxViewOverlayContainer } = styleProps || {}
-  const renderModeProp = videoMode?.max
+  const { maxViewStyles, maxViewOverlayContainer } = styleProps || {}
   const [isShown, setIsShown] = useState(false)
   const { user } = props
   const remoteUsers = useRemoteUsers()
@@ -50,14 +49,6 @@ const MaxVideoView = (props: {
               style={styles.videoplayer}
             />
           )}
-          {/* <AgoraVideoPlayer
-            style={styles.videoplayer}
-            config={{
-              fit: renderModeProp || 'cover'
-            }}
-            videoTrack={mediaStore[user.uid].videoTrack as IRemoteVideoTrack}
-          /> */}
-
           {isShown && (
             <div
               style={{
