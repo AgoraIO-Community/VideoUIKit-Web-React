@@ -41,6 +41,10 @@ const MaxVideoView = (props: {
             <LocalUser
               videoTrack={localVideoTrack} 
               audioTrack={localAudioTrack}
+              cameraOn
+              micOn
+              playAudio
+              playVideo
               style={styles.videoplayer}
             />
           ) : (
