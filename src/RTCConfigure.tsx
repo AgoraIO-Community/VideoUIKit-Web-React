@@ -24,8 +24,6 @@ import {
   stopScreenshare
 } from './Controls/Local/screenshareFunctions'
 
-let client = useRTCClient(AgoraRTC.createClient({ codec: 'vp8', mode: 'live' })) // pass in another client if use h264
-
 /**
  * React component that contains the RTC logic. It manages the user state and provides it the children components by wrapping them with context providers.
  */
@@ -46,6 +44,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
       console.log(reject)
     })
   )
+  let client = useRTCClient() // get the client set by the context provider
 
   if (rtcProps.customRtcClient) {
     // if customRtcClient prop is set then use custom client
