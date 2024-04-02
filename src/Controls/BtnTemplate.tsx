@@ -37,6 +37,7 @@ const BtnTemplate = (props: BtnTemplateInterface) => {
       onClick={onClick}
     >
       {customIcon ? (
+        // @ts-ignore - Suppress Implicit Any Index Errors
         <img src={customIcon[name]} alt={name} />
       ) : (
         <svg
@@ -56,7 +57,9 @@ const BtnTemplate = (props: BtnTemplateInterface) => {
           strokeLinejoin='round'
           // className='feather feather-video'
         >
-          {Icons[name]}
+          { // @ts-ignore - Suppress Implicit Any Index Errors
+            Icons[name]
+          }
         </svg>
       )}
     </div>
