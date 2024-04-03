@@ -24,7 +24,13 @@ import AgoraRTC, { AgoraRTCProvider, useRTCClient } from 'agora-rtc-react'
 const AgoraUIKit: React.FC<PropsInterface> = (props) => {
   const { styleProps, rtcProps } = props
   const { UIKitContainer } = styleProps || {}
-  const client = useRTCClient(AgoraRTC.createClient({ codec: 'vp8', mode: 'live' })) // pass in another client if use h264
+  let client = useRTCClient(AgoraRTC.createClient({ codec: 'vp8', mode: 'live' })) // pass in another client if use h264
+
+  if (rtcProps.customRtcClient) {
+    // if customRtcClient prop is set then use custom client
+    // client.removeAllListeners()
+    client = useRTCClient(rtcProps.customRtcClient)
+  }
 
   return (
     <AgoraRTCProvider client={client}>
@@ -55,13 +61,13 @@ export const VideocallUI = () => {
       <LocalUserContext>
         {rtcProps.disableRtm ? (
           <React.Fragment>
-            {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
+            {rtcProps?.layout === layout.grid ? <GridVideo key="grid" /> : <PinnedVideo key="pinned"/>}
             <LocalControls />
           </React.Fragment>
         ) : (
           <RtmConfigure>
             <PopUp />
-            {rtcProps?.layout === layout.grid ? <GridVideo /> : <PinnedVideo />}
+            {rtcProps?.layout === layout.grid ? <GridVideo key="grid" /> : <PinnedVideo key="pinned"/>}
             <LocalControls />
           </RtmConfigure>
         )}
