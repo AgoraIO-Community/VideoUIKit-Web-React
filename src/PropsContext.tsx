@@ -15,7 +15,7 @@ import {
   ChannelMediaRelayError,
   ChannelMediaRelayEvent,
   NetworkQuality,
-  AgoraRTCError,
+  IAgoraRTCError,
   IMicrophoneAudioTrack,
   ICameraVideoTrack
 } from 'agora-rtc-react'
@@ -52,15 +52,15 @@ export interface LocalUIKitUser {
    */
   uid: 0
   /**
-   * Whether the remote user is sending an audio track.
-   * - `true`: The remote user is sending an audio track.
-   * - `false`: The remote user is not sending an audio track.
+   * Whether the local user is sending an audio track.
+   * - `true`: The local user is sending an audio track.
+   * - `false`: The local user is not sending an audio track.
    */
   hasAudio: ToggleState
   /**
-   * Whether the remote user is sending a video track.
-   * - `true`: The remote user is sending an audio track.
-   * - `false`: The remote user is not sending an audio track.
+   * Whether the local user is sending a video track.
+   * - `true`: The local user is sending an audio track.
+   * - `false`: The local user is not sending an audio track.
    */
   hasVideo: ToggleState
 }
@@ -443,8 +443,8 @@ export interface RtcEventsInterface {
   ['token-privilege-will-expire'](): void
   ['token-privilege-did-expire'](): void
   ['network-quality'](stats: NetworkQuality): void
-  ['live-streaming-error'](url: string, err: AgoraRTCError): void
-  ['live-streaming-warning'](url: string, warning: AgoraRTCError): void
+  ['live-streaming-error'](url: string, err: IAgoraRTCError): void
+  ['live-streaming-warning'](url: string, warning: IAgoraRTCError): void
   ['stream-inject-status'](
     status: InjectStreamEventStatus,
     uid: UID,

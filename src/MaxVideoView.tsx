@@ -1,9 +1,9 @@
 import React, { CSSProperties, useContext, useState } from 'react'
 import RtcContext from './RtcContext'
-import { AgoraVideoPlayer, IRemoteVideoTrack } from 'agora-rtc-react'
+import { LocalUser, RemoteUser, useRemoteUsers } from 'agora-rtc-react'
 import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
-import PropsContext, { UIKitUser } from './PropsContext'
+import PropsContext, { LocalUIKitUser, UIKitUser } from './PropsContext'
 import VideoPlaceholder from './VideoPlaceholder'
 import Username from './Username'
 /**
@@ -13,12 +13,15 @@ const MaxVideoView = (props: {
   user: UIKitUser
   style?: React.CSSProperties
 }) => {
-  const { mediaStore } = useContext(RtcContext)
+  const { localVideoTrack, localAudioTrack } = useContext(RtcContext)
   const { styleProps, rtcProps } = useContext(PropsContext)
-  const { maxViewStyles, videoMode, maxViewOverlayContainer } = styleProps || {}
-  const renderModeProp = videoMode?.max
+  const { maxViewStyles, maxViewOverlayContainer } = styleProps || {}
   const [isShown, setIsShown] = useState(false)
   const { user } = props
+  const remoteUsers = useRemoteUsers()
+  
+  // Use type gaurd to check if UIKitUser is of LocalUIKitUser type
+  const isLocalUser = (user: UIKitUser): user is LocalUIKitUser => user.uid === 0
 
   return (
     <div
@@ -34,13 +37,22 @@ const MaxVideoView = (props: {
         // hasVideo is 1 if the local user has video enabled, or if remote user video is subbed
         <div style={styles.videoContainer}>
           {!rtcProps.disableRtm && <Username user={user} />}
-          <AgoraVideoPlayer
-            style={styles.videoplayer}
-            config={{
-              fit: renderModeProp || 'cover'
-            }}
-            videoTrack={mediaStore[user.uid].videoTrack as IRemoteVideoTrack}
-          />
+          {isLocalUser(user) ? (
+            <LocalUser
+              videoTrack={localVideoTrack} 
+              audioTrack={localAudioTrack}
+              cameraOn
+              micOn
+              playAudio
+              playVideo
+              style={styles.videoplayer}
+            />
+          ) : (
+            <RemoteUser 
+              user={remoteUsers.find(remoteUser => remoteUser.uid === user.uid)}
+              style={styles.videoplayer}
+            />
+          )}
           {isShown && (
             <div
               style={{

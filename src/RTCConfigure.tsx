@@ -15,7 +15,7 @@ import PropsContext, {
   CallbacksInterface
 } from './PropsContext'
 import { MaxUidProvider } from './MaxUidContext'
-import AgoraRTC, { createClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
+import AgoraRTC, { useRTCClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
 import { MinUidProvider } from './MinUidContext'
 import TracksContext from './TracksContext'
 import reducer, { initState } from './Reducer'
@@ -23,8 +23,6 @@ import {
   startScreenshare,
   stopScreenshare
 } from './Controls/Local/screenshareFunctions'
-
-const useClient = createClient({ codec: 'vp8', mode: 'live' }) // pass in another client if use h264
 
 /**
  * React component that contains the RTC logic. It manages the user state and provides it the children components by wrapping them with context providers.
@@ -46,12 +44,12 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
       console.log(reject)
     })
   )
+  let client = useRTCClient() // get the client set by the context provider
 
-  let client = useClient()
   if (rtcProps.customRtcClient) {
     // if customRtcClient prop is set then use custom client
     client.removeAllListeners()
-    client = rtcProps.customRtcClient
+    client = useRTCClient(rtcProps.customRtcClient)
   }
 
   let localVideoTrackHasPublished = false
@@ -111,8 +109,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             client
               .subscribe(remoteUser, mediaType)
               .then((_e) => {
-                mediaStore.current[remoteUser.uid][mediaType + 'Track'] =
-                  remoteUser[mediaType + 'Track']
+                // @ts-ignore - Suppress Implicit Any Index Errors
+                mediaStore.current[remoteUser.uid][mediaType + 'Track'] = remoteUser[mediaType + 'Track']
                 if (mediaType === 'audio') {
                   // eslint-disable-next-line no-unused-expressions
                   remoteUser.audioTrack?.play()

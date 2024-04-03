@@ -153,6 +153,7 @@ const RtmConfigure = (props: any) => {
         if (rtmCallbacks.channel) {
           channel.on(
             callback as keyof RtmEvents.RtmChannelEvents,
+            // @ts-ignore - Suppress Implicit Any Index Errors
             rtmCallbacks.channel[callback]
           )
         }
@@ -162,6 +163,7 @@ const RtmConfigure = (props: any) => {
         if (rtmCallbacks.client) {
           rtmClient.on(
             callback as keyof RtmEvents.RtmClientEvents,
+            // @ts-ignore - Suppress Implicit Any Index Errors
             rtmCallbacks.client[callback]
           )
         }
@@ -219,6 +221,7 @@ const RtmConfigure = (props: any) => {
       mute,
       isForceful: forced
     }
+    // @ts-ignore - Suppress Implicit Any Index Errors
     const peerId = uidMap[rtcId]
     if (forced && !mute) {
       console.log('cannot send force unmute request')

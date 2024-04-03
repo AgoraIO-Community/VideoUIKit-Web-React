@@ -10,7 +10,8 @@ function RemoteVideoMute(props: { UIKitUser: UIKitUser }) {
   const { muteRemoteVideo } = remoteBtnStyles || {}
   const { UIKitUser } = props
   const isMuted = UIKitUser.hasVideo === remoteTrackState.no
-
+  
+  // @ts-ignore - Suppress Implicit Any Index Errors
   return UIKitUser.uid !== 0 && uidMap[UIKitUser.uid] ? (
     <div>
       <BtnTemplate
