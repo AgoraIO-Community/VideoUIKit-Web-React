@@ -15,6 +15,7 @@ import TracksConfigure from './TracksConfigure'
 import RtmConfigure from './RTMConfigure'
 import LocalUserContext from './LocalUserContext'
 import PopUp from './Controls/Remote/RemoteMutePopUp'
+import AgoraRTC, { AgoraRTCProvider, useRTCClient } from 'agora-rtc-react'
 
 /**
  * High level component to render the UI Kit
@@ -23,24 +24,27 @@ import PopUp from './Controls/Remote/RemoteMutePopUp'
 const AgoraUIKit: React.FC<PropsInterface> = (props) => {
   const { styleProps, rtcProps } = props
   const { UIKitContainer } = styleProps || {}
+  const client = useRTCClient(AgoraRTC.createClient({ codec: 'vp8', mode: 'live' })) // pass in another client if use h264
 
   return (
-    <PropsProvider value={props}>
-      <div
-        style={{
-          ...style,
-          ...UIKitContainer
-        }}
-      >
-        {rtcProps.role === 'audience' ? (
-          <VideocallUI />
-        ) : (
-          <TracksConfigure>
+    <AgoraRTCProvider client={client}>
+      <PropsProvider value={props}>
+        <div
+          style={{
+            ...style,
+            ...UIKitContainer
+          }}
+        >
+          {rtcProps.role === 'audience' ? (
             <VideocallUI />
-          </TracksConfigure>
-        )}
-      </div>
-    </PropsProvider>
+          ) : (
+            <TracksConfigure>
+              <VideocallUI />
+            </TracksConfigure>
+          )}
+        </div>
+      </PropsProvider>
+    </AgoraRTCProvider>
   )
 }
 
