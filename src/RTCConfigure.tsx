@@ -1,28 +1,12 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  useRef,
-  useReducer,
-  PropsWithChildren
-} from 'react'
+import React, { useState, useEffect, useContext, useRef, useReducer, PropsWithChildren } from 'react'
 import { RtcProvider } from './RtcContext'
-import PropsContext, {
-  RtcPropsInterface,
-  UIKitUser,
-  mediaStore,
-  layout,
-  CallbacksInterface
-} from './PropsContext'
+import PropsContext, { RtcPropsInterface, UIKitUser, mediaStore, layout, CallbacksInterface } from './PropsContext'
 import { MaxUidProvider } from './MaxUidContext'
 import AgoraRTC, { useRTCClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
 import { MinUidProvider } from './MinUidContext'
 import TracksContext from './TracksContext'
 import reducer, { initState } from './Reducer'
-import {
-  startScreenshare,
-  stopScreenshare
-} from './Controls/Local/screenshareFunctions'
+import { startScreenshare, stopScreenshare } from './Controls/Local/screenshareFunctions'
 
 /**
  * React component that contains the RTC logic. It manages the user state and provides it the children components by wrapping them with context providers.
@@ -45,12 +29,6 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     })
   )
   let client = useRTCClient() // get the client set by the context provider
-
-  if (rtcProps.customRtcClient) {
-    // if customRtcClient prop is set then use custom client
-    client.removeAllListeners()
-    client = useRTCClient(rtcProps.customRtcClient)
-  }
 
   let localVideoTrackHasPublished = false
   let localAudioTrackHasPublished = false
@@ -242,7 +220,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     let ignore = false
     async function join(): Promise<void> {
       await canJoin.current
-      const { tokenUrl, channel, uid: userUid, appId, token } = rtcProps
+      const { tokenUrl, channel, uid: userUid, appId, token: tokenProp } = rtcProps
       if (client && !ignore) {
         if (rtcProps.role === 'audience') {
           client.setClientRole(rtcProps.role)
@@ -261,18 +239,16 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
             )
             const data = await res.json()
             const token = data.rtcToken
+            console.log(`joining channel: ${canJoin.current}`)
             uid.current = await client.join(appId, channel, token, userUid || 0)
           } catch (e) {
             console.log(e)
           }
         } else {
-          uid.current = await client.join(
-            appId,
-            channel,
-            token || null,
-            userUid || 0
-          )
+          console.log(`joining channel: ${canJoin.current}`)
+          uid.current = await client.join( appId, channel, tokenProp || null, userUid || 0)
         }
+        console.log(`joined channel with uid: ${uid.current}`)
         // console.log('!uid: ', uid.current)
       } else {
         console.error('trying to join before RTC Engine was initialized')
@@ -285,6 +261,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
       console.log('In precall - waiting to join')
     }
     return (): void => {
+      console.log('RTC Config Cleanup')
       ignore = true
       if (callActive) {
         console.log('Leaving channel')
@@ -304,7 +281,12 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   // publish local stream
   useEffect(() => {
     async function publish() {
-      if (rtcProps.enableDualStream) {
+      // Testing --> TODO: remove
+      if(client.role === 'audience') {
+          client.setClientRole('host')  
+          console.log(`channelJoined: ${channelJoined}`)
+      }
+      if (rtcProps.enableDualStream && channelJoined) {
         await client.enableDualStream()
       }
       // handle publish fail if track is not enabled
