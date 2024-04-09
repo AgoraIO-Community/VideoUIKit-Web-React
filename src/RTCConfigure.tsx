@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef, useReducer, PropsWithCh
 import { RtcProvider } from './RtcContext'
 import PropsContext, { RtcPropsInterface, UIKitUser, mediaStore, layout, CallbacksInterface } from './PropsContext'
 import { MaxUidProvider } from './MaxUidContext'
-import AgoraRTC, { useRTCClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
+import AgoraRTC, { useRTCClient, ILocalVideoTrack, UID, useIsConnected } from 'agora-rtc-react'
 import { MinUidProvider } from './MinUidContext'
 import TracksContext from './TracksContext'
 import reducer, { initState } from './Reducer'
@@ -29,6 +29,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     })
   )
   let client = useRTCClient() // get the client set by the context provider
+  const isConnected = useIsConnected()
 
   let localVideoTrackHasPublished = false
   let localAudioTrackHasPublished = false
@@ -48,6 +49,10 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     reducer,
     initState
   )
+
+  useEffect(() =>{
+    console.log(`isConnected: ${isConnected} && callActive: ${callActive}`)
+  }, [isConnected])
 
   // init rtcEngine
   useEffect(() => {
@@ -84,28 +89,26 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
               value: args
             })
           } else {
-            client
-              .subscribe(remoteUser, mediaType)
-              .then((_e) => {
-                // @ts-ignore - Suppress Implicit Any Index Errors
-                mediaStore.current[remoteUser.uid][mediaType + 'Track'] = remoteUser[mediaType + 'Track']
-                if (mediaType === 'audio') {
-                  // eslint-disable-next-line no-unused-expressions
-                  remoteUser.audioTrack?.play()
-                } else {
-                  if (rtcProps.enableDualStream && rtcProps.dualStreamMode) {
-                    client.setStreamFallbackOption(
-                      remoteUser.uid,
-                      rtcProps.dualStreamMode
-                    )
-                  }
+            client.subscribe(remoteUser, mediaType).then((_e) => {
+              // @ts-ignore - Suppress Implicit Any Index Errors
+              mediaStore.current[remoteUser.uid][mediaType + 'Track'] = remoteUser[mediaType + 'Track']
+              if (mediaType === 'audio') {
+                // eslint-disable-next-line no-unused-expressions
+                remoteUser.audioTrack?.play()
+              } else {
+                if (rtcProps.enableDualStream && rtcProps.dualStreamMode) {
+                  client.setStreamFallbackOption(
+                    remoteUser.uid,
+                    rtcProps.dualStreamMode
+                  )
                 }
-                dispatch({
-                  type: 'user-published',
-                  value: args
-                })
+              }
+              dispatch({
+                type: 'user-published',
+                value: args
               })
-              .catch((e) => console.log(e))
+            })
+            .catch((e) => console.log(e))
           }
         })
 
