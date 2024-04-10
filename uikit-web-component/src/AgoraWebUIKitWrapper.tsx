@@ -7,7 +7,7 @@ import 'agora-react-uikit/dist/index.css'
   * 1: Automatically subscribe to the low-video stream under poor network conditions. 
   * 2: Subscribe to the low-quality video stream when the network conditions worsen, and subscribe to audio only when the conditions become too poor to support video transmission.
   */
-declare enum RemoteStreamFallbackType {
+enum RemoteStreamFallbackType {
   DISABLE = 0,
   LOW_STREAM = 1,
   AUDIO_ONLY = 2
