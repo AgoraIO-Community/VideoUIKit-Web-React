@@ -1,7 +1,21 @@
 import ReactDOM from "react-dom"
 import AgoraUIKit, { layout as AgoraLayout, RtcPropsInterface, RtmPropsInterface, } from 'agora-react-uikit'
-import { RemoteStreamFallbackType } from 'agora-rtc-react'
+// import { RemoteStreamFallbackType } from 'agora-rtc-react'
 import 'agora-react-uikit/dist/index.css'
+
+declare enum RemoteStreamFallbackType {
+  /**
+   * 0: Disable the fallback.
+   */
+  DISABLE = 0,
+  /**
+   * 1: Automatically subscribe to the low-video stream under poor network conditions. */
+  LOW_STREAM = 1,
+  /**
+   * 2: Subscribe to the low-quality video stream when the network conditions worsen, and subscribe to audio only when the conditions become too poor to support video transmission.
+   */
+  AUDIO_ONLY = 2
+}
 
 class AgoraWebComponent extends HTMLElement {
   
@@ -69,14 +83,31 @@ class AgoraWebComponent extends HTMLElement {
     return attributesToObserve
   }
 
+  // Component is mounted / added to DOM
+  connectedCallback(): void {
+    // Loop through the observedAttributes an initialize them
+    AgoraWebComponent.observedAttributes.forEach(attr => {
+      const value = this.getAttribute(attr)
+      if (value !== null) {
+        // Set the initial values of the attributes
+        this.attributeChangedCallback(attr, null, value)
+      }
+    })
+    this.render()
+  }
+
   // Update props when attributes change/update
   attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
+
+    console.log(`attributeChangedCallback: \n - name: ${name}\n - oldValue: ${oldValue}\n - newValue: ${newValue}`)
     if (newValue === oldValue) return // no chage
     
     // handle updating props with proper values
     switch (name) {
       case 'appId': 
+        console.log(`-- Updating appId with ${newValue}`)
         this.rtcProps.appId = newValue ?? ''
+        console.log(`-- Updating appId: ${this.rtcProps.appId}`)
         break
       case 'channel': 
         this.rtcProps.channel = newValue ?? ''
@@ -146,10 +177,6 @@ class AgoraWebComponent extends HTMLElement {
     this.render()
   }
 
-  // Component is mounted / added to DOM
-  connectedCallback(): void {
-    this.render()
-  }
   // Component is removed from DOM
   disconnectedCallback(): void {
     ReactDOM.unmountComponentAtNode(this.mountPoint)
