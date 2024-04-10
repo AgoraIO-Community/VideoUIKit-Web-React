@@ -16,11 +16,11 @@
   "devDependencies": {
     "@types/react": "file:../node_modules/@types/react",
     "@types/react-dom": "file:../node_modules/@types/react-dom",
-    "agora-rtc-react": "^2.1.0",
-    "agora-react-uikit": "file:..",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
+    "agora-react-uikit": "file:..",
+    "agora-rtc-react": "^2.1.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
