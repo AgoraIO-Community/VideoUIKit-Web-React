@@ -42,6 +42,7 @@ const GridVideo: React.FC = () => {
   return (
     <div
       ref={parentRef}
+      id="Agora-React-UIKit-Video-Grid-Container"
       style={{
         ...{
           width: '100%',

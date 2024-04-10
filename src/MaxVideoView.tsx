@@ -35,7 +35,7 @@ const MaxVideoView = (props: {
     >
       {user.hasVideo === 1 ? (
         // hasVideo is 1 if the local user has video enabled, or if remote user video is subbed
-        <div style={styles.videoContainer}>
+        <div id="Agora-React-UIKit-Video-Grid-Local-User" style={styles.videoContainer}>
           {!rtcProps.disableRtm && <Username user={user} />}
           {isLocalUser(user) ? (
             <LocalUser
@@ -48,7 +48,8 @@ const MaxVideoView = (props: {
               style={styles.videoplayer}
             />
           ) : (
-            <RemoteUser 
+            <RemoteUser
+              className='Agora-React-UIKit-Video-Grid-Remote-User' 
               user={remoteUsers.find(remoteUser => remoteUser.uid === user.uid)}
               style={styles.videoplayer}
             />
