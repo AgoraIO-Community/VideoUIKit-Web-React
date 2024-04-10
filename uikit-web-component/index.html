@@ -7,6 +7,7 @@
   </head>
   <body>
     <agora-web-uikit 
+      style="width: 100%; height: 100vh; display: flex;"
       appId="Replace_With_Your_Agora_AppId"
       channel="test"
       userRole="host"
@@ -14,5 +15,19 @@
       rtmToken=""
     />
     <script type="module" src="/src/AgoraWebUIKitWrapper.tsx"></script>
+    <script>
+      // select web component
+      const el = document.querySelector('agora-web-uikit');
+      
+      // alternatively we can do this to pass/update props
+      // el.appId = '<Your Agora App ID>'
+
+      // Add event listener and subscribe to custom event
+      el.addEventListener('agoraUIKitEndcall', (e) => {
+        console.log('hello from html')
+        // handle endcall event
+        el.remove();
+      });
+    </script>
   </body>
 </html>
