@@ -1,25 +1,22 @@
-import ReactDOM from "react-dom"
+import { createRoot } from 'react-dom/client';
 import AgoraUIKit, { layout as AgoraLayout, RtcPropsInterface, RtmPropsInterface, } from 'agora-react-uikit'
-// import { RemoteStreamFallbackType } from 'agora-rtc-react'
 import 'agora-react-uikit/dist/index.css'
 
+/**
+  * 0: Disable the fallback.
+  * 1: Automatically subscribe to the low-video stream under poor network conditions. 
+  * 2: Subscribe to the low-quality video stream when the network conditions worsen, and subscribe to audio only when the conditions become too poor to support video transmission.
+  */
 declare enum RemoteStreamFallbackType {
-  /**
-   * 0: Disable the fallback.
-   */
   DISABLE = 0,
-  /**
-   * 1: Automatically subscribe to the low-video stream under poor network conditions. */
   LOW_STREAM = 1,
-  /**
-   * 2: Subscribe to the low-quality video stream when the network conditions worsen, and subscribe to audio only when the conditions become too poor to support video transmission.
-   */
   AUDIO_ONLY = 2
 }
 
 class AgoraWebComponent extends HTMLElement {
   
   private mountPoint: HTMLDivElement
+  private reactRoot: ReturnType<typeof createRoot> | null = null
 
   private rtcProps: RtcPropsInterface = {
     appId: '',
@@ -46,7 +43,12 @@ class AgoraWebComponent extends HTMLElement {
 
   constructor() {
     super()
+    // create DOM element to nest in shadow DOM
     this.mountPoint = document.createElement('div')
+    this.mountPoint.id = 'Agora-WebUIKit-Root'
+    this.mountPoint.style.width = '100%'
+    this.mountPoint.style.display = 'flex%'
+    // Attach Shadow DOM root
     const shadowRoot = this.attachShadow({ mode: 'open' })
     shadowRoot.appendChild(this.mountPoint)
   }
@@ -85,6 +87,11 @@ class AgoraWebComponent extends HTMLElement {
 
   // Component is mounted / added to DOM
   connectedCallback(): void {
+    // create the root
+    if (!this.reactRoot) {
+      this.reactRoot = createRoot(this.mountPoint)
+      console.log('Agora Web UIkit successfully mounted to DOM')
+    }
     // Loop through the observedAttributes an initialize them
     AgoraWebComponent.observedAttributes.forEach(attr => {
       const value = this.getAttribute(attr)
@@ -98,16 +105,12 @@ class AgoraWebComponent extends HTMLElement {
 
   // Update props when attributes change/update
   attributeChangedCallback(name: string, oldValue: string | null, newValue: string | null): void {
-
-    console.log(`attributeChangedCallback: \n - name: ${name}\n - oldValue: ${oldValue}\n - newValue: ${newValue}`)
     if (newValue === oldValue) return // no chage
     
     // handle updating props with proper values
     switch (name) {
       case 'appId': 
-        console.log(`-- Updating appId with ${newValue}`)
         this.rtcProps.appId = newValue ?? ''
-        console.log(`-- Updating appId: ${this.rtcProps.appId}`)
         break
       case 'channel': 
         this.rtcProps.channel = newValue ?? ''
@@ -179,11 +182,17 @@ class AgoraWebComponent extends HTMLElement {
 
   // Component is removed from DOM
   disconnectedCallback(): void {
-    ReactDOM.unmountComponentAtNode(this.mountPoint)
+    if(this.reactRoot) {
+      this.reactRoot.unmount()
+    }
   }
 
   private render(): void {
-    ReactDOM.render( 
+    if(!this.reactRoot) {
+      console.warn('Agora Web UIKit root missing.')
+      return
+    }
+    this.reactRoot.render( 
       <AgoraUIKit 
         rtcProps={this.rtcProps} 
         rtmProps={this.rtmProps}
@@ -193,8 +202,7 @@ class AgoraWebComponent extends HTMLElement {
             this.handleEndCallClick()
           }
         }}
-       />,
-      this.mountPoint 
+       />
     )
   }
 }
