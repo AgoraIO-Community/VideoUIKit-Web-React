@@ -192,6 +192,10 @@ class AgoraWebComponent extends HTMLElement {
       console.warn('Agora Web UIKit root missing.')
       return
     }
+    if (this.rtcProps.appId === '' || this.rtcProps.channel === '') {
+      console.warn('Agora Web UIKit Error: appId and channel cant\'t be empty.')
+      return
+    }
     this.reactRoot.render( 
       <AgoraUIKit 
         rtcProps={this.rtcProps} 
