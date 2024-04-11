@@ -290,7 +290,12 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
           console.log(`channelJoined: ${channelJoined}`)
       }
       if (rtcProps.enableDualStream && channelJoined) {
-        await client.enableDualStream()
+        // await client.enableDualStream()
+        client.enableDualStream().then(() => {
+          console.log('Dual Stream Enabled')
+        }).catch((err):void => {
+          console.warn(err)
+        })
       }
       // handle publish fail if track is not enabled
       if (localAudioTrack?.enabled && channelJoined) {
