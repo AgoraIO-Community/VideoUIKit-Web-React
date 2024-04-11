@@ -36,6 +36,7 @@ const AgoraUIKit: React.FC<PropsInterface> = (props) => {
     <AgoraRTCProvider client={client}>
       <PropsProvider value={props}>
         <div
+          id='Agora-React-UIKit-Container'
           style={{
             ...style,
             ...UIKitContainer
@@ -80,6 +81,7 @@ const style = {
   display: 'flex',
   flex: 1,
   minHeight: 0,
+  height: '100%',
   flexDirection: 'column'
 } as React.CSSProperties
 

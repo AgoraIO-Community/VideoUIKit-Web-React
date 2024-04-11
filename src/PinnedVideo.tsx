@@ -42,6 +42,7 @@ const PinnedVideo: React.FC = () => {
   return (
     <div
       ref={parentRef}
+      id="Agora-React-UIKit-Pinned-Video-Container"
       style={{
         ...{
           display: 'flex',
@@ -53,6 +54,7 @@ const PinnedVideo: React.FC = () => {
       }}
     >
       <div
+        id="Agora-React-UIKit-Pinned-Video-Max-View"
         style={{
           ...{
             display: 'flex',
@@ -70,6 +72,7 @@ const PinnedVideo: React.FC = () => {
         </MaxUidConsumer>
       </div>
       <div
+        id="Agora-React-UIKit-Pinned-Video-Scroll-View-Container"
         className={styles.scrollbar}
         style={{
           ...{
@@ -87,6 +90,7 @@ const PinnedVideo: React.FC = () => {
             minUsers.map((user) =>
               rtcProps.role === 'audience' && user.uid === 0 ? null : (
                 <div
+                  className="Agora-React-UIKit-Pinned-Video-Min-View"
                   style={{
                     ...{
                       minHeight: isLandscape ? '35vh' : '99%',

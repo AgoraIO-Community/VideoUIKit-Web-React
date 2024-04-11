@@ -337,10 +337,14 @@ const RtmConfigure = (props: any) => {
   }
 
   const end = async () => {
-    await rtmClient.logout()
-    // await channel.leave()
-    await rtmClient.removeAllListeners()
-    // await channel.removeAllListeners()
+    try {
+      await rtmClient.logout()
+      // await channel.leave()
+      await rtmClient.removeAllListeners()
+      // await channel.removeAllListeners()
+    } catch (error) {
+      console.warn(error)
+    }
   }
 
   useEffect(() => {
