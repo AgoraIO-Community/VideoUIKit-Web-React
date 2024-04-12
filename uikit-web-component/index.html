@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Agora Video Web UIkit</title>
   </head>
-  <body>
+  <body style="margin: 0;">
     <agora-web-uikit 
       style="width: 100%; height: 100vh; display: flex;"
       appId="Replace_With_Your_Agora_AppId"
-      channel="test"
+      channel=""
       userRole="host"
+      enableDualStream="false"
+      dualStreamMode="audio-only"
       rtcToken=""
       disableRtm="false"
       layout="grid"
@@ -26,7 +28,7 @@
 
       // Add event listener and subscribe to custom event
       el.addEventListener('agoraUIKitEndcall', (e) => {
-        console.log('hello from html')
+        console.log('agoraUIKitEndcall: html event')
         // handle endcall event
         el.remove();
       });
