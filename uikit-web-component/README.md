@@ -40,12 +40,13 @@ To use the Agora UIkit web-component import the required javascript and css file
   </head>
 ```
 2. Add the `<agora-web-uikit />` web-component into your webpage, and add an event-listener to remove the element from the DOM when the user clicks the end-call button. 
+> NOTE: `appId` and `channel` are the only required attributes
 ```html  
   <body style="margin: 0;">
     <agora-web-uikit 
       style="width: 100%; height: 100vh; display: flex;"
       appId="Replace_With_Your_Agora_AppId"
-      channel="test"
+      channel=""
       userRole="host"
       enableDualStream="true"
       dualStreamMode="audio-only"
@@ -66,4 +67,30 @@ To use the Agora UIkit web-component import the required javascript and css file
       });
     </script>
   </body>
+```
+
+## All Agora UIKit Attributes
+The `<agora-web-uikit />` web-component extends from the HTML element class. This means the inherits all the attributes that a standard DOM element would have (`id`, `style`, `class`, etc.) and extends it by adding attributes used by the AgoraVideoUIKit for React Web. Below is the full list of attributes.
+
+```html
+    <agora-web-uikit 
+      appId=""
+      tokenServerUrl=""
+      channel=""
+      rtcUid=""
+      userRole="host"
+      enableScreenSharing="true"
+      enableDualStream="true"
+      dualStreamMode="audio-only"
+      rtcToken=""
+      disableRtm="true"
+      layout="pin"
+      activeSpeaker="true"
+      rtmToken=""
+      rtmUid=""
+      usersname=""
+      showPopUpBeforeRemoteMute=""
+      displayUsername=""
+    />
+
 ```
