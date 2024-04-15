@@ -31,8 +31,9 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   let client = useRTCClient() // get the client set by the context provider
   const isConnected = useIsConnected()
 
-  let localVideoTrackHasPublished = false
-  let localAudioTrackHasPublished = false
+  let [localVideoTrackHasPublished, setLocalVideoTrackHasPublished] = useState<boolean>(false)
+  let [localAudioTrackHasPublished, setLocalAudioTrackHasPublished] = useState<boolean>(false)
+  let [dualStreamEnabled, setDualStreamEnabled] = useState<boolean>(false)
 
   const mediaStore = useRef<mediaStore>({})
 
@@ -284,31 +285,27 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   // publish local stream
   useEffect(() => {
     async function publish() {
-      // Testing --> TODO: remove
-      if(client.role === 'audience') {
-          client.setClientRole('host')  
-          console.log(`channelJoined: ${channelJoined}`)
-      }
-      if (rtcProps.enableDualStream && channelJoined) {
+      if (!dualStreamEnabled && rtcProps.enableDualStream && channelJoined) {
         // await client.enableDualStream()
         client.enableDualStream().then(() => {
           console.log('Dual Stream Enabled')
         }).catch((err):void => {
           console.warn(err)
         })
+        setDualStreamEnabled(true)
       }
       // handle publish fail if track is not enabled
       if (localAudioTrack?.enabled && channelJoined) {
         if (!localAudioTrackHasPublished) {
           await client.publish([localAudioTrack]).then(() => {
-            localAudioTrackHasPublished = true
+            setLocalAudioTrackHasPublished(true)
           })
         }
       }
       if (localVideoTrack?.enabled && channelJoined) {
         if (!localVideoTrackHasPublished) {
           await client.publish([localVideoTrack]).then(() => {
-            localVideoTrackHasPublished = true
+            setLocalVideoTrackHasPublished(true)
           })
         }
       }
