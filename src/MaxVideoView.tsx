@@ -19,7 +19,7 @@ const MaxVideoView = (props: {
   const [isShown, setIsShown] = useState(false)
   const { user } = props
   const remoteUsers = useRemoteUsers()
-  
+
   // Use type gaurd to check if UIKitUser is of LocalUIKitUser type
   const isLocalUser = (user: UIKitUser): user is LocalUIKitUser => user.uid === 0
 
@@ -43,7 +43,6 @@ const MaxVideoView = (props: {
               audioTrack={localAudioTrack}
               cameraOn
               micOn
-              playAudio
               playVideo
               style={styles.videoplayer}
             />
