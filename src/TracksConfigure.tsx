@@ -23,7 +23,6 @@ const TracksConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> =
 
   useEffect(() => {
     if(ready) {
-      console.log(`Mic and Camera Tracks are ready: ${ready}`)
       mediaStore.current[0] = {
         audioTrack: localMicrophoneTrack as ILocalAudioTrack,
         videoTrack: localCameraTrack as ILocalVideoTrack
