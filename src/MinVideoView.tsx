@@ -4,16 +4,17 @@ import { LocalUser, RemoteUser, useRemoteUsers } from 'agora-rtc-react'
 import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
 import SwapUser from './Controls/SwapUser'
-import PropsContext, { LocalUIKitUser, UIKitUser } from './PropsContext'
+import PropsContext, { LocalUIKitUser, UIKitUser, ToggleState } from './PropsContext'
+import { LocalContext } from './LocalUserContext'
 import VideoPlaceholder from './VideoPlaceholder'
 
 /**
  * React context to expose user array displayed in the smaller view
  */
 const MinVideoView = (props: { user: UIKitUser }) => {
-  // const { mediaStore } = useContext(RtcContext)
   const { localVideoTrack, localAudioTrack } = useContext(RtcContext)
   const { styleProps, rtcProps } = useContext(PropsContext)
+  const local = useContext(LocalContext)
   const { minViewStyles, minViewOverlayContainer } = styleProps || {}
   const [isShown, setIsShown] = useState(false)
   const { user } = props
@@ -44,9 +45,8 @@ const MinVideoView = (props: { user: UIKitUser }) => {
             <LocalUser
               videoTrack={localVideoTrack} 
               audioTrack={localAudioTrack}
-              cameraOn
-              micOn
-              playAudio
+              cameraOn={local.hasVideo === ToggleState.enabled ? true : false}
+              micOn={local.hasAudio === ToggleState.enabled ? true : false}
               playVideo
               style={{ flex: 10, display: 'flex' }}
             />
@@ -56,13 +56,6 @@ const MinVideoView = (props: { user: UIKitUser }) => {
               style={{ flex: 10, display: 'flex' }}
             />
           )}
-          {/* <AgoraVideoPlayer
-            style={{ flex: 10, display: 'flex' }}
-            config={{
-              fit: renderModeProp !== undefined ? renderModeProp : 'cover'
-            }}
-            videoTrack={mediaStore[user.uid].videoTrack as IRemoteVideoTrack}
-          /> */}
           {isShown && (
             <div
               style={{
