@@ -3,7 +3,8 @@ import RtcContext from './RtcContext'
 import { LocalUser, RemoteUser, useRemoteUsers } from 'agora-rtc-react'
 import RemoteVideoMute from './Controls/Remote/RemoteVideoMute'
 import RemoteAudioMute from './Controls/Remote/RemoteAudioMute'
-import PropsContext, { LocalUIKitUser, UIKitUser } from './PropsContext'
+import PropsContext, { LocalUIKitUser, UIKitUser, ToggleState } from './PropsContext'
+import { LocalContext } from './LocalUserContext'
 import VideoPlaceholder from './VideoPlaceholder'
 import Username from './Username'
 /**
@@ -15,6 +16,7 @@ const MaxVideoView = (props: {
 }) => {
   const { localVideoTrack, localAudioTrack } = useContext(RtcContext)
   const { styleProps, rtcProps } = useContext(PropsContext)
+  const local = useContext(LocalContext)
   const { maxViewStyles, maxViewOverlayContainer } = styleProps || {}
   const [isShown, setIsShown] = useState(false)
   const { user } = props
@@ -41,8 +43,9 @@ const MaxVideoView = (props: {
             <LocalUser
               videoTrack={localVideoTrack} 
               audioTrack={localAudioTrack}
-              cameraOn
-              micOn
+              cameraOn={local.hasVideo === ToggleState.enabled ? true : false}
+              micOn={local.hasAudio === ToggleState.enabled ? true : false}
+              // playAudio
               playVideo
               style={styles.videoplayer}
             />
