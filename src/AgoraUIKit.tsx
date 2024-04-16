@@ -15,7 +15,7 @@ import TracksConfigure from './TracksConfigure'
 import RtmConfigure from './RTMConfigure'
 import LocalUserContext from './LocalUserContext'
 import PopUp from './Controls/Remote/RemoteMutePopUp'
-import AgoraRTC, { AgoraRTCProvider, IAgoraRTCClient, useRTCClient } from 'agora-rtc-react'
+import AgoraRTC, { AgoraRTCProvider, IAgoraRTCClient } from 'agora-rtc-react'
 
 /**
  * High level component to render the UI Kit
@@ -31,17 +31,15 @@ const AgoraUIKit: React.FC<PropsInterface> = (props) => {
     if (rtcProps.customRtcClient) {
       // if customRtcClient prop is set then use custom client
       newClient.removeAllListeners()
-      newClient = useRTCClient(rtcProps.customRtcClient)
+      newClient = rtcProps.customRtcClient
     }
-    console.log('-- <AgoraUIKit />: setClient')
     setClient(newClient)
   }
 
   useEffect(()=> {
-    setNewClient()
+    setNewClient()  // set the client when the component mounts
   }, [])
 
-  console.log('-- <AgoraUIKit />: loading')
 
   return (
     <div id="AgoraUIKit" style={{ height: '100%' }}>
