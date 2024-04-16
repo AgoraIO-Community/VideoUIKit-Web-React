@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useRef, useReducer, PropsWithCh
 import { RtcProvider } from './RtcContext'
 import PropsContext, { RtcPropsInterface, UIKitUser, mediaStore, layout, CallbacksInterface } from './PropsContext'
 import { MaxUidProvider } from './MaxUidContext'
-import AgoraRTC, { useRTCClient, ILocalVideoTrack, UID, useIsConnected } from 'agora-rtc-react'
+import AgoraRTC, { useRTCClient, ILocalVideoTrack, UID } from 'agora-rtc-react'
 import { MinUidProvider } from './MinUidContext'
 import TracksContext from './TracksContext'
 import reducer, { initState } from './Reducer'
@@ -25,11 +25,10 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   const canJoin = useRef(
     new Promise<boolean | void>((resolve, reject) => {
       joinRes = resolve
-      console.log(reject)
+      if (reject) console.log(reject)
     })
   )
   let client = useRTCClient() // get the client set by the context provider
-  const isConnected = useIsConnected()
 
   let [localVideoTrackHasPublished, setLocalVideoTrackHasPublished] = useState<boolean>(false)
   let [localAudioTrackHasPublished, setLocalAudioTrackHasPublished] = useState<boolean>(false)
@@ -51,15 +50,10 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
     initState
   )
 
-  useEffect(() =>{
-    console.log(`isConnected: ${isConnected} && callActive: ${callActive}`)
-  }, [isConnected])
-
   // init rtcEngine
   useEffect(() => {
     async function init() {
       try {
-        console.log(client)
         client.on('user-joined', async (...args) => {
           const [remoteUser] = args
           if (
@@ -289,28 +283,24 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         // await client.enableDualStream()
         client.enableDualStream().then(() => {
           console.log('Dual Stream Enabled')
+          setDualStreamEnabled(true)
         }).catch((err):void => {
           console.warn(err)
         })
-        setDualStreamEnabled(true)
       }
       // handle publish fail if track is not enabled
-      if (localAudioTrack?.enabled && channelJoined) {
-        if (!localAudioTrackHasPublished) {
-          await client.publish([localAudioTrack]).then(() => {
-            setLocalAudioTrackHasPublished(true)
-          })
-        }
+      if (localAudioTrack?.enabled && channelJoined && !localAudioTrackHasPublished) {
+        await client.publish([localAudioTrack]).then(() => {
+          setLocalAudioTrackHasPublished(true)
+        })
       }
-      if (localVideoTrack?.enabled && channelJoined) {
-        if (!localVideoTrackHasPublished) {
-          await client.publish([localVideoTrack]).then(() => {
-            setLocalVideoTrackHasPublished(true)
-          })
-        }
+      if (localVideoTrack?.enabled && channelJoined && !localVideoTrackHasPublished) {
+        await client.publish([localVideoTrack]).then(() => {
+          setLocalVideoTrackHasPublished(true)
+        })
       }
     }
-    console.log('Publish', localVideoTrack, localAudioTrack, callActive)
+    // console.log('Publish', localVideoTrack, localAudioTrack, callActive)
     if (callActive) {
       publish()
     }
