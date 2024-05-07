@@ -3,7 +3,7 @@
  */
 import React, { useContext, useEffect, useState } from 'react'
 import RtcConfigure from './RTCConfigure'
-import PropsContext, { PropsProvider, PropsInterface, layout } from './PropsContext'
+import PropsContext, {  PropsProvider, PropsInterface, layout } from './PropsContext'
 import LocalControls from './Controls/LocalControls'
 import PinnedVideo from './PinnedVideo'
 import GridVideo from './GridVideo'
@@ -63,13 +63,9 @@ const AgoraUIKit: React.FC<PropsInterface> = (props) => {
                 ...UIKitContainer
               }}
             >
-              {rtcProps.role === 'audience' ? (
+              <TracksConfigure>
                 <VideocallUI />
-              ) : (
-                <TracksConfigure>
-                  <VideocallUI />
-                </TracksConfigure>
-              )}
+              </TracksConfigure>
             </div>
           </PropsProvider>
         </AgoraRTCProvider>

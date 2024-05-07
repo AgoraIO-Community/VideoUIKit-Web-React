@@ -45,14 +45,17 @@ const TracksConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> =
   console.log(`-- <TracksProvider />: loaded `) // TODO: remove Testing Logs
 
   return (
-    <TracksProvider
-      value={{
-        localVideoTrack: localCameraTrack,
-        localAudioTrack: localMicrophoneTrack
-      }}
-    >
-      {ready ? props.children : null}
-    </TracksProvider>
+    props.role === 'audience' ?
+      <div>{ready ? props.children : null}</div>
+    :
+      <TracksProvider
+        value={{
+          localVideoTrack: localCameraTrack,
+          localAudioTrack: localMicrophoneTrack
+        }}
+      >
+        {ready ? props.children : null}
+      </TracksProvider>
   )
 }
 
