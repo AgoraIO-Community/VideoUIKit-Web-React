@@ -13,7 +13,8 @@ export default async (
   callbacks?: Partial<CallbacksInterface>
 ) => {
   if (user.uid === 0) {
-    const localState = user.hasVideo
+    // const localState = user.hasVideo
+    const localState = localVideoTrack.enabled ? ToggleState.enabled : ToggleState.disabled
     if (
       localState === ToggleState.enabled ||
       localState === ToggleState.disabled

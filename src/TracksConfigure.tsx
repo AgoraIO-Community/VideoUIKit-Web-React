@@ -18,15 +18,18 @@ const TracksConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> =
   useEffect(() => {
     if(micError || cameraError) {
       console.error('Local tracks error:', { micError, cameraError })
+      console.error('-- <TracksProvider />: Local tracks error:', { micError, cameraError }) // TODO: remove Testing Logs
     }
   },[micError, cameraError])
 
   useEffect(() => {
+    console.log(`-- <TracksProvider />: ready: ${ready} `) // TODO: remove Testing Logs
     if(ready) {
       mediaStore.current[0] = {
         audioTrack: localMicrophoneTrack as ILocalAudioTrack,
         videoTrack: localCameraTrack as ILocalVideoTrack
       }
+      console.log(`-- <TracksProvider />: new tracks set `) // TODO: remove Testing Logs
     } 
     return () => {
       if (localMicrophoneTrack || localCameraTrack) {
@@ -34,19 +37,25 @@ const TracksConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> =
         localMicrophoneTrack?.close()
         // eslint-disable-next-line no-unused-expressions
         localCameraTrack?.close()
+        console.log(`-- <TracksProvider />: close tracks `) // TODO: remove Testing Logs
       }
     }
   },[ready])
 
+  console.log(`-- <TracksProvider />: loaded `) // TODO: remove Testing Logs
+
   return (
-    <TracksProvider
-      value={{
-        localVideoTrack: localCameraTrack,
-        localAudioTrack: localMicrophoneTrack
-      }}
-    >
-      {ready ? props.children : null}
-    </TracksProvider>
+    props.role === 'audience' ?
+      <div>{ready ? props.children : null}</div>
+    :
+      <TracksProvider
+        value={{
+          localVideoTrack: localCameraTrack,
+          localAudioTrack: localMicrophoneTrack
+        }}
+      >
+        {ready ? props.children : null}
+      </TracksProvider>
   )
 }
 

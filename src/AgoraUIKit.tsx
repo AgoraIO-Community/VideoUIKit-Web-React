@@ -3,11 +3,7 @@
  */
 import React, { useContext, useEffect, useState } from 'react'
 import RtcConfigure from './RTCConfigure'
-import PropsContext, {
-  PropsProvider,
-  PropsInterface,
-  layout
-} from './PropsContext'
+import PropsContext, {  PropsProvider, PropsInterface, layout } from './PropsContext'
 import LocalControls from './Controls/LocalControls'
 import PinnedVideo from './PinnedVideo'
 import GridVideo from './GridVideo'
@@ -24,27 +20,41 @@ import AgoraRTC, { AgoraRTCProvider, IAgoraRTCClient } from 'agora-rtc-react'
 const AgoraUIKit: React.FC<PropsInterface> = (props) => {
   const { styleProps, rtcProps } = props
   const { UIKitContainer } = styleProps || {}
-  let [client, setClient] = useState<IAgoraRTCClient | null>(null)
-
-  const setNewClient = () => {
-    let newClient = AgoraRTC.createClient({ codec: 'vp8', mode: 'live' }) // pass in another client if use h264
-    if (rtcProps.customRtcClient) {
-      // if customRtcClient prop is set then use custom client
-      newClient.removeAllListeners()
-      newClient = rtcProps.customRtcClient
-    }
-    setClient(newClient)
-  }
+  let [client, setClient] = useState<IAgoraRTCClient | undefined>(undefined)
 
   useEffect(()=> {
-    setNewClient()  // set the client when the component mounts
-  }, [])
+    if (!client) {
+      let newClient = AgoraRTC.createClient({ codec: 'vp8', mode: 'live' }) // pass in another client if use h264
+      if (rtcProps.customRtcClient) {
+        // if customRtcClient prop is set then use custom client
+        newClient.removeAllListeners()
+        newClient = rtcProps.customRtcClient
+      }
+      console.log(`-- <AgoraUIkit />: setClient `)
+      setClient(newClient)
+    }
 
+    return () => {
+      if (client) {
+        client?.leave()
+        client?.removeAllListeners()
+        setClient(undefined) 
+      }
+    }
+  }, [client])
+
+  useEffect(()=> {
+    if (client) {
+      client.leave()
+      client.removeAllListeners()
+      setClient(undefined) 
+    }
+  }, [rtcProps.role])
 
   return (
     <div id="AgoraUIKit" style={{ height: '100%' }}>
       {client && (
-        <AgoraRTCProvider client={client!}>
+        <AgoraRTCProvider client={client}>
           <PropsProvider value={props}>
             <div
               id='Agora-React-UIKit-Container'
@@ -53,13 +63,9 @@ const AgoraUIKit: React.FC<PropsInterface> = (props) => {
                 ...UIKitContainer
               }}
             >
-              {rtcProps.role === 'audience' ? (
+              <TracksConfigure>
                 <VideocallUI />
-              ) : (
-                <TracksConfigure>
-                  <VideocallUI />
-                </TracksConfigure>
-              )}
+              </TracksConfigure>
             </div>
           </PropsProvider>
         </AgoraRTCProvider>

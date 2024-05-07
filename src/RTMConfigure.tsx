@@ -57,9 +57,10 @@ const RtmConfigure = (props: any) => {
     const { tokenUrl } = rtcProps
     if (tokenUrl) {
       try {
-        const res = await fetch(
-          tokenUrl + '/rtm/' + (rtmProps?.uid || localUid.current)
-        )
+        const res = await fetch(`${tokenUrl}/rtm/${rtmProps?.uid || localUid.current}/`) // tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (userUid || 0) + '/' )
+        // const res = await fetch(
+        //   tokenUrl + '/rtm/' + (rtmProps?.uid || localUid.current)
+        // )
         const data = await res.json()
         const serverToken = data.rtmToken
         await rtmClient.login({
@@ -119,9 +120,10 @@ const RtmConfigure = (props: any) => {
       console.log('token expired - renewing')
       if (tokenUrl) {
         try {
-          const res = await fetch(
-            tokenUrl + '/rtm/' + (rtmProps?.uid || localUid.current)
-          )
+          const res = await fetch(`${tokenUrl}/rtm/${rtmProps?.uid || localUid.current}/`) // tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (userUid || 0) + '/' )
+          // const res = await fetch(
+          //   tokenUrl + '/rtm/' + (rtmProps?.uid || localUid.current)
+          // )
           const data = await res.json()
           const serverToken = data.rtmToken
           await rtmClient.renewToken(serverToken)
