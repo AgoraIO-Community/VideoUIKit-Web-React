@@ -150,28 +150,32 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
           const { tokenUrl, channel, uid } = rtcProps
           client.on('token-privilege-will-expire', async () => {
             console.log('token will expire')
-            const res = await fetch(
-              tokenUrl +
-                '/rtc/' +
-                channel +
-                '/publisher/uid/' +
-                (uid || 0) +
-                '/'
-            )
+            const role = rtcProps.role === 'host' ? 'publisher' : 'audience'
+            const res = await fetch(`${tokenUrl}/rtc/${channel}/${role}/uid/${uid || 0}/`) // tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (userUid || 0) + '/' )
+            // const res = await fetch(
+            //   tokenUrl +
+            //     '/rtc/' +
+            //     channel +
+            //     '/publisher/uid/' +
+            //     (uid || 0) +
+            //     '/'
+            // )
             const data = await res.json()
             const token = data.rtcToken
             client.renewToken(token)
           })
 
           client.on('token-privilege-did-expire', async () => {
-            const res = await fetch(
-              tokenUrl +
-                '/rtc/' +
-                channel +
-                '/publisher/uid/' +
-                (uid || 0) +
-                '/'
-            )
+            const role = rtcProps.role === 'host' ? 'publisher' : 'audience'
+            const res = await fetch(`${tokenUrl}/rtc/${channel}/${role}/uid/${uid || 0}/`) // tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (userUid || 0) + '/' )
+            // const res = await fetch(
+            //   tokenUrl +
+            //     '/rtc/' +
+            //     channel +
+            //     '/publisher/uid/' +
+            //     (uid || 0) +
+            //     '/'
+            // )
             const data = await res.json()
             const token = data.rtcToken
             client.renewToken(token)
@@ -215,6 +219,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
 
   // Dynamically switches channel when channel prop changes
   useEffect(() => {
+    console.log(`-- <RTCConfigure />: rtcProps useEffect: channel: ${rtcProps.channel}, uid ${rtcProps.uid}, callActive: ${callActive}, tokenUrl: ${rtcProps.tokenUrl}`)
     let ignore = false
     async function join(): Promise<void> {
       await canJoin.current
@@ -227,18 +232,14 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         }
         if (tokenUrl) {
           try {
-            const res = await fetch(
-              tokenUrl +
-                '/rtc/' +
-                channel +
-                '/publisher/uid/' +
-                (userUid || 0) +
-                '/'
-            )
+            const role = rtcProps.role === 'host' ? 'publisher' : 'audience'
+            const res = await fetch(`${tokenUrl}/rtc/${channel}/${role}/uid/${userUid || 0}/`) // tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (userUid || 0) + '/' )
+            // const res = await fetch( tokenUrl + '/rtc/' + channel + '/publisher/uid/' + (userUid || 0) + '/' )
             const data = await res.json()
             const token = data.rtcToken
             console.log(`joining channel: ${canJoin.current}`)
             uid.current = await client.join(appId, channel, token, userUid || 0)
+            console.log(`joined channel: ${canJoin.current}`)
           } catch (e) {
             console.log(e)
           }
@@ -279,7 +280,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
   // publish local stream
   useEffect(() => {
     async function publish() {
-      if (!dualStreamEnabled && rtcProps.enableDualStream && channelJoined) {
+      if (rtcProps.enableDualStream && channelJoined && !dualStreamEnabled ) {
         // await client.enableDualStream()
         client.enableDualStream().then(() => {
           console.log('Dual Stream Enabled')
@@ -300,7 +301,7 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
         })
       }
     }
-    // console.log('Publish', localVideoTrack, localAudioTrack, callActive)
+    console.log('-- <RTCConfigure />: Publish', client.uid, localVideoTrack, localAudioTrack, callActive)
     if (callActive) {
       publish()
     }
@@ -336,7 +337,8 @@ const RtcConfigure: React.FC<PropsWithChildren<Partial<RtcPropsInterface>>> = (
 
   // set role if role is updated
   useEffect(() => {
-    if (rtcProps.role) {
+    if (rtcProps.role && client.role != rtcProps.role) {
+      console.log(`-- <RTCConfigure />: role updated to: ${rtcProps.role} `)  // TODO: remove Testing Logs
       client
         .setClientRole(rtcProps.role)
         .then((e) => console.log('changed role', e))
