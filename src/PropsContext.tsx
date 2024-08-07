@@ -231,6 +231,10 @@ export interface StylePropInterface {
    */
   localBtnWrapper?: React.CSSProperties
   /**
+   * Style for timer
+   */
+  timerStyles?: React.CSSProperties
+  /**
    * Applies style to the individual cell (view) containing the video in the grid layout
    */
   gridVideoCells?: React.CSSProperties
