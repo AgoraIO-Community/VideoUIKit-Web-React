@@ -117,6 +117,8 @@ This project has been created to support some improvements and fix some importan
 
 `localBtnWrapper` styles for button wrapper inside button container
 
+`timerStyles` styles for Timer
+
 `fullScreen`: style for FullScreen button
 
 `switchCamera`: style for SwitchCamera button
