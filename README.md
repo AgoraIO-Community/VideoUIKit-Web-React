@@ -1,8 +1,17 @@
-# Agora React VideoUIKit 
+# [ARCHIVED] Agora React VideoUIKit 
 
-> Instantly integrate Agora video calling or streaming into your web application using a React based VideoUIKit.
+**⚠️ This project is no longer maintained and has been archived.**  
+Please note that this repository is now in a read-only state and will not receive any further updates or support.
+We recommend migrating to the following alternatives:
+
+- **Agora SDK**: For developers seeking a customizable solution with full control over the user experience. [Learn more](https://www.agora.io/en/products/video-call/)
+- **Agora App Builder**: For those preferring a no-code approach to integrate real-time engagement features. [Get started](https://appbuilder.agora.io/)
+
+For documentation and support, please visit the [Agora Documentation](https://docs.agora.io/en/).
 
 [![NPM](https://img.shields.io/npm/v/agora-react-uikit.svg)](https://www.npmjs.com/package/agora-react-uikit) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+
+> Instantly integrate Agora video calling or streaming into your web application using a React based VideoUIKit.
 
 ## Getting started
 ### Requirements
